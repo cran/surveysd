@@ -1,6 +1,34 @@
+# surveysd 1.1.0
+
+* uncouple surveysd from simPop
+    * use `demo.eusilc()` for all examples and unit tests in this package
+    * remove simPop from the "Suggests" field (DESCRIPTION)
+* remove hardcoded variable names in default parameters
+* allow calls to `recalib()` without specifying `conP.vars` or `conH.vars`
+
+# surveysd 1.0.2
+
+* fix bug with NSE
+* update documentation for calc.stError
+
+# surveysd 1.0.1
+
+* fix bug with fpc calculation ([0824834](https://github.com/statistikat/surveysd/commit/0824834))
+* fix bug with dummy data ([5adb6b7](https://github.com/statistikat/surveysd/commit/5adb6b7))
+* improve readability of code and resolve linters
+* resolve issues when datasets have columns with certain names (#7, #10)
+* automatize the gh-pages builds
+    * css updates
+* automated linter-checking
+* new badges (code coverage, cran)
+* update setup for vignettes
+* fix issue when household column is not a factor (#12)
+
 # surveysd 1.0.0
 
-* copy `simPop::ipu2()` and some related functions to surveysd. 
+* copy `simPop::ipu2()` and some related functions to surveysd.
+    * add bugfixes for ported functions
+* simplify tests
 * update references for the methodology vignette
 * fix sampling with full population in some strata
 
