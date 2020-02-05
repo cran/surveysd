@@ -14,7 +14,8 @@ dat_boot <- draw.bootstrap(eusilc, REP = 10, hid = "hid", weights = "pWeight",
                            strata = "region", period = "year")
 
 ## ------------------------------------------------------------------------
-dat_boot_calib <- recalib(dat_boot, conP.var = "gender", conH.var = "region")
+dat_boot_calib <- recalib(dat_boot, conP.var = "gender", conH.var = "region",
+                          epsP = 1e-2, epsH = 2.5e-2, verbose = TRUE)
 dat_boot_calib[1:5, .(year, povertyRisk, gender, pWeight, w1, w2, w3, w4)]
 
 ## ------------------------------------------------------------------------

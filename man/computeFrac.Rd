@@ -23,7 +23,7 @@ computeFrac(curValue, target, x, w)
 \item{w}{Vector of weights}
 
 \item{boundLinear}{The output \code{f} will satisfy
-\code{1/boundLinear <= f <= boundLinear}. See \code{bound} in \link{ipf}}
+\verb{1/boundLinear <= f <= boundLinear}. See \code{bound} in \link{ipf}}
 }
 \value{
 A weight multiplier \code{f}
@@ -48,10 +48,12 @@ other hand calculates \code{f} as
 where \code{a} and \code{b} are chosen, so f satisfies the following two equations.
 
 \ifelse{html}{
-  \out{<center>&sum; f<sub>i</sub> w<sub>i</sub> x<sub>i</sub> = target</center>}
+  \out{<center>&sum; f<sub>i</sub> w<sub>i</sub>
+       x<sub>i</sub> = target</center>}
 }{\deqn{\sum f_i * w_i * x_i = target}}
 \ifelse{html}{
-  \out{<center>&sum; f<sub>i</sub> w<sub>i</sub> = &sum; w<sub>i</sub></center>}
+  \out{<center>&sum; f<sub>i</sub>
+       w<sub>i</sub> = &sum; w<sub>i</sub></center>}
 }{\deqn{\sum f_i * w_i = \sum w_i}}
 
 \code{computeLinearG1} calculates \code{f} in the same way as \code{computeLinear}, but if

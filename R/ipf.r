@@ -8,9 +8,9 @@
 combine_factors <- function(dat, targets) {
 
   x <- as.data.frame(targets)
-  x$ID_ipu <- 1:nrow(x)
+  x$ID_ipu <- seq_len(nrow(x))
   x <- merge(dat, x, by = names(dimnames(targets)), sort = FALSE, all.x = TRUE)
-  factor(x$ID_ipu, levels = 1:length(targets))
+  factor(x$ID_ipu, levels = seq_along(targets))
 }
 
 getMeanFun <- function(meanHH) {
@@ -21,7 +21,7 @@ getMeanFun <- function(meanHH) {
   meanfun <- switch(meanHH,
                     arithmetic = arithmetic_mean,
                     geometric = geometric_mean,
-                    none = function(x, w){
+                    none = function(x, w) {
                       x
                     }
   )
@@ -42,14 +42,14 @@ getMeanFun <- function(meanHH) {
 #' @examples
 #' kishFactor(rep(1,10))
 #' kishFactor(rlnorm(10))
-kishFactor <- function(w){
+kishFactor <- function(w) {
   if (!is.numeric(w)) {
     stop("The input must be a numeric vector")
   }
   n <- length(w)
   sqrt(n * sum(w ^ 2) / sum(w) ^ 2)
 }
-boundsFak <- function(g1, g0, f, bound = 4){
+boundsFak <- function(g1, g0, f, bound = 4) {
   # Berechnet die neuen Gewichte (innerhalb 4, .25 Veraenderungsraten)
   g1 <- g1 * f
   TF <- which((g1 / g0) > bound)
@@ -60,7 +60,7 @@ boundsFak <- function(g1, g0, f, bound = 4){
   g1[TF] <- (1 / bound) * g0[TF]
   return(g1)
 }
-boundsFakHH <- function(g1, g0, eps, orig, p, bound = 4){
+boundsFakHH <- function(g1, g0, eps, orig, p, bound = 4) {
   # Berechnet die neuen Gewichte fuer Unter- und Obergrenze (innerhalb 4,
   #   .25 Veraenderungsraten)
   u <- orig * (1 - eps)
@@ -78,12 +78,53 @@ boundsFakHH <- function(g1, g0, eps, orig, p, bound = 4){
   return(g1)
 }
 
-check_population_totals <- function(con, dat, type = "personal") {
-  # do not apply this check for numerical calibration
+check_population_totals <- function(con, dat, w = NULL, type = "personal") {
+
+  # check weights
+  if (!is.null(w)) {
+    if (!w %in% colnames(dat)) {
+      stop("Base weight ", w, " is not a column name in dat")
+    }
+    if (any(is.na(dat[[w]]))) {
+      stop("Base weight ", w, " contains missing values")
+    }
+    if (!is.numeric(dat[[w]])) {
+      stop("Base weight ", w, " must be a numeric column")
+    }
+  }
+
+  # check constraints for non numerical calibration
+  # and numerical calibration
   if (is.null(names(con))) {
     ind <- seq_along(con)
+    indNum <- NULL
   } else {
     ind <- which(names(con) == "")
+    indNum <- which(names(con) != "")
+  }
+
+
+  # check constraints for numerical calibration
+  if (!is.null(indNum)) {
+    namesNum <- names(con)[indNum]
+
+    if (any(!namesNum %in% colnames(dat))) {
+      stop("Numerical constraints must be named by variables in dat")
+    }
+
+    numNA <- dat[, lapply(
+      .SD, function(z) {
+        any(is.na(z))
+      }),
+      .SDcols = c(namesNum)]
+    numNA <- unlist(numNA)
+    numNA <- names(numNA)[numNA]
+    if (length(numNA) > 0) {
+      mult <- (length(numNA) > 1) + 1
+      stop("Numeric variable", c(" ", "s ")[mult],
+           paste(numNA, collapse = ", "),
+           " contain", c("s ", " ")[mult], "missing values")
+    }
   }
 
   # do not apply this check for constraints that only cover the population
@@ -175,9 +216,19 @@ calibP <- function(i, dat, error, valueP, pColNames, bound, verbose, calIter,
             (abs(1 / fVariableForCalibrationIPF - 1) > epsPcur),
           list(
             maxFac = max(abs(1 / fVariableForCalibrationIPF - 1)), .N,
-            head(epsPcur, 1),
-            sumCalib = sum(get(variableKeepingTheCalibWeight)), head(value, 1)),
+            epsP = head(epsPcur, 1),
+            CalibMargin = {
+              if (!is.null(numericalWeightingVar)) {
+                sum(get(variableKeepingTheCalibWeight) *
+                      get(numericalWeightingVar))
+              }else{
+                sum(get(variableKeepingTheCalibWeight))
+              }
+            },
+            PopMargin = head(value, 1)),
           by = eval(pColNames[[i]])]
+
+
         print(tmp[order(maxFac, decreasing = TRUE), ])
         message("-----------------------------------------\n")
       }
@@ -258,10 +309,10 @@ calibH <- function(i, dat, error, valueH, hColNames, bound, verbose, calIter,
           !is.na(fVariableForCalibrationIPF) &
             (abs(1 / fVariableForCalibrationIPF - 1) > epsHcur),
           list(maxFac = max(abs(1 / fVariableForCalibrationIPF - 1)), .N,
-               head(epsHcur, 1),
+               epsH = head(epsHcur, 1),
                sumCalibWeight = sum(get(variableKeepingTheCalibWeight) *
                                       representativeHouseholdForCalibration),
-               head(value, 1)),
+               PopMargin = head(value, 1)),
           by = eval(hColNames[[i]])]
         print(tmp[order(maxFac, decreasing = TRUE), ])
 
@@ -323,7 +374,7 @@ addWeightsAndAttributes <- function(dat, conP, conH, epsP, epsH, dat_original,
   # add calibrated weights. Use setkey to make sure the indexes match
   setkey(dat, OriginalSortingVariable)
 
-  if ((maxIter < calIter) & returnNA){
+  if ((maxIter < calIter) & returnNA) {
     outTable[, c(variableKeepingTheCalibWeight) := NA]
   } else {
     outTable[, c(variableKeepingTheCalibWeight) :=
@@ -369,7 +420,9 @@ addWeightsAndAttributes <- function(dat, conP, conH, epsP, epsH, dat_original,
 #' individual level constraints.
 #'
 #' This function implements the weighting procedure described
-#' [here](http://www.ajs.or.at/index.php/ajs/article/viewFile/doi10.17713ajs.v45i3.120/512).
+#' [here](https://doi.org/10.17713/ajs.v45i3.120).
+#' Usage examples can be found in the corresponding vignette
+#' (`vignette("ipf")`).
 #'
 #' `conP` and `conH` are contingency tables, which can be created with `xtabs`.
 #' The `dimnames` of those tables should match the names and levels of the
@@ -377,7 +430,7 @@ addWeightsAndAttributes <- function(dat, conP, conH, epsP, epsH, dat_original,
 #'
 #' `maxIter`, `epsP` and `epsH` are the stopping criteria. `epsP` and `epsH`
 #' describe relative tolerances in the sense that
-#' \out{\deqn{1-epsP < \frac{w_{i+1}}{w_i} < 1+epsP}{1-epsP < w(i+1)/w(i) < 1+epsP} }
+#' \deqn{1-epsP < \frac{w_{i+1}}{w_i} < 1+epsP}{1-epsP < w(i+1)/w(i) < 1+epsP}
 #' will be used as convergence criterium. Here i is the iteration step and wi is
 #' the weight of a specific person at step i.
 #'
@@ -530,8 +583,8 @@ ipf <- function(
     computeLinear, check_hh_vars = TRUE, conversion_messages = FALSE,
   nameCalibWeight = "calibWeight") {
 
-  check_population_totals(conP, dat, "personal")
-  check_population_totals(conH, dat, "household")
+  check_population_totals(conP, dat, w = w, type = "personal")
+  check_population_totals(conH, dat, w = w, type = "household")
   variableKeepingTheBaseWeight <- w
   variableKeepingTheCalibWeight <- nameCalibWeight
   if ("variableKeepingTheBaseWeight" %in% names(dat))
@@ -540,7 +593,7 @@ ipf <- function(
 
   OriginalSortingVariable <- V1 <- epsvalue <-
     f <- temporary_hvar <-
-    value <- wValue <- representativeHouseholdForCalibration <- NULL
+    value <- wValue <- representativeHouseholdForCalibration <- ..hid <- NULL
   dat_original <- dat
   dat <- copy(dat)
   ## originalsorting is fucked up without this
@@ -565,24 +618,24 @@ ipf <- function(
   if (is.null(hid)) {
     #delVars <- c("hid")
     hid <- "hid"
-    dat[, hid := as.factor(1:nrow(dat))]
+    dat[, hid := as.factor(seq_len(nrow(dat)))]
     dat[, representativeHouseholdForCalibration := 1]
   } else {
     if (!is.factor(dat[[hid]]))
       data.table::set(dat, NULL, hid, as.factor(dat[[hid]]))
     dat[, representativeHouseholdForCalibration :=
-          as.numeric(!duplicated(get(hid)))]
+          as.numeric(!duplicated(get(..hid)))]
   }
 
   ## Names of the calibration variables for Person and household dimension
   pColNames <- lapply(conP, function(x) names(dimnames(x)))
   hColNames <- lapply(conH, function(x) names(dimnames(x)))
 
-  for (i in seq_along(conP)){
+  for (i in seq_along(conP)) {
     current_colnames <- pColNames[[i]]
 
-    for (colname in current_colnames){
-      if (!inherits(dat[[colname]], "factor")){
+    for (colname in current_colnames) {
+      if (!inherits(dat[[colname]], "factor")) {
         if (conversion_messages)
           message("converting column ", colname, " to factor")
         set(
@@ -650,7 +703,7 @@ ipf <- function(
   if (check_hh_vars) {
     ## Check for non-unqiue values inside of a household for variabels used
     ##   in Household constraints
-    for (hh in hColNames){
+    for (hh in hColNames) {
       for (h in hh) {
         setnames(dat, h, "temporary_hvar")
         if (dat[, length(unique(temporary_hvar)),
@@ -771,8 +824,8 @@ ipf <- function(
 
     if (verbose && !error) {
       message("Convergence reached in ", calIter, " steps \n")
-    } else if (verbose && maxIter == calIter){
-      message("Not converged in", maxIter, "steps \n")
+    } else if (maxIter == calIter) {
+      warning("Not converged in ", maxIter, " steps \n")
     }
     calIter <- calIter + 1
   }

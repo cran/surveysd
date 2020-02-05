@@ -20,7 +20,7 @@ dt.eval <- function(..., env = parent.frame()) {
   if (length(expressions) > 1) {
     return(lapply(
       expressions,
-      function(z){
+      function(z) {
         eval(parse(text = z), envir = env)
       }
     ))
@@ -35,6 +35,22 @@ dt.eval2 <- function(...) {
 
 getEllipsis <- function(element, default, ell) {
   ifelse(is.null(ell[[element]]), default, ell[[element]])
+}
+getEllipsis2 <- function(element, default, ell) {
+
+  if (is.null(ell[[element]])) {
+    return(default)
+  }else{
+    return(ell[[element]])
+  }
+}
+
+# helpfunction to create contingency tables
+makeCalibTable <- function(dat, weights, period, vars) {
+  # make contingency table
+  formTab <- paste(weights, "~", paste(c(period, vars), collapse = "+"))
+  varsTab <- xtabs(formTab, data = dat)
+  return(list(varsTab))
 }
 
 paste_ <- function(a, b) {
@@ -68,7 +84,7 @@ povmd <- function(x, w) {
 }
 
 # helpfunction for quantile calcultion with missings
-quantileNA <- function(x, probs, p.names, np = length(probs)){
+quantileNA <- function(x, probs, p.names, np = length(probs)) {
 
   if (any(is.na(x))) {
     out <- rep(NA_real_, np)
@@ -79,7 +95,7 @@ quantileNA <- function(x, probs, p.names, np = length(probs)){
   return(out)
 }
 
-randomInsert <- function(x, y, n = 20){
+randomInsert <- function(x, y, n = 20) {
   if (length(x) < 20 | length(y) < 20) {
     stop("n must be smaller than length(x) and length(y)")
   }
@@ -88,4 +104,15 @@ randomInsert <- function(x, y, n = 20){
   y.values <- sample(y, n)
   x[x.indices] <- y.values
   return(x)
+}
+
+generateRandomName <- function(nchar = 20, existingNames) {
+
+  newName <- paste(sample(c(letters, LETTERS), nchar), collapse = "")
+  while (newName %in% existingNames) {
+    newName <- paste(sample(c(letters, LETTERS), nchar), collapse = "")
+  }
+
+
+  return(newName)
 }

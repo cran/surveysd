@@ -11,7 +11,9 @@
 #'   specified by `strata=c("strata1>strata2>strata3")`. See Details for more
 #'   information.
 #' @param cluster string specifying the column name in `dat` that is used for
-#'   clustering. For multistage sampling multiple column names can be specified
+#'   clustering. For instance given a household sample the column containing
+#'   the household ID should be supplied.
+#'   For multistage sampling multiple column names can be specified
 #'   by `cluster=c("cluster1>cluster2>cluster3")`.
 #' See Details for more information.
 #' @param fpc string specifying the column name in `dat` that contains the
@@ -90,7 +92,21 @@ rescaled.bootstrap <- function(
   InitialOrder <- N <- SINGLE_BOOT_FLAG <- SINGLE_BOOT_FLAG_FINAL <- f <-
     n_prev <- n_draw_prev <- sum_prev <- n_draw <- NULL
 
+  dat <- copy(dat)
+
   # prepare input
+  removeCols <- c()
+  if (is.null(cluster)) {
+    cluster <- generateRandomName(20, colnames(dat))
+    removeCols <- c(removeCols, cluster)
+    dat[, c(cluster) := 1:.N]
+  }
+  if (is.null(strata)) {
+    strata <- generateRandomName(20, colnames(dat))
+    removeCols <- c(removeCols, strata)
+    dat[, c(strata) := 1]
+  }
+
   input <- c(strata, cluster, fpc)
   input <- gsub("\\s", "", input)
   input <- strsplit(input, ">")
@@ -161,7 +177,7 @@ rescaled.bootstrap <- function(
       }
     }
   }
-  dat <- copy(dat)
+
   # check if variable f, N, n are in data.table
   overwrite.names <- c("f", "N", "n", "n_prev", "n_draw", "n_draw_prev")
   overwrite.names <- overwrite.names[overwrite.names %in% colnames(dat)]
@@ -188,6 +204,8 @@ rescaled.bootstrap <- function(
   N.calc <- matrix(0, nrow = n, ncol = stages)
   n_draw.calc <- matrix(0, nrow = n, ncol = stages)
   delta.calc <- array(0, dim = c(n, stages, REP))
+
+
 
   for (i in 1:stages) {
 
@@ -312,6 +330,7 @@ rescaled.bootstrap <- function(
            "https://github.com/statistikat/surveysd")
     }
     # do bootstrap for i-th stage
+
     dati[, c(deltai) := as.data.table(
       replicate(REP, draw.without.replacement(n[1], n_draw[1]),
                 simplify = FALSE)),
@@ -353,11 +372,12 @@ rescaled.bootstrap <- function(
   }
 
   setkey(dat, InitialOrder)
+
+  if (length(removeCols) > 0) {
+    dat[, c(removeCols) := NULL]
+  }
+
   if (return.value == "data") {
-    # get original col values
-    if (length(overwrite.names) > 0) {
-      setnames(dat, overwrite.names.new, overwrite.names)
-    }
     # get original values for PSUs and fpc - if singles PSUs have been detected
     #   and merged
     if (single.PSU == "merge") {
@@ -370,6 +390,11 @@ rescaled.bootstrap <- function(
       }
     }
     dat[, c("f", "n_prev", "n_draw_prev", "InitialOrder", "sum_prev") := NULL]
+    # get original col values
+    if (length(overwrite.names) > 0) {
+      setnames(dat, overwrite.names.new, overwrite.names)
+    }
+
     return(dat)
   } else if (return.value == "replicates") {
     return(dat[, mget(bootRep)])
@@ -401,7 +426,7 @@ select.nstar <- function(n, N, f, n_prev, n_draw_prev, lambda_prev,
   return(n_draw)
 }
 
-draw.without.replacement <- function(n, n_draw){
+draw.without.replacement <- function(n, n_draw) {
   delta <- rep(c(1.0, 0.0), c(n_draw, n - n_draw))
   if (length(delta) > 1) {
     delta <- sample(delta)

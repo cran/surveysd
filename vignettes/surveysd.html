@@ -7,12 +7,11 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2019-07-15" />
+<meta name="date" content="2020-02-05" />
 
 <title>Introduction to surveysd</title>
 
@@ -96,7 +95,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -302,7 +301,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Introduction to surveysd</h1>
-<h4 class="date">2019-07-15</h4>
+<h4 class="date">2020-02-05</h4>
 
 
 
@@ -370,20 +369,23 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="calibrate-bootstrap-replicates" class="section level3">
 <h3>Calibrate bootstrap replicates</h3>
 <p>Calibrate each sample according to the distribution of <code>gender</code> (on a personal level) and <code>region</code> (on a household level).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">dat_boot_calib &lt;-<span class="st"> </span><span class="kw">recalib</span>(dat_boot, <span class="dt">conP.var =</span> <span class="st">&quot;gender&quot;</span>, <span class="dt">conH.var =</span> <span class="st">&quot;region&quot;</span>)</a></code></pre></div>
-<pre><code>## Convergence reached in 2 steps</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">dat_boot_calib &lt;-<span class="st"> </span><span class="kw">recalib</span>(dat_boot, <span class="dt">conP.var =</span> <span class="st">&quot;gender&quot;</span>, <span class="dt">conH.var =</span> <span class="st">&quot;region&quot;</span>,</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">                          <span class="dt">epsP =</span> <span class="fl">1e-2</span>, <span class="dt">epsH =</span> <span class="fl">2.5e-2</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## Convergence reached in 3 steps 
 ## 
 ## Convergence reached in 3 steps</code></pre>
-<pre><code>## Convergence reached in 1 steps</code></pre>
+<pre><code>## Convergence reached in 2 steps 
+## 
+## Convergence reached in 2 steps</code></pre>
+<pre><code>## Convergence reached in 3 steps 
+## 
+## Convergence reached in 3 steps</code></pre>
 <pre><code>## Convergence reached in 2 steps</code></pre>
-<pre><code>## Convergence reached in 3 steps</code></pre>
-<pre><code>## Convergence reached in 1 steps</code></pre>
 <pre><code>## Convergence reached in 3 steps</code></pre>
 <pre><code>## Convergence reached in 2 steps 
 ## 
 ## Convergence reached in 2 steps</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">dat_boot_calib[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, .(year, povertyRisk, gender, pWeight, w1, w2, w3, w4)]</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">dat_boot_calib[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, .(year, povertyRisk, gender, pWeight, w1, w2, w3, w4)]</a></code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -404,50 +406,50 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">FALSE</td>
 <td align="left">female</td>
 <td align="right">504.5696</td>
-<td align="right">1.456272</td>
-<td align="right">1.458504</td>
-<td align="right">1006.351</td>
-<td align="right">1007.677</td>
+<td align="right">1024.316</td>
+<td align="right">1.492932</td>
+<td align="right">1.452077</td>
+<td align="right">1.472965</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
 <td align="left">FALSE</td>
 <td align="left">male</td>
 <td align="right">504.5696</td>
-<td align="right">1.456272</td>
-<td align="right">1.458504</td>
-<td align="right">1006.351</td>
-<td align="right">1007.677</td>
+<td align="right">1024.316</td>
+<td align="right">1.492932</td>
+<td align="right">1.452077</td>
+<td align="right">1.472965</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
 <td align="left">FALSE</td>
 <td align="left">male</td>
 <td align="right">504.5696</td>
-<td align="right">1.456272</td>
-<td align="right">1.458504</td>
-<td align="right">1006.351</td>
-<td align="right">1007.677</td>
+<td align="right">1024.316</td>
+<td align="right">1.492932</td>
+<td align="right">1.452077</td>
+<td align="right">1.472965</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
 <td align="left">FALSE</td>
 <td align="left">female</td>
 <td align="right">504.5696</td>
-<td align="right">1.464918</td>
-<td align="right">1.563892</td>
-<td align="right">1012.509</td>
-<td align="right">1007.677</td>
+<td align="right">1023.818</td>
+<td align="right">1.538197</td>
+<td align="right">1.493209</td>
+<td align="right">1.501502</td>
 </tr>
 <tr class="odd">
 <td align="right">2011</td>
 <td align="left">FALSE</td>
 <td align="left">male</td>
 <td align="right">504.5696</td>
-<td align="right">1.464918</td>
-<td align="right">1.563892</td>
-<td align="right">1012.509</td>
-<td align="right">1007.677</td>
+<td align="right">1023.818</td>
+<td align="right">1.538197</td>
+<td align="right">1.493209</td>
+<td align="right">1.501502</td>
 </tr>
 </tbody>
 </table>
@@ -456,8 +458,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="estimate-with-respect-to-a-grouping-variable" class="section level3">
 <h3>Estimate with respect to a grouping variable</h3>
 <p>Estimate relative amount of persons at risk of poverty per period and <code>gender</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">err.est &lt;-<span class="st"> </span><span class="kw">calc.stError</span>(dat_boot_calib, <span class="dt">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="dt">fun =</span> weightedRatio, <span class="dt">group =</span> <span class="st">&quot;gender&quot;</span>)</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">err.est<span class="op">$</span>Estimates</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">err.est &lt;-<span class="st"> </span><span class="kw">calc.stError</span>(dat_boot_calib, <span class="dt">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="dt">fun =</span> weightedRatio, <span class="dt">group =</span> <span class="st">&quot;gender&quot;</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">err.est<span class="op">$</span>Estimates</a></code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -477,7 +479,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">3979572</td>
 <td align="left">male</td>
 <td align="right">12.02660</td>
-<td align="right">0.4889923</td>
+<td align="right">0.5870804</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -485,7 +487,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">4202650</td>
 <td align="left">female</td>
 <td align="right">16.73351</td>
-<td align="right">0.5343574</td>
+<td align="right">0.7460045</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -493,7 +495,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">8182222</td>
 <td align="left">NA</td>
 <td align="right">14.44422</td>
-<td align="right">0.4300383</td>
+<td align="right">0.6613327</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
@@ -501,7 +503,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">3979572</td>
 <td align="left">male</td>
 <td align="right">12.81921</td>
-<td align="right">0.4693456</td>
+<td align="right">0.6050084</td>
 </tr>
 <tr class="odd">
 <td align="right">2011</td>
@@ -509,7 +511,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">4202650</td>
 <td align="left">female</td>
 <td align="right">16.62488</td>
-<td align="right">0.4896667</td>
+<td align="right">0.7344174</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
@@ -517,7 +519,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">8182222</td>
 <td align="left">NA</td>
 <td align="right">14.77393</td>
-<td align="right">0.4166631</td>
+<td align="right">0.6622016</td>
 </tr>
 </tbody>
 </table>
@@ -527,9 +529,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="estimate-with-respect-to-several-variables" class="section level3">
 <h3>Estimate with respect to several variables</h3>
 <p>Estimate relative amount of persons at risk of poverty per period for each <code>region</code>, <code>gender</code>, and combination of both.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">group &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>))</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">err.est &lt;-<span class="st"> </span><span class="kw">calc.stError</span>(dat_boot_calib, <span class="dt">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="dt">fun =</span> weightedRatio, <span class="dt">group =</span> group)</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="kw">head</span>(err.est<span class="op">$</span>Estimates)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">group &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>))</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">err.est &lt;-<span class="st"> </span><span class="kw">calc.stError</span>(dat_boot_calib, <span class="dt">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="dt">fun =</span> weightedRatio, <span class="dt">group =</span> group)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw">head</span>(err.est<span class="op">$</span>Estimates)</a></code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -551,7 +553,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Burgenland</td>
 <td align="right">17.414524</td>
-<td align="right">3.175991</td>
+<td align="right">3.814464</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -560,7 +562,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Burgenland</td>
 <td align="right">21.432598</td>
-<td align="right">4.118974</td>
+<td align="right">3.228845</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -569,7 +571,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Vorarlberg</td>
 <td align="right">12.973259</td>
-<td align="right">2.147179</td>
+<td align="right">1.862122</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -578,7 +580,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Vorarlberg</td>
 <td align="right">19.883637</td>
-<td align="right">2.682142</td>
+<td align="right">3.101161</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -587,7 +589,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Salzburg</td>
 <td align="right">9.156964</td>
-<td align="right">2.080256</td>
+<td align="right">1.804527</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -596,17 +598,14 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Salzburg</td>
 <td align="right">17.939382</td>
-<td align="right">3.167576</td>
+<td align="right">2.579708</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co">## skipping 54 more rows</span></a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co">## skipping 54 more rows</span></a></code></pre></div>
 </div>
 
-
-
-<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

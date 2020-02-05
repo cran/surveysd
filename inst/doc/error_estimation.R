@@ -8,7 +8,8 @@ set.seed(1234)
 eusilc <- demo.eusilc(prettyNames = TRUE)
 dat_boot <- draw.bootstrap(eusilc, REP = 10, hid = "hid", weights = "pWeight",
                            strata = "region", period = "year")
-dat_boot_calib <- recalib(dat_boot, conP.var = "gender", conH.var = "region")
+dat_boot_calib <- recalib(dat_boot, conP.var = "gender", conH.var = "region",
+                          epsP = 1e-2, epsH = 2.5e-2, verbose = TRUE)
 dat_boot_calib[, onePerson := nrow(.SD) == 1, by = .(year, hid)]
 
 ## print part of the dataset
@@ -29,8 +30,8 @@ myWeightedSum <- function(x, w) {
 }
 
 ## check if results are equal to the one using `suveysd::weightedSum()`
-totalIncome2 <- totalIncome <- calc.stError(dat_boot_calib, var = "eqIncome", fun = weightedSum)
-all.equal(totalIncome, totalIncome2)
+totalIncome2 <- calc.stError(dat_boot_calib, var = "eqIncome", fun = myWeightedSum)
+all.equal(totalIncome$Estimates, totalIncome2$Estimates)
 
 ## ------------------------------------------------------------------------
 multipleRates <- calc.stError(dat_boot_calib, var = c("povertyRisk", "onePerson"), fun = weightedRatio)

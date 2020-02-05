@@ -7,12 +7,11 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2019-07-15" />
+<meta name="date" content="2020-02-05" />
 
 <title>Error estimation</title>
 
@@ -96,7 +95,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -302,7 +301,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Error estimation</h1>
-<h4 class="date">2019-07-15</h4>
+<h4 class="date">2020-02-05</h4>
 
 
 <div id="TOC">
@@ -328,7 +327,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb1-4" data-line-number="4">eusilc &lt;-<span class="st"> </span><span class="kw">demo.eusilc</span>(<span class="dt">prettyNames =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">dat_boot &lt;-<span class="st"> </span><span class="kw">draw.bootstrap</span>(eusilc, <span class="dt">REP =</span> <span class="dv">10</span>, <span class="dt">hid =</span> <span class="st">&quot;hid&quot;</span>, <span class="dt">weights =</span> <span class="st">&quot;pWeight&quot;</span>,</a>
 <a class="sourceLine" id="cb1-6" data-line-number="6">                           <span class="dt">strata =</span> <span class="st">&quot;region&quot;</span>, <span class="dt">period =</span> <span class="st">&quot;year&quot;</span>)</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">dat_boot_calib &lt;-<span class="st"> </span><span class="kw">recalib</span>(dat_boot, <span class="dt">conP.var =</span> <span class="st">&quot;gender&quot;</span>, <span class="dt">conH.var =</span> <span class="st">&quot;region&quot;</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-7" data-line-number="7">dat_boot_calib &lt;-<span class="st"> </span><span class="kw">recalib</span>(dat_boot, <span class="dt">conP.var =</span> <span class="st">&quot;gender&quot;</span>, <span class="dt">conH.var =</span> <span class="st">&quot;region&quot;</span>,</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">                          <span class="dt">epsP =</span> <span class="fl">1e-2</span>, <span class="dt">epsH =</span> <span class="fl">2.5e-2</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## Convergence reached in 3 steps 
 ## 
 ## Convergence reached in 3 steps 
@@ -375,11 +375,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">16090.69</td>
 <td align="left">FALSE</td>
 <td align="right">504.5696</td>
-<td align="right">1.467361</td>
-<td align="right">1.461925</td>
-<td align="right">1.448003</td>
-<td align="right">1.479799</td>
-<td align="right">1.490757</td>
+<td align="right">1.459066</td>
+<td align="right">1006.555</td>
+<td align="right">1.455580</td>
+<td align="right">1.462730</td>
+<td align="right">1018.671</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -387,11 +387,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">16090.69</td>
 <td align="left">FALSE</td>
 <td align="right">504.5696</td>
-<td align="right">1.467361</td>
-<td align="right">1.461925</td>
-<td align="right">1.448003</td>
-<td align="right">1.479799</td>
-<td align="right">1.490757</td>
+<td align="right">1.459066</td>
+<td align="right">1006.555</td>
+<td align="right">1.455580</td>
+<td align="right">1.462730</td>
+<td align="right">1018.671</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -399,11 +399,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">16090.69</td>
 <td align="left">FALSE</td>
 <td align="right">504.5696</td>
-<td align="right">1.467361</td>
-<td align="right">1.461925</td>
-<td align="right">1.448003</td>
-<td align="right">1.479799</td>
-<td align="right">1.490757</td>
+<td align="right">1.459066</td>
+<td align="right">1006.555</td>
+<td align="right">1.455580</td>
+<td align="right">1.462730</td>
+<td align="right">1018.671</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
@@ -411,11 +411,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">16090.69</td>
 <td align="left">FALSE</td>
 <td align="right">504.5696</td>
-<td align="right">1.464252</td>
-<td align="right">1.400870</td>
-<td align="right">1.360662</td>
-<td align="right">1.510375</td>
-<td align="right">1.477272</td>
+<td align="right">1.380779</td>
+<td align="right">967.380</td>
+<td align="right">1.456154</td>
+<td align="right">1.516569</td>
+<td align="right">1004.087</td>
 </tr>
 <tr class="odd">
 <td align="right">2011</td>
@@ -423,11 +423,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">16090.69</td>
 <td align="left">FALSE</td>
 <td align="right">504.5696</td>
-<td align="right">1.464252</td>
-<td align="right">1.400870</td>
-<td align="right">1.360662</td>
-<td align="right">1.510375</td>
-<td align="right">1.477272</td>
+<td align="right">1.380779</td>
+<td align="right">967.380</td>
+<td align="right">1.456154</td>
+<td align="right">1.516569</td>
+<td align="right">1004.087</td>
 </tr>
 </tbody>
 </table>
@@ -457,56 +457,56 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">14.44422</td>
-<td align="right">0.4710230</td>
+<td align="right">0.5829182</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">14.77393</td>
-<td align="right">0.5615682</td>
+<td align="right">0.6761383</td>
 </tr>
 <tr class="odd">
 <td align="right">2012</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">15.04515</td>
-<td align="right">0.3879097</td>
+<td align="right">0.4903267</td>
 </tr>
 <tr class="even">
 <td align="right">2013</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">14.89013</td>
-<td align="right">0.4429596</td>
+<td align="right">0.4751962</td>
 </tr>
 <tr class="odd">
 <td align="right">2014</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">15.14556</td>
-<td align="right">0.5121590</td>
+<td align="right">0.5188642</td>
 </tr>
 <tr class="even">
 <td align="right">2015</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">15.53640</td>
-<td align="right">0.4302365</td>
+<td align="right">0.4798736</td>
 </tr>
 <tr class="odd">
 <td align="right">2016</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">15.08315</td>
-<td align="right">0.3469344</td>
+<td align="right">0.3559527</td>
 </tr>
 <tr class="even">
 <td align="right">2017</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">15.42019</td>
-<td align="right">0.5633740</td>
+<td align="right">0.5582783</td>
 </tr>
 </tbody>
 </table>
@@ -529,56 +529,56 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">162750998071</td>
-<td align="right">973119034</td>
+<td align="right">959510036</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">161926931417</td>
-<td align="right">840418104</td>
+<td align="right">900201396</td>
 </tr>
 <tr class="odd">
 <td align="right">2012</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">162576509628</td>
-<td align="right">1115195638</td>
+<td align="right">1195965007</td>
 </tr>
 <tr class="even">
 <td align="right">2013</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">163199507862</td>
-<td align="right">1396066604</td>
+<td align="right">1472304274</td>
 </tr>
 <tr class="odd">
 <td align="right">2014</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">163986275009</td>
-<td align="right">1384785226</td>
+<td align="right">1525837944</td>
 </tr>
 <tr class="even">
 <td align="right">2015</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">163416275447</td>
-<td align="right">1339544407</td>
+<td align="right">1335217370</td>
 </tr>
 <tr class="odd">
 <td align="right">2016</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">162706205137</td>
-<td align="right">1274753118</td>
+<td align="right">1204524680</td>
 </tr>
 <tr class="even">
 <td align="right">2017</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">164314959107</td>
-<td align="right">1396270280</td>
+<td align="right">1320123257</td>
 </tr>
 </tbody>
 </table>
@@ -595,8 +595,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb7-4" data-line-number="4">}</a>
 <a class="sourceLine" id="cb7-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">## check if results are equal to the one using `suveysd::weightedSum()`</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">totalIncome2 &lt;-<span class="st"> </span>totalIncome &lt;-<span class="st"> </span><span class="kw">calc.stError</span>(dat_boot_calib, <span class="dt">var =</span> <span class="st">&quot;eqIncome&quot;</span>, <span class="dt">fun =</span> weightedSum)</a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="kw">all.equal</span>(totalIncome, totalIncome2)</a></code></pre></div>
+<a class="sourceLine" id="cb7-7" data-line-number="7">totalIncome2 &lt;-<span class="st"> </span><span class="kw">calc.stError</span>(dat_boot_calib, <span class="dt">var =</span> <span class="st">&quot;eqIncome&quot;</span>, <span class="dt">fun =</span> myWeightedSum)</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="kw">all.equal</span>(totalIncome<span class="op">$</span>Estimates, totalIncome2<span class="op">$</span>Estimates)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>The parameters <code>x</code> and <code>w</code> can be assumed to be vectors with equal length with <code>w</code> being numeric and <code>x</code> being the column defined in the <code>var</code> argument. It will be called once for each period (in this case <code>year</code>) and for each weight column (in this case <code>pWeight</code>, <code>w1</code>, <code>w2</code>, …, <code>w10</code>).</p>
 </div>
@@ -624,72 +624,72 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">14.44422</td>
-<td align="right">0.4710230</td>
+<td align="right">0.5829182</td>
 <td align="right">14.85737</td>
-<td align="right">0.2602878</td>
+<td align="right">0.2568455</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">14.77393</td>
-<td align="right">0.5615682</td>
+<td align="right">0.6761383</td>
 <td align="right">14.85737</td>
-<td align="right">0.3228597</td>
+<td align="right">0.2774971</td>
 </tr>
 <tr class="odd">
 <td align="right">2012</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">15.04515</td>
-<td align="right">0.3879097</td>
+<td align="right">0.4903267</td>
 <td align="right">14.85737</td>
-<td align="right">0.3342605</td>
+<td align="right">0.2905952</td>
 </tr>
 <tr class="even">
 <td align="right">2013</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">14.89013</td>
-<td align="right">0.4429596</td>
+<td align="right">0.4751962</td>
 <td align="right">14.85737</td>
-<td align="right">0.3798783</td>
+<td align="right">0.3452929</td>
 </tr>
 <tr class="odd">
 <td align="right">2014</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">15.14556</td>
-<td align="right">0.5121590</td>
+<td align="right">0.5188642</td>
 <td align="right">14.85737</td>
-<td align="right">0.4507181</td>
+<td align="right">0.4386546</td>
 </tr>
 <tr class="even">
 <td align="right">2015</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">15.53640</td>
-<td align="right">0.4302365</td>
+<td align="right">0.4798736</td>
 <td align="right">14.85737</td>
-<td align="right">0.4143875</td>
+<td align="right">0.3803537</td>
 </tr>
 <tr class="odd">
 <td align="right">2016</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">15.08315</td>
-<td align="right">0.3469344</td>
+<td align="right">0.3559527</td>
 <td align="right">14.85737</td>
-<td align="right">0.3280088</td>
+<td align="right">0.3099259</td>
 </tr>
 <tr class="even">
 <td align="right">2017</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="right">15.42019</td>
-<td align="right">0.5633740</td>
+<td align="right">0.5582783</td>
 <td align="right">14.85737</td>
-<td align="right">0.2870508</td>
+<td align="right">0.3025539</td>
 </tr>
 </tbody>
 </table>
@@ -725,7 +725,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">260564</td>
 <td align="left">Burgenland</td>
 <td align="right">19.53984</td>
-<td align="right">1.7962051</td>
+<td align="right">1.7963347</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -733,7 +733,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">377355</td>
 <td align="left">Vorarlberg</td>
 <td align="right">16.53731</td>
-<td align="right">3.2682348</td>
+<td align="right">3.2774567</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -741,7 +741,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">535451</td>
 <td align="left">Salzburg</td>
 <td align="right">13.78734</td>
-<td align="right">2.2561119</td>
+<td align="right">2.2523362</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -749,7 +749,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">563648</td>
 <td align="left">Carinthia</td>
 <td align="right">13.08627</td>
-<td align="right">1.7480745</td>
+<td align="right">1.7427986</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -757,7 +757,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">701899</td>
 <td align="left">Tyrol</td>
 <td align="right">15.30819</td>
-<td align="right">2.0314532</td>
+<td align="right">1.3916058</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -765,7 +765,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">1167045</td>
 <td align="left">Styria</td>
 <td align="right">14.37464</td>
-<td align="right">1.3554432</td>
+<td align="right">1.3485703</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -773,7 +773,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">1598931</td>
 <td align="left">Vienna</td>
 <td align="right">17.23468</td>
-<td align="right">1.0438717</td>
+<td align="right">1.0419000</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -781,7 +781,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">1555709</td>
 <td align="left">Lower Austria</td>
 <td align="right">13.84362</td>
-<td align="right">1.6944545</td>
+<td align="right">1.7019212</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -789,7 +789,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">1421620</td>
 <td align="left">Upper Austria</td>
 <td align="right">10.88977</td>
-<td align="right">0.8676276</td>
+<td align="right">0.8701448</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -797,7 +797,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">8182222</td>
 <td align="left">NA</td>
 <td align="right">14.44422</td>
-<td align="right">0.4710230</td>
+<td align="right">0.5829182</td>
 </tr>
 </tbody>
 </table>
@@ -835,7 +835,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Burgenland</td>
 <td align="right">19.53984</td>
-<td align="right">1.7962051</td>
+<td align="right">1.7963347</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -844,7 +844,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Vorarlberg</td>
 <td align="right">16.53731</td>
-<td align="right">3.2682348</td>
+<td align="right">3.2774567</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -853,7 +853,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Salzburg</td>
 <td align="right">13.78734</td>
-<td align="right">2.2561119</td>
+<td align="right">2.2523362</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -862,7 +862,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Carinthia</td>
 <td align="right">13.08627</td>
-<td align="right">1.7480745</td>
+<td align="right">1.7427986</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -871,7 +871,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Tyrol</td>
 <td align="right">15.30819</td>
-<td align="right">2.0314532</td>
+<td align="right">1.3916058</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -880,7 +880,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Styria</td>
 <td align="right">14.37464</td>
-<td align="right">1.3554432</td>
+<td align="right">1.3485703</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -889,7 +889,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Vienna</td>
 <td align="right">17.23468</td>
-<td align="right">1.0438717</td>
+<td align="right">1.0419000</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -898,7 +898,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Lower Austria</td>
 <td align="right">13.84362</td>
-<td align="right">1.6944545</td>
+<td align="right">1.7019212</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -907,7 +907,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Upper Austria</td>
 <td align="right">10.88977</td>
-<td align="right">0.8676276</td>
+<td align="right">0.8701448</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -916,7 +916,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">NA</td>
 <td align="right">12.02660</td>
-<td align="right">0.5814477</td>
+<td align="right">0.6294860</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -925,7 +925,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">NA</td>
 <td align="right">16.73351</td>
-<td align="right">0.4651848</td>
+<td align="right">0.6290441</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -934,7 +934,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="right">14.44422</td>
-<td align="right">0.4710230</td>
+<td align="right">0.5829182</td>
 </tr>
 </tbody>
 </table>
@@ -968,7 +968,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Burgenland</td>
 <td align="right">17.414524</td>
-<td align="right">2.2240337</td>
+<td align="right">2.2233926</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -977,7 +977,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Burgenland</td>
 <td align="right">21.432598</td>
-<td align="right">2.0722169</td>
+<td align="right">2.0806293</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -986,7 +986,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Vorarlberg</td>
 <td align="right">12.973259</td>
-<td align="right">3.0907951</td>
+<td align="right">3.0976410</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -995,7 +995,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Vorarlberg</td>
 <td align="right">19.883637</td>
-<td align="right">3.7366664</td>
+<td align="right">3.7435376</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1004,7 +1004,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Salzburg</td>
 <td align="right">9.156964</td>
-<td align="right">1.8991413</td>
+<td align="right">1.8974748</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1013,7 +1013,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Salzburg</td>
 <td align="right">17.939382</td>
-<td align="right">2.5337406</td>
+<td align="right">2.5305822</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1022,7 +1022,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Carinthia</td>
 <td align="right">10.552148</td>
-<td align="right">2.0564400</td>
+<td align="right">2.0566143</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1031,7 +1031,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Carinthia</td>
 <td align="right">15.392924</td>
-<td align="right">1.9761700</td>
+<td align="right">1.9709443</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1040,7 +1040,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Tyrol</td>
 <td align="right">12.857542</td>
-<td align="right">2.2576659</td>
+<td align="right">1.0350617</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1049,7 +1049,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Tyrol</td>
 <td align="right">17.604861</td>
-<td align="right">2.0523531</td>
+<td align="right">2.2101768</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1058,7 +1058,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Styria</td>
 <td align="right">11.671247</td>
-<td align="right">1.5091092</td>
+<td align="right">1.5095045</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1067,7 +1067,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Vienna</td>
 <td align="right">15.590616</td>
-<td align="right">1.3336286</td>
+<td align="right">1.3336364</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1076,7 +1076,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Styria</td>
 <td align="right">16.964539</td>
-<td align="right">1.3880995</td>
+<td align="right">1.3743809</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1085,7 +1085,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Vienna</td>
 <td align="right">18.778813</td>
-<td align="right">0.9322183</td>
+<td align="right">0.9295877</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1094,7 +1094,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Upper Austria</td>
 <td align="right">9.074690</td>
-<td align="right">1.1708532</td>
+<td align="right">1.1700859</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1103,7 +1103,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Lower Austria</td>
 <td align="right">16.372949</td>
-<td align="right">1.8277282</td>
+<td align="right">1.8349672</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1112,7 +1112,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Lower Austria</td>
 <td align="right">11.348283</td>
-<td align="right">1.6402739</td>
+<td align="right">1.6423009</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1121,7 +1121,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Upper Austria</td>
 <td align="right">12.574205</td>
-<td align="right">0.7678252</td>
+<td align="right">0.7703255</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1130,7 +1130,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="right">14.444218</td>
-<td align="right">0.4710230</td>
+<td align="right">0.5829182</td>
 </tr>
 </tbody>
 </table>
@@ -1170,7 +1170,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Burgenland</td>
 <td align="right">17.414524</td>
-<td align="right">2.2240337</td>
+<td align="right">2.2233926</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1179,7 +1179,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Burgenland</td>
 <td align="right">21.432598</td>
-<td align="right">2.0722169</td>
+<td align="right">2.0806293</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1188,7 +1188,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Vorarlberg</td>
 <td align="right">12.973259</td>
-<td align="right">3.0907951</td>
+<td align="right">3.0976410</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1197,7 +1197,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Vorarlberg</td>
 <td align="right">19.883637</td>
-<td align="right">3.7366664</td>
+<td align="right">3.7435376</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1206,7 +1206,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Salzburg</td>
 <td align="right">9.156964</td>
-<td align="right">1.8991413</td>
+<td align="right">1.8974748</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1215,7 +1215,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Salzburg</td>
 <td align="right">17.939382</td>
-<td align="right">2.5337406</td>
+<td align="right">2.5305822</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1224,7 +1224,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Carinthia</td>
 <td align="right">10.552148</td>
-<td align="right">2.0564400</td>
+<td align="right">2.0566143</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1233,7 +1233,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Burgenland</td>
 <td align="right">19.539836</td>
-<td align="right">1.7962051</td>
+<td align="right">1.7963347</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1242,7 +1242,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Carinthia</td>
 <td align="right">15.392924</td>
-<td align="right">1.9761700</td>
+<td align="right">1.9709443</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1251,7 +1251,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Tyrol</td>
 <td align="right">12.857542</td>
-<td align="right">2.2576659</td>
+<td align="right">1.0350617</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1260,7 +1260,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Tyrol</td>
 <td align="right">17.604861</td>
-<td align="right">2.0523531</td>
+<td align="right">2.2101768</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1269,7 +1269,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Vorarlberg</td>
 <td align="right">16.537310</td>
-<td align="right">3.2682348</td>
+<td align="right">3.2774567</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1278,7 +1278,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Salzburg</td>
 <td align="right">13.787343</td>
-<td align="right">2.2561119</td>
+<td align="right">2.2523362</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1287,7 +1287,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Carinthia</td>
 <td align="right">13.086268</td>
-<td align="right">1.7480745</td>
+<td align="right">1.7427986</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1296,7 +1296,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Styria</td>
 <td align="right">11.671247</td>
-<td align="right">1.5091092</td>
+<td align="right">1.5095045</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1305,7 +1305,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Vienna</td>
 <td align="right">15.590616</td>
-<td align="right">1.3336286</td>
+<td align="right">1.3336364</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1314,7 +1314,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Styria</td>
 <td align="right">16.964539</td>
-<td align="right">1.3880995</td>
+<td align="right">1.3743809</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1323,7 +1323,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Vienna</td>
 <td align="right">18.778813</td>
-<td align="right">0.9322183</td>
+<td align="right">0.9295877</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1332,7 +1332,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Tyrol</td>
 <td align="right">15.308191</td>
-<td align="right">2.0314532</td>
+<td align="right">1.3916058</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1341,7 +1341,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Upper Austria</td>
 <td align="right">9.074690</td>
-<td align="right">1.1708532</td>
+<td align="right">1.1700859</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1350,7 +1350,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Lower Austria</td>
 <td align="right">16.372949</td>
-<td align="right">1.8277282</td>
+<td align="right">1.8349672</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1359,7 +1359,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">Lower Austria</td>
 <td align="right">11.348283</td>
-<td align="right">1.6402739</td>
+<td align="right">1.6423009</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1368,7 +1368,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">Upper Austria</td>
 <td align="right">12.574205</td>
-<td align="right">0.7678252</td>
+<td align="right">0.7703255</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1377,7 +1377,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Styria</td>
 <td align="right">14.374637</td>
-<td align="right">1.3554432</td>
+<td align="right">1.3485703</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1386,7 +1386,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Vienna</td>
 <td align="right">17.234683</td>
-<td align="right">1.0438717</td>
+<td align="right">1.0419000</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1395,7 +1395,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Lower Austria</td>
 <td align="right">13.843623</td>
-<td align="right">1.6944545</td>
+<td align="right">1.7019212</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1404,7 +1404,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">Upper Austria</td>
 <td align="right">10.889773</td>
-<td align="right">0.8676276</td>
+<td align="right">0.8701448</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1413,7 +1413,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">male</td>
 <td align="left">NA</td>
 <td align="right">12.026600</td>
-<td align="right">0.5814477</td>
+<td align="right">0.6294860</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1422,7 +1422,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">female</td>
 <td align="left">NA</td>
 <td align="right">16.733508</td>
-<td align="right">0.4651848</td>
+<td align="right">0.6290441</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1431,7 +1431,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="right">14.444218</td>
-<td align="right">0.4710230</td>
+<td align="right">0.5829182</td>
 </tr>
 </tbody>
 </table>
@@ -1440,9 +1440,6 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 </div>
 
-
-
-<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

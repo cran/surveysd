@@ -4,12 +4,26 @@
 \alias{ipf}
 \title{Iterative Proportional Fitting}
 \usage{
-ipf(dat, hid = NULL, conP = NULL, conH = NULL, epsP = 1e-06,
-  epsH = 0.01, verbose = FALSE, w = NULL, bound = 4,
-  maxIter = 200, meanHH = TRUE, allPthenH = TRUE, returnNA = TRUE,
-  looseH = FALSE, numericalWeighting = computeLinear,
-  check_hh_vars = TRUE, conversion_messages = FALSE,
-  nameCalibWeight = "calibWeight")
+ipf(
+  dat,
+  hid = NULL,
+  conP = NULL,
+  conH = NULL,
+  epsP = 1e-06,
+  epsH = 0.01,
+  verbose = FALSE,
+  w = NULL,
+  bound = 4,
+  maxIter = 200,
+  meanHH = TRUE,
+  allPthenH = TRUE,
+  returnNA = TRUE,
+  looseH = FALSE,
+  numericalWeighting = computeLinear,
+  check_hh_vars = TRUE,
+  conversion_messages = FALSE,
+  nameCalibWeight = "calibWeight"
+)
 }
 \arguments{
 \item{dat}{a \code{data.table} containing household ids (optionally), base
@@ -114,7 +128,9 @@ individual level constraints.
 }
 \details{
 This function implements the weighting procedure described
-\href{http://www.ajs.or.at/index.php/ajs/article/viewFile/doi10.17713ajs.v45i3.120/512}{here}.
+\href{https://doi.org/10.17713/ajs.v45i3.120}{here}.
+Usage examples can be found in the corresponding vignette
+(\code{vignette("ipf")}).
 
 \code{conP} and \code{conH} are contingency tables, which can be created with \code{xtabs}.
 The \code{dimnames} of those tables should match the names and levels of the
@@ -122,7 +138,7 @@ corresponding columns in \code{dat}.
 
 \code{maxIter}, \code{epsP} and \code{epsH} are the stopping criteria. \code{epsP} and \code{epsH}
 describe relative tolerances in the sense that
-\out{\deqn{1-epsP < \frac{w_{i+1}}{w_i} < 1+epsP}{1-epsP < w(i+1)/w(i) < 1+epsP} }
+\deqn{1-epsP < \frac{w_{i+1}}{w_i} < 1+epsP}{1-epsP < w(i+1)/w(i) < 1+epsP}
 will be used as convergence criterium. Here i is the iteration step and wi is
 the weight of a specific person at step i.
 
