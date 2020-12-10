@@ -210,10 +210,19 @@ recalib <- function(
     z <- names(dimnames(z))
     z[z != period]
   })
+  conHnamesNumeric <- conPnamesNumeric <- NULL
+  if(!is.null(names(conP))){
+    conPnamesNumeric <- unique(names(conP))
+    conPnamesNumeric <- conPnamesNumeric[conPnamesNumeric!=""]
+  }
   conHnames <- lapply(conH, function(z) {
     z <- names(dimnames(z))
     z[z != period]
   })
+    if(!is.null(names(conH))){
+      conHnamesNumeric <- unique(names(conH))
+      conHnamesNumeric <- conHnamesNumeric[conHnamesNumeric!=""]
+  }
 
   if (!all(unlist(conPnames) %in% c.names)) {
     stop("Not all dimnames in conP are column names in dat")
@@ -250,7 +259,7 @@ recalib <- function(
   vars <- c(period, unique(unlist(c(conP.var, conH.var, conPnames, conHnames))))
   vars.class <- unlist(lapply(dat[, mget(vars)], function(z) {
     z.class <- class(z)
-    if (z.class[1] == "labelled") {
+    if (z.class[1] %in% c("labelled", "haven_labelled")) {
       z.class <- "factor"
     }
     return(z.class)
@@ -289,13 +298,13 @@ recalib <- function(
            " was supplied through parameter conH AND conH.var")
     }
   }
-
   # define new Index
   dat[, hidfactor := factor(do.call(paste0, .SD)), .SDcols = c(hid, period)]
 
   # calibrate weights to conP and conH
   select.var <- unique(c("hidfactor", weights, period,
-                         unlist(c(conP.var, conH.var, conPnames, conHnames))))
+                         unlist(c(conP.var, conH.var, conPnames, conHnames,
+                                  conPnamesNumeric, conHnamesNumeric))))
   calib.fail <- c()
 
   for (g in b.rep) {
@@ -312,7 +321,6 @@ recalib <- function(
                          paste(names(dimnames(z)), collapse = ","), ")][V1==0]")
       nrow(check.z) > 0
     })
-
     if (!is.null(conP) | !is.null(conH)) {
       if (any(unlist(c(check.conH, check.conP)))) {
         calib.fail <- c(calib.fail, g)

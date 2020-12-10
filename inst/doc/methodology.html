@@ -1,19 +1,35 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
 
 <title>Methodology</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 
 
 
@@ -29,9 +45,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -200,7 +213,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -289,7 +303,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="iterative-proportional-fitting-ipf" class="section level2">
 <h2>Iterative proportional fitting (IPF)</h2>
 <p>The uncalibrated bootstrap weights <span class="math inline">\(\tilde{b}_j^{i}\)</span> computed through the rescaled bootstrap procedure yields population statistics that differ from the known population margins of specified sociodemographic variables for which the base weights <span class="math inline">\(w_j\)</span> have been calibrated. To adjust for this the bootstrap weights <span class="math inline">\(\tilde{b}_{j}^{i}\)</span> can be recalibrated using iterative proportional fitting as described in <span class="citation">(Meraner, Gumprecht, and Kowarik 2016)</span>.</p>
-<p>Let the original weight <span class="math inline">\(w_{j}\)</span> be calibrated for <span class="math inline">\(n=n_P+n_H\)</span> sociodemographic variables which are divided into the sets <span class="math inline">\(\mathcal{P}:=\{p_{c}, c=1 \ldots,n_P\}\)</span> and <span class="math inline">\(\mathcal{H}:=\{h_{c}, c=1 \ldots,n_H\}\)</span>. <span class="math inline">\(\mathcal{P}\)</span> and <span class="math inline">\(\mathcal{H}\)</span> correspond to personal, for example gender or age, or household variables, like region or households size, respectively. Each variable in either <span class="math inline">\(\mathcal{P}\)</span> or <span class="math inline">\(\mathcal{H}\)</span> can take on <span class="math inline">\(P_{c}\)</span> or <span class="math inline">\(H_{c}\)</span> values with and <span class="math inline">\(N^{p_c}_v\)</span>, <span class="math inline">\(v=1,\ldots,P_c\)</span>, or <span class="math inline">\(N^{h_c}_v\)</span>, <span class="math inline">\(v=1,\ldots,H_c\)</span>, as the corresponding population margins. Starting with <span class="math inline">\(k=0\)</span> the iterative proportional fitting procedure is applied on each <span class="math inline">\(\tilde{b}_j^{i}\)</span>, <span class="math inline">\(i=1,\ldots, B\)</span> seperately. The weights are first updated for personal and afterwards updated for household variables. If constraints regarding the populations margins are not met <span class="math inline">\(k\)</span> is raised by 1 and the procedure starts from the beginning. For the following denote as starting weight <span class="math inline">\(\tilde{b}_j^{[0]}:=\tilde{b}_j^{i}\)</span> for fixed <span class="math inline">\(i\)</span>.</p>
+<p>Let the original weight <span class="math inline">\(w_{j}\)</span> be calibrated for <span class="math inline">\(n=n_P+n_H\)</span> sociodemographic variables which are divided into the sets <span class="math inline">\(\mathcal{P}:=\{p_{c}, c=1 \ldots,n_P\}\)</span> and <span class="math inline">\(\mathcal{H}:=\{h_{c}, c=1 \ldots,n_H\}\)</span>. <span class="math inline">\(\mathcal{P}\)</span> and <span class="math inline">\(\mathcal{H}\)</span> correspond to personal, for example gender or age, or household variables, like region or households size, respectively. Each variable in either <span class="math inline">\(\mathcal{P}\)</span> or <span class="math inline">\(\mathcal{H}\)</span> can take on <span class="math inline">\(P_{c}\)</span> or <span class="math inline">\(H_{c}\)</span> values with and <span class="math inline">\(N^{p_c}_v\)</span>, <span class="math inline">\(v=1,\ldots,P_c\)</span>, or <span class="math inline">\(N^{h_c}_v\)</span>, <span class="math inline">\(v=1,\ldots,H_c\)</span>, as the corresponding population margins. Starting with <span class="math inline">\(k=0\)</span> the iterative proportional fitting procedure is applied on each <span class="math inline">\(\tilde{b}_j^{i}\)</span>, <span class="math inline">\(i=1,\ldots, B\)</span> separately. The weights are first updated for personal and afterwards updated for household variables. If constraints regarding the populations margins are not met <span class="math inline">\(k\)</span> is raised by 1 and the procedure starts from the beginning. For the following denote as starting weight <span class="math inline">\(\tilde{b}_j^{[0]}:=\tilde{b}_j^{i}\)</span> for fixed <span class="math inline">\(i\)</span>.</p>
 <div id="adjustment-and-trimming-for-mathcalp" class="section level3">
 <h3>Adjustment and trimming for <span class="math inline">\(\mathcal{P}\)</span></h3>
 <p>The uncalibrated bootstrap weight <span class="math inline">\(\tilde{b}_j^{[(n+1)k+c-1]}\)</span> for the <span class="math inline">\(j\)</span>-th observation is iteratively multiplied by a factor so that the projected distribution of the population matches the respective calibration specification <span class="math inline">\(N_{p_c}\)</span>, <span class="math inline">\(c=1, \ldots,n_P\)</span>. For each <span class="math inline">\(c \in \left\{1, \ldots,n_P\right\}\)</span> the calibrated weights against <span class="math inline">\(N^{p_c}_v\)</span> are computed as <span class="math display">\[
@@ -300,7 +314,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h3>Averaging weights within households</h3>
 <p>Since the sociodemographic variables <span class="math inline">\(p_1,\ldots,p_{n_c}\)</span> include person-specific variables, the weights <span class="math inline">\(\tilde{b}_j^{[nk+n_p]}\)</span> resulting from the iterative multiplication can be unequal for members of the same household. This can lead to inconsistencies between results projected with household and person weights. To avoid such inconsistencies each household member is assigned the mean of the household weights. That is for each person <span class="math inline">\(j\)</span> in household <span class="math inline">\(a\)</span> with <span class="math inline">\(h_a\)</span> household members, the weights are defined by <span class="math display">\[
   \tilde{b}_j^{[(n+1)k+n_p+1]} = \frac{{\sum\limits_{l\in a}} {\tilde{b}_l^{[(n+1)k+n_p]}}}{h_a}
-\]</span> This can result in losing the population structure performed in the previouse subsection.</p>
+\]</span> This can result in losing the population structure performed in the previous subsection.</p>
 </div>
 <div id="adjustment-and-trimming-for-mathcalh" class="section level3">
 <h3>Adjustment and trimming for <span class="math inline">\(\mathcal{H}\)</span></h3>
@@ -320,7 +334,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 \]</span> and for variables in <span class="math inline">\(\mathcal{H}\)</span> the constraints</p>
 <p><span class="math display">\[
 \frac{N^{h_c}_v}{{\sum\limits_l} {\tilde{b}}_l^{[(n+1)k+j]}} \in ((1-\epsilon_h)N^{h_c}_v,(1+\epsilon_h)N^{h_c}_v)
-\]</span> are verified, where the sum in the denominator expands over all observations which have the same value for variables <span class="math inline">\(h_c\)</span> or <span class="math inline">\(p_c\)</span>. If these contraints hold true the algorithm reaches convergence, otherwise <span class="math inline">\(k\)</span> is raised by 1 and the procedure repeats itself.</p>
+\]</span> are verified, where the sum in the denominator expands over all observations which have the same value for variables <span class="math inline">\(h_c\)</span> or <span class="math inline">\(p_c\)</span>. If these constraints hold true the algorithm reaches convergence, otherwise <span class="math inline">\(k\)</span> is raised by 1 and the procedure repeats itself.</p>
 <p>The above described calibration procedure is applied on each year <span class="math inline">\(y_t\)</span> of EU-SILC separately, <span class="math inline">\(t=1,\ldots n_y\)</span>, thus resulting in so called calibrated bootstrap sample weights <span class="math inline">\(b_{j}^{(i,{y_t})}\)</span>, <span class="math inline">\(i=1,\ldots,B\)</span> for each year <span class="math inline">\(y\)</span> and each household <span class="math inline">\(j\)</span>.</p>
 </div>
 </div>
@@ -353,29 +367,32 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Bauer, Martin, Matthias Till, Richard Heuberger, Marcel Bilgili, Thomas Glaser, Elisabeth Kafka, Johannes Klotz, et al. 2013. “Studie Zu Armut Und Sozialer Eingliederung in Den Bundesländern.” Statistik Austria [in German].</p>
 </div>
 <div id="ref-chipprest2007">
-<p>Chipperfield, James, and John Preston. 2007. “Efficient Bootstrap for Business Surveys.” <em>Survey Methodology</em> 33 (December): 167–72. <a href="https://www.researchgate.net/publication/299052617">https://www.researchgate.net/publication/299052617</a>.</p>
+<p>Chipperfield, James, and John Preston. 2007. “Efficient Bootstrap for Business Surveys.” <em>Survey Methodology</em> 33 (December): 167–72. <a href="https://www.researchgate.net/publication/299052617_Efficient_bootstrap_for_business_surveys">https://www.researchgate.net/publication/299052617_Efficient_bootstrap_for_business_surveys</a>.</p>
 </div>
 <div id="ref-efron1979">
-<p>Efron, B. 1979. “Bootstrap Methods: Another Look at the Jackknife.” <em>Ann. Statist.</em> 7 (1). The Institute of Mathematical Statistics: 1–26. <a href="https://doi.org/10.1214/aos/1176344552">https://doi.org/10.1214/aos/1176344552</a>.</p>
+<p>Efron, B. 1979. “Bootstrap Methods: Another Look at the Jackknife.” <em>Ann. Statist.</em> 7 (1): 1–26. <a href="https://doi.org/10.1214/aos/1176344552">https://doi.org/10.1214/aos/1176344552</a>.</p>
 </div>
 <div id="ref-mekogu2016">
 <p>Meraner, Angelika, Daniela Gumprecht, and Alexander Kowarik. 2016. “Weighting Procedure of the Austrian Microcensus Using Administrative Data.” <em>Austrian Journal of Statistics</em> 45 (June): 3. <a href="https://doi.org/10.17713/ajs.v45i3.120">https://doi.org/10.17713/ajs.v45i3.120</a>.</p>
 </div>
 <div id="ref-potter90">
-<p>Potter, Frank J. 1990. “A Study of Procedures to Identify and Trim Extreme Sampling Weights.” <em>Proceedings of the American Statistical Association, Section on Survey Research Methods</em>, 225–30. <a href="https://www.researchgate.net/publication/242577922">https://www.researchgate.net/publication/242577922</a>.</p>
+<p>Potter, Frank J. 1990. “A Study of Procedures to Identify and Trim Extreme Sampling Weights.” <em>Proceedings of the American Statistical Association, Section on Survey Research Methods</em>, 225–30. <a href="https://www.researchgate.net/publication/242577922_A_study_of_procedures_to_identify_and_trim_extreme_sampling_weights">https://www.researchgate.net/publication/242577922_A_study_of_procedures_to_identify_and_trim_extreme_sampling_weights</a>.</p>
 </div>
 <div id="ref-potter93">
-<p>———. 1993. “The Effect of Weight Trimming on Nonlinear Survey Estimates.” <em>Proceedings of the American Statistical Association, Section on Survey Research Methods</em> 2: 758–63.</p>
+<p>———. 1993. “The Effect of Weight Trimming on Nonlinear Survey Estimates.” <em>Proceedings of the American Statistical Association, Section on Survey Research Methods</em> 2: 758–63. <a href="https://www.iser.essex.ac.uk/research/publications/498663">https://www.iser.essex.ac.uk/research/publications/498663</a>.</p>
 </div>
 <div id="ref-prest2009">
-<p>Preston, J. 2009. “Rescaled Bootstrap for Stratified Multistage Sampling.” <em>Survey Methodology</em> 35 (December): 227–34. <a href="https://www.researchgate.net/publication/281735659">https://www.researchgate.net/publication/281735659</a>.</p>
+<p>Preston, J. 2009. “Rescaled Bootstrap for Stratified Multistage Sampling.” <em>Survey Methodology</em> 35 (December): 227–34. <a href="https://www.researchgate.net/publication/281735659_Rescaled_bootstrap_for_stratified_multistage_sampling">https://www.researchgate.net/publication/281735659_Rescaled_bootstrap_for_stratified_multistage_sampling</a>.</p>
 </div>
 <div id="ref-raowu1988">
-<p>Rao, J. N. K., and C. F. J. Wu. 1988. “Resampling Inference with Complex Survey Data.” <em>Journal of the American Statistical Association</em> 83 (401). Taylor &amp; Francis: 231–41. <a href="https://doi.org/10.2307/2288945">https://doi.org/10.2307/2288945</a>.</p>
+<p>Rao, J. N. K., and C. F. J. Wu. 1988. “Resampling Inference with Complex Survey Data.” <em>Journal of the American Statistical Association</em> 83 (401): 231–41. <a href="https://doi.org/10.2307/2288945">https://doi.org/10.2307/2288945</a>.</p>
 </div>
 </div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

@@ -29,38 +29,24 @@ getMeanFun <- function(meanHH) {
     stop("invalid value for meanHH")
   meanfun
 }
-#'
-#' Kish Factor
-#'
-#' Compute the kish factor for a specific weight vector
-#'
-#' @name kishFactor
-#' @param w a numeric vector with weights
-#' @return The function will return the the kish factor
-#' @author Alexander Kowarik
-#' @export kishFactor
-#' @examples
-#' kishFactor(rep(1,10))
-#' kishFactor(rlnorm(10))
-kishFactor <- function(w) {
-  if (!is.numeric(w)) {
-    stop("The input must be a numeric vector")
-  }
-  n <- length(w)
-  sqrt(n * sum(w ^ 2) / sum(w) ^ 2)
-}
-boundsFak <- function(g1, g0, f, bound = 4) {
+boundsFak <- function(g1, g0, f, bound = 4, minMaxTrim=NULL) {
   # Berechnet die neuen Gewichte (innerhalb 4, .25 Veraenderungsraten)
   g1 <- g1 * f
-  TF <- which((g1 / g0) > bound)
-  TF[is.na(TF)] <- FALSE
-  g1[TF] <- bound * g0[TF]
-  TF <- which((g1 / g0) < (1 / bound))
-  TF[is.na(TF)] <- FALSE
-  g1[TF] <- (1 / bound) * g0[TF]
+  if(!is.null(bound)){
+    TF <- which((g1 / g0) > bound)
+    TF[is.na(TF)] <- FALSE
+    g1[TF] <- bound * g0[TF]
+    TF <- which((g1 / g0) < (1 / bound))
+    TF[is.na(TF)] <- FALSE
+    g1[TF] <- (1 / bound) * g0[TF]
+  }
+  if(!is.null(minMaxTrim)){
+    g1[g1<minMaxTrim[1]] <- minMaxTrim[1]
+    g1[g1>minMaxTrim[2]] <- minMaxTrim[2]
+  }
   return(g1)
 }
-boundsFakHH <- function(g1, g0, eps, orig, p, bound = 4) {
+boundsFakHH <- function(g1, g0, eps, orig, p, bound = 4, minMaxTrim=NULL) {
   # Berechnet die neuen Gewichte fuer Unter- und Obergrenze (innerhalb 4,
   #   .25 Veraenderungsraten)
   u <- orig * (1 - eps)
@@ -70,61 +56,43 @@ boundsFakHH <- function(g1, g0, eps, orig, p, bound = 4) {
   psu <- which(p < u)
   g1[pbo] <- g1[pbo] * o[pbo] / p[pbo]
   g1[psu] <- g1[psu] * u[psu] / p[psu]
-
-  TF <- which((g1 / g0) > bound)
-  g1[TF] <- bound * g0[TF]
-  TF <- which((g1 / g0) < (1 / bound))
-  g1[TF] <- (1 / bound) * g0[TF]
+  if(!is.null(bound)){
+    TF <- which((g1 / g0) > bound)
+    g1[TF] <- bound * g0[TF]
+    TF <- which((g1 / g0) < (1 / bound))
+    g1[TF] <- (1 / bound) * g0[TF]
+  }
+  if(!is.null(minMaxTrim)){
+    g1[g1<minMaxTrim[1]] <- minMaxTrim[1]
+    g1[g1>minMaxTrim[2]] <- minMaxTrim[2]
+  }
   return(g1)
 }
 
-check_population_totals <- function(con, dat, w = NULL, type = "personal") {
-
-  # check weights
-  if (!is.null(w)) {
-    if (!w %in% colnames(dat)) {
-      stop("Base weight ", w, " is not a column name in dat")
+check_eps <- function(con, eps, type){
+  l <- length(con)
+  if(is.list(eps)){
+    if(length(eps)!=l){
+      stop(paste("Provided",type,"eps argument does not fit",type,"constraints."))
     }
-    if (any(is.na(dat[[w]]))) {
-      stop("Base weight ", w, " contains missing values")
+    for(i in 1:length(eps)){
+      if(is.array(eps[[i]])){
+        if(!identical(dim(eps[[i]]),dim(con[[i]]))){
+          stop(paste("Provided",type,"eps argument",i,"does not fit in dimension to ",type,"constraints",i,"."))
+        }
+      }
     }
-    if (!is.numeric(dat[[w]])) {
-      stop("Base weight ", w, " must be a numeric column")
-    }
+  }else if(length(eps)>1){
+    stop("Individual eps arguments for each constraints must be defined as list.")
   }
+}
 
-  # check constraints for non numerical calibration
-  # and numerical calibration
+check_population_totals <- function(con, dat, type = "personal") {
+  # do not apply this check for numerical calibration
   if (is.null(names(con))) {
     ind <- seq_along(con)
-    indNum <- NULL
   } else {
     ind <- which(names(con) == "")
-    indNum <- which(names(con) != "")
-  }
-
-
-  # check constraints for numerical calibration
-  if (!is.null(indNum)) {
-    namesNum <- names(con)[indNum]
-
-    if (any(!namesNum %in% colnames(dat))) {
-      stop("Numerical constraints must be named by variables in dat")
-    }
-
-    numNA <- dat[, lapply(
-      .SD, function(z) {
-        any(is.na(z))
-      }),
-      .SDcols = c(namesNum)]
-    numNA <- unlist(numNA)
-    numNA <- names(numNA)[numNA]
-    if (length(numNA) > 0) {
-      mult <- (length(numNA) > 1) + 1
-      stop("Numeric variable", c(" ", "s ")[mult],
-           paste(numNA, collapse = ", "),
-           " contain", c("s ", " ")[mult], "missing values")
-    }
   }
 
   # do not apply this check for constraints that only cover the population
@@ -166,8 +134,8 @@ check_population_totals <- function(con, dat, w = NULL, type = "personal") {
 }
 
 calibP <- function(i, dat, error, valueP, pColNames, bound, verbose, calIter,
-                   numericalWeighting, numericalWeightingVar, w, cw) {
-  epsPcur <- maxFac <- OriginalSortingVariable <- V1 <-
+                   numericalWeighting, numericalWeightingVar, w, cw, minMaxTrim) {
+  selectGroupNotConverged <- epsPcur <- maxFac <- OriginalSortingVariable <- V1 <-
     epsvalue <- fVariableForCalibrationIPF <- NULL
   temporary_hvar <- value <-
     wValue <- representativeHouseholdForCalibration <- NULL
@@ -198,7 +166,6 @@ calibP <- function(i, dat, error, valueP, pColNames, bound, verbose, calIter,
       head(wValue, 1), head(value, 1), get(numericalWeightingVar),
       get(variableKeepingTheCalibWeight)),
       by = eval(paste0("combined_factors_", i))]
-
   } else {
     # categorical variable to be calibrated
     set(dat, j = "fVariableForCalibrationIPF", value = ipf_step_f(
@@ -211,9 +178,11 @@ calibP <- function(i, dat, error, valueP, pColNames, bound, verbose, calIter,
     if (verbose && calIter %% 10 == 0) {
       message(calIter, ":Not yet converged for P-Constraint", i, "\n")
       if (calIter %% 100 == 0) {
+
+        dat[, selectGroupNotConverged := any(!is.na(fVariableForCalibrationIPF) &
+                                               (abs(1 / fVariableForCalibrationIPF - 1) > epsPcur)), by= c(pColNames[[i]])]
         tmp <- dat[
-          !is.na(fVariableForCalibrationIPF) &
-            (abs(1 / fVariableForCalibrationIPF - 1) > epsPcur),
+          selectGroupNotConverged == TRUE,
           list(
             maxFac = max(abs(1 / fVariableForCalibrationIPF - 1)), .N,
             epsP = head(epsPcur, 1),
@@ -227,19 +196,19 @@ calibP <- function(i, dat, error, valueP, pColNames, bound, verbose, calIter,
             },
             PopMargin = head(value, 1)),
           by = eval(pColNames[[i]])]
-
+        dat[, selectGroupNotConverged := NULL]
 
         print(tmp[order(maxFac, decreasing = TRUE), ])
         message("-----------------------------------------\n")
       }
     }
-    if (!is.null(bound)) {
+    if (!is.null(bound) || !is.null(minMaxTrim)) {
       dat[!is.na(fVariableForCalibrationIPF),
           c(variableKeepingTheCalibWeight) :=
             boundsFak(
               get(variableKeepingTheCalibWeight),
               get(variableKeepingTheBaseWeight), fVariableForCalibrationIPF,
-              bound = bound)]
+              bound = bound, minMaxTrim = minMaxTrim)]
       #,by=eval(pColNames[[i]])]
     } else {
       dat[!is.na(fVariableForCalibrationIPF),
@@ -255,7 +224,7 @@ calibP <- function(i, dat, error, valueP, pColNames, bound, verbose, calIter,
 }
 
 calibH <- function(i, dat, error, valueH, hColNames, bound, verbose, calIter,
-                   looseH, numericalWeighting, numericalWeightingVar, w, cw) {
+                   looseH, numericalWeighting, numericalWeightingVar, w, cw, minMaxTrim) {
   variableKeepingTheBaseWeight <- w
   variableKeepingTheCalibWeight <- cw
   epsHcur <- OriginalSortingVariable <- V1 <-
@@ -319,19 +288,19 @@ calibH <- function(i, dat, error, valueH, hColNames, bound, verbose, calIter,
         message("-----------------------------------------\n")
       }
     }
-    if (!is.null(bound)) {
+    if (!is.null(bound) || !is.null(minMaxTrim)) {
       if (!looseH) {
         set(dat, j = variableKeepingTheCalibWeight, value = boundsFak(
           g1 = dat[[variableKeepingTheCalibWeight]],
           g0 = dat[[variableKeepingTheBaseWeight]],
           f = dat[["fVariableForCalibrationIPF"]],
-          bound = bound))
+          bound = bound, minMaxTrim = minMaxTrim))
       }else{
         set(dat, j = variableKeepingTheCalibWeight, value = boundsFakHH(
           g1 = dat[[variableKeepingTheCalibWeight]],
           g0 = dat[[variableKeepingTheBaseWeight]],
           eps = dat[["epsHcur"]], orig = dat[["value"]],
-          p = dat[["wValue"]], bound = bound)
+          p = dat[["wValue"]], bound = bound, minMaxTrim = minMaxTrim)
         )
       }
     } else {
@@ -366,42 +335,74 @@ getFormulas <- function(con, w) {
 ## enrich dat_original with the calibrated weights and assign attributes
 
 addWeightsAndAttributes <- function(dat, conP, conH, epsP, epsH, dat_original,
-                                    maxIter, calIter, returnNA, cw) {
+                                    maxIter, calIter, returnNA, cw, verbose, looseH) {
   variableKeepingTheCalibWeight <- cw
   representativeHouseholdForCalibration <- OriginalSortingVariable <-
     outTable <- copy(dat_original)
-
-  # add calibrated weights. Use setkey to make sure the indexes match
-  setkey(dat, OriginalSortingVariable)
-
-  if ((maxIter < calIter) & returnNA) {
-    outTable[, c(variableKeepingTheCalibWeight) := NA]
-  } else {
-    outTable[, c(variableKeepingTheCalibWeight) :=
-               dat[[variableKeepingTheCalibWeight]]]
-  }
-
 
   formP <- getFormulas(conP, w = variableKeepingTheCalibWeight)
   formH <- getFormulas(conH, w = variableKeepingTheCalibWeight)
 
   # general information
-  setattr(outTable, "converged", (maxIter >= calIter))
   setattr(outTable, "iterations", min(maxIter, calIter))
-  # return maxIter in case of no convergence
 
   # input constraints
   setattr(outTable, "conP", conP)
   setattr(outTable, "conH", conH)
 
   # adjusted constraints (conP, conH according to the calibrated weights)
-  setattr(outTable, "conP_adj", lapply(formP, xtabs, dat))
-  setattr(outTable, "conH_adj", lapply(
-    formH, xtabs, dat[representativeHouseholdForCalibration == 1]))
+  conP_adj <- lapply(formP, xtabs, dat)
+  conH_adj <- lapply(
+    formH, xtabs, dat[representativeHouseholdForCalibration == 1])
+  setattr(outTable, "conP_adj", conP_adj)
+  setattr(outTable, "conH_adj", conH_adj)
 
   # tolerances
   setattr(outTable, "epsP", epsP)
   setattr(outTable, "epsH", epsH)
+
+  setkey(dat, OriginalSortingVariable)
+
+
+  # convergence
+  conP_converged <- sapply(seq_along(conP), function(i) {
+    epsP_current <- switch(is.list(epsP) + 1, epsP, epsP[[i]])
+    all(abs(conP[[i]] - conP_adj[[i]]) <= epsP_current * conP[[i]])
+  })
+  if(looseH){
+    if(verbose){
+      message("For looseH=TRUE epsH+epsH/100 is allowed as tolerance for the convergence.")
+    }
+
+    conH_converged <- sapply(seq_along(conH), function(i) {
+      epsH_current <- switch(is.list(epsH) + 1, epsH, epsH[[i]])
+      all(abs(conH[[i]] - conH_adj[[i]])/conH[[i]] <= epsH_current + epsH_current/100)
+
+    })
+  }else{
+    conH_converged <- sapply(seq_along(conH), function(i) {
+      epsH_current <- switch(is.list(epsH) + 1, epsH, epsH[[i]])
+      all(abs(conH[[i]] - conH_adj[[i]]) <= epsH_current * conH[[i]])
+    })
+  }
+  converged <- all(conP_converged) && all(conH_converged)
+  setattr(outTable, "converged", converged)
+  if (verbose) {
+    if (converged)
+      message("Convergence reached")
+    else
+      message("No convergence reached")
+  }
+
+  # add calibrated weights. Use setkey to make sure the indexes match
+  setkey(dat, OriginalSortingVariable)
+
+  if (!converged & returnNA) {
+    outTable[, c(variableKeepingTheCalibWeight) := NA]
+  } else {
+    outTable[, c(variableKeepingTheCalibWeight) :=
+               dat[[variableKeepingTheCalibWeight]]]
+  }
 
   # formulas
   setattr(outTable, "formP", formP)
@@ -479,6 +480,9 @@ addWeightsAndAttributes <- function(dat, conP, conH, epsP, epsH, dat_original,
 #'   weight trimming boundary if the change of the base weights should be
 #'   restricted, i.e. if the weights should stay between 1/`bound`*`w`
 #'   and `bound`*\code{w}.
+#' @param minMaxTrim numeric vector of length2, first element a minimum value
+#'   for weights to be trimmed to, second element a maximum value for weights to
+#'   be trimmed to.
 #' @param maxIter numeric value specifying the maximum number of iterations
 #' that should be performed.
 #' @param meanHH if TRUE, every person in a household is assigned the mean of
@@ -581,16 +585,28 @@ ipf <- function(
   verbose = FALSE, w = NULL, bound = 4, maxIter = 200, meanHH = TRUE,
   allPthenH = TRUE, returnNA = TRUE, looseH = FALSE, numericalWeighting =
     computeLinear, check_hh_vars = TRUE, conversion_messages = FALSE,
-  nameCalibWeight = "calibWeight") {
+  nameCalibWeight = "calibWeight", minMaxTrim = NULL) {
 
-  check_population_totals(conP, dat, w = w, type = "personal")
-  check_population_totals(conH, dat, w = w, type = "household")
+  check_population_totals(conP, dat, "personal")
+  check_population_totals(conH, dat, "household")
+  check_eps(conP, epsP, type = "personal")
+  check_eps(conH, epsH, type = "household")
   variableKeepingTheBaseWeight <- w
   variableKeepingTheCalibWeight <- nameCalibWeight
   if ("variableKeepingTheBaseWeight" %in% names(dat))
     stop("The provided dataset must not have a column called",
          " 'variableKeepingTheBaseWeight'")
-
+  if(!is.null(minMaxTrim)){
+    if(length(minMaxTrim)!=2)
+      stop("minMaxTrim must have exactly 2 elements, a minimum and a maximum.")
+    if(!is.numeric(minMaxTrim)){
+      stop("minMaxTrim must be a numeric vector of length two.")
+    }
+    if(minMaxTrim[2]<minMaxTrim[1]){
+      stop("minMaxTrim must have a minimum as a first element and a maximum as a second element.
+           But in the input the second element is smaller than the first.")
+    }
+  }
   OriginalSortingVariable <- V1 <- epsvalue <-
     f <- temporary_hvar <-
     value <- wValue <- representativeHouseholdForCalibration <- ..hid <- NULL
@@ -621,6 +637,15 @@ ipf <- function(
     dat[, hid := as.factor(seq_len(nrow(dat)))]
     dat[, representativeHouseholdForCalibration := 1]
   } else {
+
+    if(!hid%in%colnames(dat)){
+      stop("dat does not contain column ",hid)
+    }
+
+    if(any(is.na(dat[[hid]]))){
+      stop("hid contains missing values")
+    }
+
     if (!is.factor(dat[[hid]]))
       data.table::set(dat, NULL, hid, as.factor(dat[[hid]]))
     dat[, representativeHouseholdForCalibration :=
@@ -764,9 +789,8 @@ ipf <- function(
           calIter = calIter, numericalWeighting = numericalWeighting,
           numericalWeightingVar = numericalWeightingTmp,
           w = variableKeepingTheBaseWeight,
-          cw = variableKeepingTheCalibWeight)
+          cw = variableKeepingTheCalibWeight, minMaxTrim = minMaxTrim)
       }
-
       ## replace person weight with household average
       set(dat, j = variableKeepingTheCalibWeight,
           value = meanfun(dat[[variableKeepingTheCalibWeight]], dat[[hid]]))
@@ -784,7 +808,7 @@ ipf <- function(
           numericalWeighting = numericalWeighting,
           numericalWeightingVar = numericalWeightingTmp,
           w = variableKeepingTheBaseWeight,
-          cw = variableKeepingTheCalibWeight)
+          cw = variableKeepingTheCalibWeight, minMaxTrim = minMaxTrim)
       }
     } else {
       ### Person calib
@@ -799,7 +823,7 @@ ipf <- function(
           calIter = calIter, numericalWeighting = numericalWeighting,
           numericalWeightingVar = numericalWeightingTmp,
           w = variableKeepingTheBaseWeight,
-          cw = variableKeepingTheCalibWeight)
+          cw = variableKeepingTheCalibWeight, minMaxTrim = minMaxTrim)
 
         ## replace person weight with household average
         set(dat, j = variableKeepingTheCalibWeight,
@@ -817,15 +841,15 @@ ipf <- function(
             calIter = calIter, numericalWeighting = numericalWeighting,
             numericalWeightingVar = numericalWeightingTmp, looseH = looseH,
             w = variableKeepingTheBaseWeight,
-            cw = variableKeepingTheCalibWeight)
+            cw = variableKeepingTheCalibWeight, minMaxTrim = minMaxTrim)
         }
       }
     }
 
     if (verbose && !error) {
-      message("Convergence reached in ", calIter, " steps \n")
+      message("Iteration stopped after ", calIter, " steps")
     } else if (maxIter == calIter) {
-      warning("Not converged in ", maxIter, " steps \n")
+      warning("Not converged in ", maxIter, " steps")
     }
     calIter <- calIter + 1
   }
@@ -833,5 +857,6 @@ ipf <- function(
   fVariableForCalibrationIPF <- NULL
   dat[, fVariableForCalibrationIPF := NULL]
   addWeightsAndAttributes(dat, conP, conH, epsP, epsH, dat_original, maxIter,
-                          calIter, returnNA, variableKeepingTheCalibWeight)
+                          calIter, returnNA, variableKeepingTheCalibWeight,
+                          verbose, looseH)
 }
