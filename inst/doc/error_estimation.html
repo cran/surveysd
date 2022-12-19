@@ -11,94 +11,107 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2020-12-10" />
+<meta name="date" content="2022-12-19" />
 
 <title>Error estimation</title>
 
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
-document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
   }
 });
 </script>
 
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
 
-<style type="text/css">code{white-space: pre;}</style>
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -107,13 +120,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -121,6 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 })();
 </script>
+
 
 
 
@@ -317,51 +338,65 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Error estimation</h1>
-<h4 class="date">2020-12-10</h4>
+<h4 class="date">2022-12-19</h4>
 
 
 <div id="TOC">
 <ul>
-<li><a href="#prerequisites">Prerequisites</a></li>
-<li><a href="#estimator-functions">Estimator functions</a><ul>
-<li><a href="#custom-estimators">Custom estimators</a></li>
-<li><a href="#multiple-estimators">Multiple estimators</a></li>
+<li><a href="#prerequisites" id="toc-prerequisites">Prerequisites</a></li>
+<li><a href="#estimator-functions" id="toc-estimator-functions">Estimator functions</a>
+<ul>
+<li><a href="#custom-estimators" id="toc-custom-estimators">Custom
+estimators</a></li>
+<li><a href="#adjust-variable-depending-on-bootstrap-weights" id="toc-adjust-variable-depending-on-bootstrap-weights">Adjust variable
+depending on bootstrap weights</a></li>
+<li><a href="#multiple-estimators" id="toc-multiple-estimators">Multiple
+estimators</a></li>
 </ul></li>
-<li><a href="#grouping">Grouping</a><ul>
-<li><a href="#several-grouping-variables">Several grouping variables</a></li>
+<li><a href="#grouping" id="toc-grouping">Grouping</a>
+<ul>
+<li><a href="#several-grouping-variables" id="toc-several-grouping-variables">Several grouping variables</a></li>
 </ul></li>
 </ul>
 </div>
 
-<p>For the most part, this document will present the functionalities of the function <code>surveysd::calc.stError()</code> which generates point estimates and standard errors for user-supplied estimation functions.</p>
+<p>For the most part, this document will present the functionalities of
+the function <code>surveysd::calc.stError()</code> which generates point
+estimates and standard errors for user-supplied estimation
+functions.</p>
 <div id="prerequisites" class="section level2">
 <h2>Prerequisites</h2>
-<p>In order to use a dataset with <code>calc.stError()</code>, several weight columns have to be present. Each weight column corresponds to a bootstrap sample. In the following examples, we will use the data from <code>demo.eusilc()</code> and attach the bootstrap weights using <code>draw.bootstrap()</code> and <code>recalib()</code>. Please refer to the documentation of those functions for more detail.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(surveysd)</span>
-<span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb1-4"><a href="#cb1-4"></a>eusilc &lt;-<span class="st"> </span><span class="kw">demo.eusilc</span>(<span class="dt">prettyNames =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb1-5"><a href="#cb1-5"></a>dat_boot &lt;-<span class="st"> </span><span class="kw">draw.bootstrap</span>(eusilc, <span class="dt">REP =</span> <span class="dv">10</span>, <span class="dt">hid =</span> <span class="st">&quot;hid&quot;</span>, <span class="dt">weights =</span> <span class="st">&quot;pWeight&quot;</span>,</span>
-<span id="cb1-6"><a href="#cb1-6"></a>                           <span class="dt">strata =</span> <span class="st">&quot;region&quot;</span>, <span class="dt">period =</span> <span class="st">&quot;year&quot;</span>)</span>
-<span id="cb1-7"><a href="#cb1-7"></a>dat_boot_calib &lt;-<span class="st"> </span><span class="kw">recalib</span>(dat_boot, <span class="dt">conP.var =</span> <span class="st">&quot;gender&quot;</span>, <span class="dt">conH.var =</span> <span class="st">&quot;region&quot;</span>,</span>
-<span id="cb1-8"><a href="#cb1-8"></a>                          <span class="dt">epsP =</span> <span class="fl">1e-2</span>, <span class="dt">epsH =</span> <span class="fl">2.5e-2</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb1-9"><a href="#cb1-9"></a>dat_boot_calib[, onePerson <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">nrow</span>(.SD) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, by =<span class="st"> </span>.(year, hid)]</span>
-<span id="cb1-10"><a href="#cb1-10"></a></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="co">## print part of the dataset</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a>dat_boot_calib[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, .(year, povertyRisk, eqIncome, onePerson, pWeight, w1, w2, w3, w4, w5)]</span></code></pre></div>
+<p>In order to use a dataset with <code>calc.stError()</code>, several
+weight columns have to be present. Each weight column corresponds to a
+bootstrap sample. In the following examples, we will use the data from
+<code>demo.eusilc()</code> and attach the bootstrap weights using
+<code>draw.bootstrap()</code> and <code>recalib()</code>. Please refer
+to the documentation of those functions for more detail.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(surveysd)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>eusilc <span class="ot">&lt;-</span> <span class="fu">demo.eusilc</span>(<span class="at">prettyNames =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>dat_boot <span class="ot">&lt;-</span> <span class="fu">draw.bootstrap</span>(eusilc, <span class="at">REP =</span> <span class="dv">10</span>, <span class="at">hid =</span> <span class="st">&quot;hid&quot;</span>, <span class="at">weights =</span> <span class="st">&quot;pWeight&quot;</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">strata =</span> <span class="st">&quot;region&quot;</span>, <span class="at">period =</span> <span class="st">&quot;year&quot;</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>dat_boot_calib <span class="ot">&lt;-</span> <span class="fu">recalib</span>(dat_boot, <span class="at">conP.var =</span> <span class="st">&quot;gender&quot;</span>, <span class="at">conH.var =</span> <span class="st">&quot;region&quot;</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">epsP =</span> <span class="fl">1e-2</span>, <span class="at">epsH =</span> <span class="fl">2.5e-2</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>dat_boot_calib[, onePerson <span class="sc">:</span><span class="er">=</span> <span class="fu">nrow</span>(.SD) <span class="sc">==</span> <span class="dv">1</span>, by <span class="ot">=</span> .(year, hid)]</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="do">## print part of the dataset</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>dat_boot_calib[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, .(year, povertyRisk, eqIncome, onePerson, pWeight, w1, w2, w3, w4, w5)]</span></code></pre></div>
 <div class="kable-table">
 <table style="width:100%;">
 <colgroup>
-<col width="5%"></col>
-<col width="12%"></col>
-<col width="9%"></col>
-<col width="10%"></col>
-<col width="9%"></col>
-<col width="10%"></col>
-<col width="10%"></col>
-<col width="10%"></col>
-<col width="10%"></col>
-<col width="9%"></col>
+<col width="5%" />
+<col width="12%" />
+<col width="9%" />
+<col width="10%" />
+<col width="9%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="9%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -444,11 +479,17 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="estimator-functions" class="section level2">
 <h2>Estimator functions</h2>
-<p>The parameters <code>fun</code> and <code>var</code> in <code>calc.stError()</code> define the estimator to be used in the error analysis. There are two built-in estimator functions <code>weightedSum()</code> and <code>weightedRatio()</code> which can be used as follows.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>povertyRate &lt;-<span class="st"> </span><span class="kw">calc.stError</span>(dat_boot_calib, <span class="dt">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="dt">fun =</span> weightedRatio)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>totalIncome &lt;-<span class="st"> </span><span class="kw">calc.stError</span>(dat_boot_calib, <span class="dt">var =</span> <span class="st">&quot;eqIncome&quot;</span>, <span class="dt">fun =</span> weightedSum)</span></code></pre></div>
-<p>Those functions calculate the ratio of persons at risk of poverty (in percent) and the total income. By default, the results are calculated separately for each reference period.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>povertyRate<span class="op">$</span>Estimates</span></code></pre></div>
+<p>The parameters <code>fun</code> and <code>var</code> in
+<code>calc.stError()</code> define the estimator to be used in the error
+analysis. There are two built-in estimator functions
+<code>weightedSum()</code> and <code>weightedRatio()</code> which can be
+used as follows.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>povertyRate <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(dat_boot_calib, <span class="at">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="at">fun =</span> weightedRatio)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>totalIncome <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(dat_boot_calib, <span class="at">var =</span> <span class="st">&quot;eqIncome&quot;</span>, <span class="at">fun =</span> weightedSum)</span></code></pre></div>
+<p>Those functions calculate the ratio of persons at risk of poverty (in
+percent) and the total income. By default, the results are calculated
+separately for each reference period.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>povertyRate<span class="sc">$</span>Estimates</span></code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -520,7 +561,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 </div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>totalIncome<span class="op">$</span>Estimates</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>totalIncome<span class="sc">$</span>Estimates</span></code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -592,30 +633,474 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 </div>
-<p>Columns that use the <code>val_</code> prefix denote the point estimate belonging to the “main weight” of the dataset, which is <code>pWeight</code> in case of the dataset used here.</p>
-<p>Columns with the <code>stE_</code> prefix denote standard errors calculated with bootstrap replicates. The replicates result in using <code>w1</code>, <code>w2</code>, …, <code>w10</code> instead of <code>pWeight</code> when applying the estimator.</p>
-<p><code>n</code> denotes the number of observations for the year and <code>N</code> denotes the total weight of those persons.</p>
+<p>Columns that use the <code>val_</code> prefix denote the point
+estimate belonging to the “main weight” of the dataset, which is
+<code>pWeight</code> in case of the dataset used here.</p>
+<p>Columns with the <code>stE_</code> prefix denote standard errors
+calculated with bootstrap replicates. The replicates result in using
+<code>w1</code>, <code>w2</code>, …, <code>w10</code> instead of
+<code>pWeight</code> when applying the estimator.</p>
+<p><code>n</code> denotes the number of observations for the year and
+<code>N</code> denotes the total weight of those persons.</p>
 <div id="custom-estimators" class="section level3">
 <h3>Custom estimators</h3>
-<p>In order to define a custom estimator function to be used in <code>fun</code>, the function needs to have two arguments like the example below.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">## define custom estimator</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>myWeightedSum &lt;-<span class="st"> </span><span class="cf">function</span>(x, w) {</span>
-<span id="cb5-3"><a href="#cb5-3"></a>  <span class="kw">sum</span>(x<span class="op">*</span>w)</span>
-<span id="cb5-4"><a href="#cb5-4"></a>}</span>
-<span id="cb5-5"><a href="#cb5-5"></a></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="co">## check if results are equal to the one using `suveysd::weightedSum()`</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a>totalIncome2 &lt;-<span class="st"> </span><span class="kw">calc.stError</span>(dat_boot_calib, <span class="dt">var =</span> <span class="st">&quot;eqIncome&quot;</span>, <span class="dt">fun =</span> myWeightedSum)</span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="kw">all.equal</span>(totalIncome<span class="op">$</span>Estimates, totalIncome2<span class="op">$</span>Estimates)</span></code></pre></div>
+<p>In order to define a custom estimator function to be used in
+<code>fun</code>, the function needs to have at least two arguments like
+the example below.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## define custom estimator</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>myWeightedSum <span class="ot">&lt;-</span> <span class="cf">function</span>(x, w) {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(x<span class="sc">*</span>w)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">## check if results are equal to the one using `surveysd::weightedSum()`</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>totalIncome2 <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(dat_boot_calib, <span class="at">var =</span> <span class="st">&quot;eqIncome&quot;</span>, <span class="at">fun =</span> myWeightedSum)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(totalIncome<span class="sc">$</span>Estimates, totalIncome2<span class="sc">$</span>Estimates)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<p>The parameters <code>x</code> and <code>w</code> can be assumed to be vectors with equal length with <code>w</code> being numeric and <code>x</code> being the column defined in the <code>var</code> argument. It will be called once for each period (in this case <code>year</code>) and for each weight column (in this case <code>pWeight</code>, <code>w1</code>, <code>w2</code>, …, <code>w10</code>).</p>
+<p>The parameters <code>x</code> and <code>w</code> can be assumed to be
+vectors with equal length with <code>w</code> being numeric weight
+vector and <code>x</code> being the column defined in the
+<code>var</code> argument. It will be called once for each period (in
+this case <code>year</code>) and for each weight column (in this case
+<code>pWeight</code>, <code>w1</code>, <code>w2</code>, …,
+<code>w10</code>).</p>
+<p>Custom estimators using additional parameters can also be supplied
+and parameter <code>add.arg</code> can be used to set the additional
+arguments for the custom estimator.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## use add.arg-argument</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fun <span class="ot">&lt;-</span> <span class="cf">function</span>(x, w, b) {</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(x<span class="sc">*</span>w<span class="sc">*</span>b)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>add.arg <span class="ot">=</span> <span class="fu">list</span>(<span class="at">b=</span><span class="st">&quot;onePerson&quot;</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>err.est <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(dat_boot_calib, <span class="at">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="at">fun =</span> fun,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">period.mean =</span> <span class="dv">0</span>, <span class="at">add.arg=</span>add.arg)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>err.est<span class="sc">$</span>Estimates</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="right">n</th>
+<th align="right">N</th>
+<th align="right">val_povertyRisk</th>
+<th align="right">stE_povertyRisk</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2010</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">273683.9</td>
+<td align="right">12521.133</td>
+</tr>
+<tr class="even">
+<td align="right">2011</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">261883.6</td>
+<td align="right">9478.316</td>
+</tr>
+<tr class="odd">
+<td align="right">2012</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">243083.9</td>
+<td align="right">8099.185</td>
+</tr>
+<tr class="even">
+<td align="right">2013</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">238004.4</td>
+<td align="right">12366.440</td>
+</tr>
+<tr class="odd">
+<td align="right">2014</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">218572.1</td>
+<td align="right">16077.990</td>
+</tr>
+<tr class="even">
+<td align="right">2015</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">219984.1</td>
+<td align="right">14706.184</td>
+</tr>
+<tr class="odd">
+<td align="right">2016</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">201753.9</td>
+<td align="right">14324.090</td>
+</tr>
+<tr class="even">
+<td align="right">2017</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">196881.2</td>
+<td align="right">9721.776</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare with direct computation</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>compare.value <span class="ot">&lt;-</span> dat_boot_calib[,<span class="fu">fun</span>(povertyRisk,pWeight,<span class="at">b=</span>onePerson),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                                 by<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;year&quot;</span>)]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>((compare.value<span class="sc">$</span>V1<span class="sc">-</span>err.est<span class="sc">$</span>Estimates<span class="sc">$</span>val_povertyRisk)<span class="sc">==</span><span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>The above chunk computes the weighted poverty ratio for single person
+households.</p>
+</div>
+<div id="adjust-variable-depending-on-bootstrap-weights" class="section level3">
+<h3>Adjust variable depending on bootstrap weights</h3>
+<p>In our example the variable <code>povertyRisk</code> is a boolean and
+is <code>TRUE</code> if the income is less than 60% of the weighted
+median income. Thus it directly depends on the original weight vector
+<code>pWeight</code>. To further reduce the estimated error one should
+calculate for each bootstrap replicate weight <span class="math inline">\(w\)</span> the weighted median income <span class="math inline">\(medIncome_{w}\)</span> and then define <span class="math inline">\(povertyRisk_w\)</span> as</p>
+<p><span class="math display">\[
+povertyRisk_w = \cases{1 \quad\text{if Income}&lt;0.6\cdot
+medIncome_{w}\\
+                     0 \quad\text{else}}
+\]</span></p>
+<p>The estimator can then be applied to the new variable <span class="math inline">\(povertyRisk_w\)</span>. This can be realized using
+a custom estimator function.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># custom estimator to first derive poverty threshold </span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># and then estimate a weighted ratio</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>povmd <span class="ot">&lt;-</span> <span class="cf">function</span>(x, w) {</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a> md <span class="ot">&lt;-</span> laeken<span class="sc">::</span><span class="fu">weightedMedian</span>(x, w)<span class="sc">*</span><span class="fl">0.6</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a> pmd60 <span class="ot">&lt;-</span> x <span class="sc">&lt;</span> md</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a> <span class="co"># weighted ratio is directly estimated inside the function</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a> <span class="fu">return</span>(<span class="fu">sum</span>(w[pmd60])<span class="sc">/</span><span class="fu">sum</span>(w)<span class="sc">*</span><span class="dv">100</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>err.est <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  dat_boot_calib, <span class="at">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="at">fun =</span> weightedRatio,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">fun.adjust.var =</span> povmd, <span class="at">adjust.var =</span> <span class="st">&quot;eqIncome&quot;</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>err.est<span class="sc">$</span>Estimates</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="right">n</th>
+<th align="right">N</th>
+<th align="right">val_povertyRisk</th>
+<th align="right">stE_povertyRisk</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2010</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">14.44422</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2011</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">14.77393</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">2012</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">15.04515</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2013</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">14.89013</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">2014</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">15.14556</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2015</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">15.53640</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">2016</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">15.08315</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2017</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="right">15.42019</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The approach shown above is only valid if not grouping variables are
+supplied (parameter <code>group</code>). If grouping variables are
+supplied one should use parameters <code>fun.adjust.var</code> and
+<code>adjust.var</code> such that the <span class="math inline">\(povertyRisk_w\)</span> is first calculated for
+each <code>period</code> and then used for each grouping in
+<code>group</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using fun.adjust.var and adjust.var to estimate povmd60 indicator</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># for each period and bootstrap weight before applying the weightedRatio</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>povmd2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x, w) {</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a> md <span class="ot">&lt;-</span> laeken<span class="sc">::</span><span class="fu">weightedMedian</span>(x, w)<span class="sc">*</span><span class="fl">0.6</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a> pmd60 <span class="ot">&lt;-</span> x <span class="sc">&lt;</span> md</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">return</span>(<span class="fu">as.integer</span>(pmd60))</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># set adjust.var=&quot;eqIncome&quot; so the income vector is used to estimate</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># the povmd60 indicator for each bootstrap weight</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># and the resulting indicators are passed to function weightedRatio</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="st">&quot;gender&quot;</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>err.est <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  dat_boot_calib, <span class="at">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="at">fun =</span> weightedRatio, <span class="at">group =</span> <span class="st">&quot;gender&quot;</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">fun.adjust.var =</span> povmd2, <span class="at">adjust.var =</span> <span class="st">&quot;eqIncome&quot;</span>)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>err.est<span class="sc">$</span>Estimates</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="right">n</th>
+<th align="right">N</th>
+<th align="left">gender</th>
+<th align="right">val_povertyRisk</th>
+<th align="right">stE_povertyRisk</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2010</td>
+<td align="right">7267</td>
+<td align="right">3979572</td>
+<td align="left">male</td>
+<td align="right">12.02660</td>
+<td align="right">0.6237242</td>
+</tr>
+<tr class="even">
+<td align="right">2010</td>
+<td align="right">7560</td>
+<td align="right">4202650</td>
+<td align="left">female</td>
+<td align="right">16.73351</td>
+<td align="right">0.7234573</td>
+</tr>
+<tr class="odd">
+<td align="right">2010</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="left">NA</td>
+<td align="right">14.44422</td>
+<td align="right">0.6330581</td>
+</tr>
+<tr class="even">
+<td align="right">2011</td>
+<td align="right">7267</td>
+<td align="right">3979572</td>
+<td align="left">male</td>
+<td align="right">12.81921</td>
+<td align="right">0.5870065</td>
+</tr>
+<tr class="odd">
+<td align="right">2011</td>
+<td align="right">7560</td>
+<td align="right">4202650</td>
+<td align="left">female</td>
+<td align="right">16.62488</td>
+<td align="right">0.6907626</td>
+</tr>
+<tr class="even">
+<td align="right">2011</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="left">NA</td>
+<td align="right">14.77393</td>
+<td align="right">0.6103274</td>
+</tr>
+<tr class="odd">
+<td align="right">2012</td>
+<td align="right">7267</td>
+<td align="right">3979572</td>
+<td align="left">male</td>
+<td align="right">13.76065</td>
+<td align="right">0.5105388</td>
+</tr>
+<tr class="even">
+<td align="right">2012</td>
+<td align="right">7560</td>
+<td align="right">4202650</td>
+<td align="left">female</td>
+<td align="right">16.26147</td>
+<td align="right">0.7726815</td>
+</tr>
+<tr class="odd">
+<td align="right">2012</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="left">NA</td>
+<td align="right">15.04515</td>
+<td align="right">0.6236907</td>
+</tr>
+<tr class="even">
+<td align="right">2013</td>
+<td align="right">7267</td>
+<td align="right">3979572</td>
+<td align="left">male</td>
+<td align="right">13.88962</td>
+<td align="right">0.5193635</td>
+</tr>
+<tr class="odd">
+<td align="right">2013</td>
+<td align="right">7560</td>
+<td align="right">4202650</td>
+<td align="left">female</td>
+<td align="right">15.83754</td>
+<td align="right">0.6342728</td>
+</tr>
+<tr class="even">
+<td align="right">2013</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="left">NA</td>
+<td align="right">14.89013</td>
+<td align="right">0.5654875</td>
+</tr>
+<tr class="odd">
+<td align="right">2014</td>
+<td align="right">7267</td>
+<td align="right">3979572</td>
+<td align="left">male</td>
+<td align="right">14.50351</td>
+<td align="right">0.5988502</td>
+</tr>
+<tr class="even">
+<td align="right">2014</td>
+<td align="right">7560</td>
+<td align="right">4202650</td>
+<td align="left">female</td>
+<td align="right">15.75353</td>
+<td align="right">0.5824421</td>
+</tr>
+<tr class="odd">
+<td align="right">2014</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="left">NA</td>
+<td align="right">15.14556</td>
+<td align="right">0.5411586</td>
+</tr>
+<tr class="even">
+<td align="right">2015</td>
+<td align="right">7267</td>
+<td align="right">3979572</td>
+<td align="left">male</td>
+<td align="right">15.12289</td>
+<td align="right">0.4298710</td>
+</tr>
+<tr class="odd">
+<td align="right">2015</td>
+<td align="right">7560</td>
+<td align="right">4202650</td>
+<td align="left">female</td>
+<td align="right">15.92796</td>
+<td align="right">0.5197222</td>
+</tr>
+<tr class="even">
+<td align="right">2015</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="left">NA</td>
+<td align="right">15.53640</td>
+<td align="right">0.3928424</td>
+</tr>
+<tr class="odd">
+<td align="right">2016</td>
+<td align="right">7267</td>
+<td align="right">3979572</td>
+<td align="left">male</td>
+<td align="right">14.57968</td>
+<td align="right">0.3692397</td>
+</tr>
+<tr class="even">
+<td align="right">2016</td>
+<td align="right">7560</td>
+<td align="right">4202650</td>
+<td align="left">female</td>
+<td align="right">15.55989</td>
+<td align="right">0.4607921</td>
+</tr>
+<tr class="odd">
+<td align="right">2016</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="left">NA</td>
+<td align="right">15.08315</td>
+<td align="right">0.2784766</td>
+</tr>
+<tr class="even">
+<td align="right">2017</td>
+<td align="right">7267</td>
+<td align="right">3979572</td>
+<td align="left">male</td>
+<td align="right">14.94816</td>
+<td align="right">0.3491172</td>
+</tr>
+<tr class="odd">
+<td align="right">2017</td>
+<td align="right">7560</td>
+<td align="right">4202650</td>
+<td align="left">female</td>
+<td align="right">15.86717</td>
+<td align="right">0.4099472</td>
+</tr>
+<tr class="even">
+<td align="right">2017</td>
+<td align="right">14827</td>
+<td align="right">8182222</td>
+<td align="left">NA</td>
+<td align="right">15.42019</td>
+<td align="right">0.3168769</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="multiple-estimators" class="section level3">
 <h3>Multiple estimators</h3>
-<p>In case an estimator should be applied to several columns of the dataset, <code>var</code> can be set to a vector containing all necessary columns.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>multipleRates &lt;-<span class="st"> </span><span class="kw">calc.stError</span>(dat_boot_calib, <span class="dt">var =</span> <span class="kw">c</span>(<span class="st">&quot;povertyRisk&quot;</span>, <span class="st">&quot;onePerson&quot;</span>), <span class="dt">fun =</span> weightedRatio)</span>
-<span id="cb7-2"><a href="#cb7-2"></a>multipleRates<span class="op">$</span>Estimates</span></code></pre></div>
+<p>In case an estimator should be applied to several columns of the
+dataset, <code>var</code> can be set to a vector containing all
+necessary columns.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>multipleRates <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(dat_boot_calib, <span class="at">var =</span> <span class="fu">c</span>(<span class="st">&quot;povertyRisk&quot;</span>, <span class="st">&quot;onePerson&quot;</span>), <span class="at">fun =</span> weightedRatio)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>multipleRates<span class="sc">$</span>Estimates</span></code></pre></div>
 <div class="kable-table">
 <table>
+<colgroup>
+<col width="6%" />
+<col width="7%" />
+<col width="10%" />
+<col width="20%" />
+<col width="20%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="right">year</th>
@@ -703,18 +1188,25 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 </div>
-<p>Here we see the relative number of persons at risk of poverty and the relative number of one-person households.</p>
+<p>Here we see the relative number of persons at risk of poverty and the
+relative number of one-person households.</p>
 </div>
 </div>
 <div id="grouping" class="section level2">
 <h2>Grouping</h2>
-<p>The <code>groups</code> argument can be used to calculate estimators for different subsets of the data. This argument can take the grouping variable as a string that refers to a column name (usually a factor) in <code>dat</code>. If set, all estimators are not only split by the reference period but also by the grouping variable. For simplicity, only one reference period of the above data is used.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>dat2 &lt;-<span class="st"> </span><span class="kw">subset</span>(dat_boot_calib, year <span class="op">==</span><span class="st"> </span><span class="dv">2010</span>)</span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="cf">for</span> (att  <span class="cf">in</span> <span class="kw">c</span>(<span class="st">&quot;period&quot;</span>, <span class="st">&quot;weights&quot;</span>, <span class="st">&quot;b.rep&quot;</span>))</span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="kw">attr</span>(dat2, att) &lt;-<span class="st"> </span><span class="kw">attr</span>(dat_boot_calib, att)</span></code></pre></div>
-<p>To calculate the ratio of persons at risk of poverty for each federal state of Austria, <code>group = &quot;region&quot;</code> can be used.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>povertyRates &lt;-<span class="st"> </span><span class="kw">calc.stError</span>(dat2, <span class="dt">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="dt">fun =</span> weightedRatio, <span class="dt">group =</span> <span class="st">&quot;region&quot;</span>)</span>
-<span id="cb9-2"><a href="#cb9-2"></a>povertyRates<span class="op">$</span>Estimates</span></code></pre></div>
+<p>The <code>groups</code> argument can be used to calculate estimators
+for different subsets of the data. This argument can take the grouping
+variable as a string that refers to a column name (usually a factor) in
+<code>dat</code>. If set, all estimators are not only split by the
+reference period but also by the grouping variable. For simplicity, only
+one reference period of the above data is used.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>dat2 <span class="ot">&lt;-</span> <span class="fu">subset</span>(dat_boot_calib, year <span class="sc">==</span> <span class="dv">2010</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (att  <span class="cf">in</span> <span class="fu">c</span>(<span class="st">&quot;period&quot;</span>, <span class="st">&quot;weights&quot;</span>, <span class="st">&quot;b.rep&quot;</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attr</span>(dat2, att) <span class="ot">&lt;-</span> <span class="fu">attr</span>(dat_boot_calib, att)</span></code></pre></div>
+<p>To calculate the ratio of persons at risk of poverty for each federal
+state of Austria, <code>group = &quot;region&quot;</code> can be used.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>povertyRates <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(dat2, <span class="at">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="at">fun =</span> weightedRatio, <span class="at">group =</span> <span class="st">&quot;region&quot;</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>povertyRates<span class="sc">$</span>Estimates</span></code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -811,20 +1303,38 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 </div>
-<p>The last row with <code>region = NA</code> denotes the aggregate over all regions. Note that the columns <code>N</code> and <code>n</code> now show the weighted and unweighted number of persons in each region.</p>
+<p>The last row with <code>region = NA</code> denotes the aggregate over
+all regions. Note that the columns <code>N</code> and <code>n</code> now
+show the weighted and unweighted number of persons in each region.</p>
 <div id="several-grouping-variables" class="section level3">
 <h3>Several grouping variables</h3>
-<p>In case more than one grouping variable is used, there are several options of calling <code>calc.stError()</code> depending on whether combinations of grouping levels should be regarded or not. We will consider the variables <code>gender</code> and <code>region</code> as our grouping variables and show three options on how <code>calc.stError()</code> can be called.</p>
+<p>In case more than one grouping variable is used, there are several
+options of calling <code>calc.stError()</code> depending on whether
+combinations of grouping levels should be regarded or not. We will
+consider the variables <code>gender</code> and <code>region</code> as
+our grouping variables and show three options on how
+<code>calc.stError()</code> can be called.</p>
 <div id="option-1-all-regions-and-all-genders" class="section level4">
 <h4>Option 1: All regions and all genders</h4>
-<p>Calculate the point estimate and standard error for each region and each gender. The number of rows in the output is therefore</p>
-<p><span class="math display">\[n_\text{periods}\cdot(n_\text{regions} + n_\text{genders} + 1) = 1\cdot(9 + 2 + 1) = 12.\]</span></p>
+<p>Calculate the point estimate and standard error for each region and
+each gender. The number of rows in the output is therefore</p>
+<p><span class="math display">\[n_\text{periods}\cdot(n_\text{regions} +
+n_\text{genders} + 1) = 1\cdot(9 + 2 + 1) = 12.\]</span></p>
 <p>The last row is again the estimate for the whole period.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>povertyRates &lt;-<span class="st"> </span><span class="kw">calc.stError</span>(dat2, <span class="dt">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="dt">fun =</span> weightedRatio, </span>
-<span id="cb10-2"><a href="#cb10-2"></a>                             <span class="dt">group =</span> <span class="kw">c</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>))</span>
-<span id="cb10-3"><a href="#cb10-3"></a>povertyRates<span class="op">$</span>Estimates</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>povertyRates <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(dat2, <span class="at">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="at">fun =</span> weightedRatio, </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">group =</span> <span class="fu">c</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>povertyRates<span class="sc">$</span>Estimates</span></code></pre></div>
 <div class="kable-table">
 <table>
+<colgroup>
+<col width="6%" />
+<col width="8%" />
+<col width="11%" />
+<col width="9%" />
+<col width="19%" />
+<col width="22%" />
+<col width="22%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="right">year</th>
@@ -950,14 +1460,26 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 </div>
 <div id="option-2-all-combinations-of-state-and-gender" class="section level4">
-<h4>Option 2: All combinations of <code>state</code> and <code>gender</code></h4>
-<p>Split the data by all combinations of the two grouping variables. This will result in a larger output-table of the size</p>
-<p><span class="math display">\[n_\text{periods}\cdot(n_\text{regions} \cdot n_\text{genders} + 1) = 1\cdot(9\cdot2 + 1)= 19.\]</span></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>povertyRates &lt;-<span class="st"> </span><span class="kw">calc.stError</span>(dat2, <span class="dt">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="dt">fun =</span> weightedRatio, </span>
-<span id="cb11-2"><a href="#cb11-2"></a>                             <span class="dt">group =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>)))</span>
-<span id="cb11-3"><a href="#cb11-3"></a>povertyRates<span class="op">$</span>Estimates</span></code></pre></div>
+<h4>Option 2: All combinations of <code>state</code> and
+<code>gender</code></h4>
+<p>Split the data by all combinations of the two grouping variables.
+This will result in a larger output-table of the size</p>
+<p><span class="math display">\[n_\text{periods}\cdot(n_\text{regions}
+\cdot n_\text{genders} + 1) = 1\cdot(9\cdot2 + 1)= 19.\]</span></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>povertyRates <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(dat2, <span class="at">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="at">fun =</span> weightedRatio, </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">group =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>)))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>povertyRates<span class="sc">$</span>Estimates</span></code></pre></div>
 <div class="kable-table">
 <table>
+<colgroup>
+<col width="6%" />
+<col width="8%" />
+<col width="13%" />
+<col width="9%" />
+<col width="18%" />
+<col width="21%" />
+<col width="21%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="right">year</th>
@@ -1147,19 +1669,31 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="option-3-cobination-of-option-1-and-option-2" class="section level4">
 <h4>Option 3: Cobination of Option 1 and Option 2</h4>
-<p>In this case, the estimates and standard errors are calculated for</p>
+<p>In this case, the estimates and standard errors are calculated
+for</p>
 <ul>
 <li>every gender,</li>
 <li>every state and</li>
 <li>every combination of state and gender.</li>
 </ul>
 <p>The number of rows in the output is therefore</p>
-<p><span class="math display">\[n_\text{periods}\cdot(n_\text{regions} \cdot n_\text{genders} + n_\text{regions} + n_\text{genders} + 1) = 1\cdot(9\cdot2 + 9 + 2 + 1) = 30.\]</span></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>povertyRates &lt;-<span class="st"> </span><span class="kw">calc.stError</span>(dat2, <span class="dt">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="dt">fun =</span> weightedRatio, </span>
-<span id="cb12-2"><a href="#cb12-2"></a>                             <span class="dt">group =</span> <span class="kw">list</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>)))</span>
-<span id="cb12-3"><a href="#cb12-3"></a>povertyRates<span class="op">$</span>Estimates</span></code></pre></div>
+<p><span class="math display">\[n_\text{periods}\cdot(n_\text{regions}
+\cdot n_\text{genders} + n_\text{regions} + n_\text{genders} + 1) =
+1\cdot(9\cdot2 + 9 + 2 + 1) = 30.\]</span></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>povertyRates <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(dat2, <span class="at">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="at">fun =</span> weightedRatio, </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">group =</span> <span class="fu">list</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>)))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>povertyRates<span class="sc">$</span>Estimates</span></code></pre></div>
 <div class="kable-table">
 <table>
+<colgroup>
+<col width="6%" />
+<col width="8%" />
+<col width="13%" />
+<col width="9%" />
+<col width="18%" />
+<col width="21%" />
+<col width="21%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="right">year</th>

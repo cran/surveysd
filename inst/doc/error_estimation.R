@@ -1,4 +1,5 @@
 ## ----setup, include=FALSE-----------------------------------------------------
+options(rmarkdown.html_vignette.check_title = FALSE)
 knitr::opts_chunk$set(echo = TRUE)
 
 ## -----------------------------------------------------------------------------
@@ -29,9 +30,59 @@ myWeightedSum <- function(x, w) {
   sum(x*w)
 }
 
-## check if results are equal to the one using `suveysd::weightedSum()`
+## check if results are equal to the one using `surveysd::weightedSum()`
 totalIncome2 <- calc.stError(dat_boot_calib, var = "eqIncome", fun = myWeightedSum)
 all.equal(totalIncome$Estimates, totalIncome2$Estimates)
+
+## -----------------------------------------------------------------------------
+## use add.arg-argument
+fun <- function(x, w, b) {
+  sum(x*w*b)
+}
+add.arg = list(b="onePerson")
+
+err.est <- calc.stError(dat_boot_calib, var = "povertyRisk", fun = fun,
+                        period.mean = 0, add.arg=add.arg)
+err.est$Estimates
+
+# compare with direct computation
+compare.value <- dat_boot_calib[,fun(povertyRisk,pWeight,b=onePerson),
+                                 by=c("year")]
+all((compare.value$V1-err.est$Estimates$val_povertyRisk)==0)
+
+## -----------------------------------------------------------------------------
+# custom estimator to first derive poverty threshold 
+# and then estimate a weighted ratio
+povmd <- function(x, w) {
+ md <- laeken::weightedMedian(x, w)*0.6
+ pmd60 <- x < md
+ # weighted ratio is directly estimated inside the function
+ return(sum(w[pmd60])/sum(w)*100)
+}
+
+err.est <- calc.stError(
+  dat_boot_calib, var = "povertyRisk", fun = weightedRatio,
+  fun.adjust.var = povmd, adjust.var = "eqIncome")
+err.est$Estimates
+
+
+## -----------------------------------------------------------------------------
+# using fun.adjust.var and adjust.var to estimate povmd60 indicator
+# for each period and bootstrap weight before applying the weightedRatio
+povmd2 <- function(x, w) {
+ md <- laeken::weightedMedian(x, w)*0.6
+ pmd60 <- x < md
+ return(as.integer(pmd60))
+}
+
+# set adjust.var="eqIncome" so the income vector is used to estimate
+# the povmd60 indicator for each bootstrap weight
+# and the resulting indicators are passed to function weightedRatio
+group <- "gender"
+err.est <- calc.stError(
+  dat_boot_calib, var = "povertyRisk", fun = weightedRatio, group = "gender",
+  fun.adjust.var = povmd2, adjust.var = "eqIncome")
+err.est$Estimates
 
 ## -----------------------------------------------------------------------------
 multipleRates <- calc.stError(dat_boot_calib, var = c("povertyRisk", "onePerson"), fun = weightedRatio)
