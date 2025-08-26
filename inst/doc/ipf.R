@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -27,10 +27,10 @@ setdiff(names(pop_sample_c), names(pop_sample))
 xtabs(calibWeight ~ gender, pop_sample_c)
 xtabs(pWeight ~ gender, population)
 
-## ---- fig.align="center", out.width="100%"------------------------------------
+## ----fig.align="center", out.width="100%"-------------------------------------
 xtabs(~ calibWeight + gender, pop_sample_c)
 
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 overrepresented_gender <- pop_sample_c[calibWeight < 10, ][1, gender]
 
 ## -----------------------------------------------------------------------------

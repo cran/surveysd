@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2022-12-19" />
+<meta name="date" content="2025-08-26" />
 
 <title>Introduction to surveysd</title>
 
@@ -50,7 +50,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -61,7 +61,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -338,7 +338,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Introduction to surveysd</h1>
-<h4 class="date">2022-12-19</h4>
+<h4 class="date">2025-08-26</h4>
 
 
 
@@ -352,12 +352,12 @@ the theory used in this package, refer to
 <p>A test data set based on
 <code>data(eusilc, package = &quot;laeken&quot;)</code> can be created with
 <code>demo.eusilc()</code></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(surveysd)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>eusilc <span class="ot">&lt;-</span> <span class="fu">demo.eusilc</span>(<span class="at">n =</span> <span class="dv">2</span>, <span class="at">prettyNames =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>eusilc[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, .(year, povertyRisk, gender, pWeight)]</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(surveysd)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>eusilc <span class="ot">&lt;-</span> <span class="fu">demo.eusilc</span>(<span class="at">n =</span> <span class="dv">2</span>, <span class="at">prettyNames =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>eusilc[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, .(year, povertyRisk, gender, pWeight)]</span></code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -407,28 +407,28 @@ the theory used in this package, refer to
 <h3>Draw bootstrap replicates</h3>
 <p>Use stratified resampling without replacement to generate 10 samples.
 Those samples are consistent with respect to the reference periods.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dat_boot <span class="ot">&lt;-</span> <span class="fu">draw.bootstrap</span>(eusilc, <span class="at">REP =</span> <span class="dv">10</span>, <span class="at">hid =</span> <span class="st">&quot;hid&quot;</span>, <span class="at">weights =</span> <span class="st">&quot;pWeight&quot;</span>, </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">strata =</span> <span class="st">&quot;region&quot;</span>, <span class="at">period =</span> <span class="st">&quot;year&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>dat_boot <span class="ot">&lt;-</span> <span class="fu">draw.bootstrap</span>(eusilc, <span class="at">REP =</span> <span class="dv">10</span>, <span class="at">hid =</span> <span class="st">&quot;hid&quot;</span>, <span class="at">weights =</span> <span class="st">&quot;pWeight&quot;</span>, </span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>                           <span class="at">strata =</span> <span class="st">&quot;region&quot;</span>, <span class="at">period =</span> <span class="st">&quot;year&quot;</span>)</span></code></pre></div>
 </div>
 <div id="calibrate-bootstrap-replicates" class="section level3">
 <h3>Calibrate bootstrap replicates</h3>
 <p>Calibrate each sample according to the distribution of
 <code>gender</code> (on a personal level) and <code>region</code> (on a
 household level).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dat_boot_calib <span class="ot">&lt;-</span> <span class="fu">recalib</span>(dat_boot, <span class="at">conP.var =</span> <span class="st">&quot;gender&quot;</span>, <span class="at">conH.var =</span> <span class="st">&quot;region&quot;</span>,</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">epsP =</span> <span class="fl">1e-2</span>, <span class="at">epsH =</span> <span class="fl">2.5e-2</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>dat_boot_calib[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, .(year, povertyRisk, gender, pWeight, w1, w2, w3, w4)]</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>dat_boot_calib <span class="ot">&lt;-</span> <span class="fu">recalib</span>(dat_boot, <span class="at">conP.var =</span> <span class="st">&quot;gender&quot;</span>, <span class="at">conH.var =</span> <span class="st">&quot;region&quot;</span>,</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                          <span class="at">epsP =</span> <span class="fl">1e-2</span>, <span class="at">epsH =</span> <span class="fl">2.5e-2</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>dat_boot_calib[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, .(year, povertyRisk, gender, pWeight, w1, w2, w3, w4)]</span></code></pre></div>
 <div class="kable-table">
-<table style="width:100%;">
+<table>
 <colgroup>
 <col width="6%" />
+<col width="15%" />
+<col width="8%" />
+<col width="11%" />
+<col width="12%" />
 <col width="16%" />
-<col width="9%" />
 <col width="12%" />
-<col width="12%" />
-<col width="13%" />
-<col width="13%" />
-<col width="13%" />
+<col width="15%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -448,50 +448,50 @@ household level).</p>
 <td align="left">FALSE</td>
 <td align="left">female</td>
 <td align="right">504.5696</td>
-<td align="right">1025.360</td>
-<td align="right">0.4581938</td>
-<td align="right">0.4456302</td>
-<td align="right">0.4520549</td>
+<td align="right">0.4486785</td>
+<td align="right">1008.6905620</td>
+<td align="right">0.4486785</td>
+<td align="right">0.4486785</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
 <td align="left">FALSE</td>
 <td align="left">male</td>
 <td align="right">504.5696</td>
-<td align="right">1025.360</td>
-<td align="right">0.4581938</td>
-<td align="right">0.4456302</td>
-<td align="right">0.4520549</td>
+<td align="right">0.4486785</td>
+<td align="right">1008.6905620</td>
+<td align="right">0.4486785</td>
+<td align="right">0.4486785</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
 <td align="left">FALSE</td>
 <td align="left">male</td>
 <td align="right">504.5696</td>
-<td align="right">1025.360</td>
-<td align="right">0.4581938</td>
-<td align="right">0.4456302</td>
-<td align="right">0.4520549</td>
+<td align="right">0.4486785</td>
+<td align="right">1008.6905620</td>
+<td align="right">0.4486785</td>
+<td align="right">0.4486785</td>
 </tr>
 <tr class="even">
-<td align="right">2011</td>
+<td align="right">2010</td>
 <td align="left">FALSE</td>
 <td align="left">female</td>
-<td align="right">504.5696</td>
-<td align="right">1024.862</td>
-<td align="right">0.4721126</td>
-<td align="right">0.4582807</td>
-<td align="right">0.4608312</td>
+<td align="right">493.3824</td>
+<td align="right">0.4387304</td>
+<td align="right">0.4387304</td>
+<td align="right">0.4387304</td>
+<td align="right">986.3259754</td>
 </tr>
 <tr class="odd">
-<td align="right">2011</td>
+<td align="right">2010</td>
 <td align="left">FALSE</td>
 <td align="left">male</td>
-<td align="right">504.5696</td>
-<td align="right">1024.862</td>
-<td align="right">0.4721126</td>
-<td align="right">0.4582807</td>
-<td align="right">0.4608312</td>
+<td align="right">493.3824</td>
+<td align="right">0.4387304</td>
+<td align="right">0.4387304</td>
+<td align="right">0.4387304</td>
+<td align="right">986.3259754</td>
 </tr>
 </tbody>
 </table>
@@ -501,16 +501,26 @@ household level).</p>
 <h3>Estimate with respect to a grouping variable</h3>
 <p>Estimate relative amount of persons at risk of poverty per period and
 <code>gender</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>err.est <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(dat_boot_calib, <span class="at">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="at">fun =</span> weightedRatio, <span class="at">group =</span> <span class="st">&quot;gender&quot;</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>err.est<span class="sc">$</span>Estimates</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>err.est <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(dat_boot_calib, <span class="at">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="at">fun =</span> weightedRatio, <span class="at">group =</span> <span class="st">&quot;gender&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>err.est<span class="sc">$</span>Estimates</span></code></pre></div>
 <div class="kable-table">
 <table>
+<colgroup>
+<col width="6%" />
+<col width="8%" />
+<col width="11%" />
+<col width="9%" />
+<col width="19%" />
+<col width="22%" />
+<col width="22%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="right">year</th>
 <th align="right">n</th>
 <th align="right">N</th>
 <th align="left">gender</th>
+<th align="left">estimate_type</th>
 <th align="right">val_povertyRisk</th>
 <th align="right">stE_povertyRisk</th>
 </tr>
@@ -521,48 +531,54 @@ household level).</p>
 <td align="right">7267</td>
 <td align="right">3979572</td>
 <td align="left">male</td>
+<td align="left">direct</td>
 <td align="right">12.02660</td>
-<td align="right">0.5882841</td>
+<td align="right">0.5591015</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
 <td align="right">7560</td>
 <td align="right">4202650</td>
 <td align="left">female</td>
+<td align="left">direct</td>
 <td align="right">16.73351</td>
-<td align="right">0.7473909</td>
+<td align="right">0.7715705</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="left">NA</td>
+<td align="left">direct</td>
 <td align="right">14.44422</td>
-<td align="right">0.6626295</td>
+<td align="right">0.6072575</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
 <td align="right">7267</td>
 <td align="right">3979572</td>
 <td align="left">male</td>
+<td align="left">direct</td>
 <td align="right">12.81921</td>
-<td align="right">0.6059190</td>
+<td align="right">0.5643889</td>
 </tr>
 <tr class="odd">
 <td align="right">2011</td>
 <td align="right">7560</td>
 <td align="right">4202650</td>
 <td align="left">female</td>
+<td align="left">direct</td>
 <td align="right">16.62488</td>
-<td align="right">0.7355060</td>
+<td align="right">0.6980746</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
 <td align="right">14827</td>
 <td align="right">8182222</td>
 <td align="left">NA</td>
+<td align="left">direct</td>
 <td align="right">14.77393</td>
-<td align="right">0.6631967</td>
+<td align="right">0.5833305</td>
 </tr>
 </tbody>
 </table>
@@ -577,19 +593,20 @@ genders for the corresponding year.</p>
 <p>Estimate relative amount of persons at risk of poverty per period for
 each <code>region</code>, <code>gender</code>, and combination of
 both.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>))</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>err.est <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(dat_boot_calib, <span class="at">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="at">fun =</span> weightedRatio, <span class="at">group =</span> group)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(err.est<span class="sc">$</span>Estimates)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;region&quot;</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>err.est <span class="ot">&lt;-</span> <span class="fu">calc.stError</span>(dat_boot_calib, <span class="at">var =</span> <span class="st">&quot;povertyRisk&quot;</span>, <span class="at">fun =</span> weightedRatio, <span class="at">group =</span> group)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">head</span>(err.est<span class="sc">$</span>Estimates)</span></code></pre></div>
 <div class="kable-table">
 <table>
 <colgroup>
-<col width="7%" />
-<col width="5%" />
-<col width="13%" />
+<col width="6%" />
+<col width="4%" />
 <col width="10%" />
-<col width="16%" />
-<col width="23%" />
-<col width="23%" />
+<col width="8%" />
+<col width="13%" />
+<col width="17%" />
+<col width="19%" />
+<col width="19%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -598,6 +615,7 @@ both.</p>
 <th align="right">N</th>
 <th align="left">gender</th>
 <th align="left">region</th>
+<th align="left">estimate_type</th>
 <th align="right">val_povertyRisk</th>
 <th align="right">stE_povertyRisk</th>
 </tr>
@@ -609,8 +627,9 @@ both.</p>
 <td align="right">122741.8</td>
 <td align="left">male</td>
 <td align="left">Burgenland</td>
+<td align="left">direct</td>
 <td align="right">17.414524</td>
-<td align="right">3.831697</td>
+<td align="right">4.208485</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -618,8 +637,9 @@ both.</p>
 <td align="right">137822.2</td>
 <td align="left">female</td>
 <td align="left">Burgenland</td>
+<td align="left">direct</td>
 <td align="right">21.432598</td>
-<td align="right">3.243412</td>
+<td align="right">3.730093</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -627,8 +647,9 @@ both.</p>
 <td align="right">182732.9</td>
 <td align="left">male</td>
 <td align="left">Vorarlberg</td>
+<td align="left">direct</td>
 <td align="right">12.973259</td>
-<td align="right">1.869263</td>
+<td align="right">2.475398</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -636,8 +657,9 @@ both.</p>
 <td align="right">194622.1</td>
 <td align="left">female</td>
 <td align="left">Vorarlberg</td>
+<td align="left">direct</td>
 <td align="right">19.883637</td>
-<td align="right">3.112974</td>
+<td align="right">3.331928</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -645,8 +667,9 @@ both.</p>
 <td align="right">253143.7</td>
 <td align="left">male</td>
 <td align="left">Salzburg</td>
+<td align="left">direct</td>
 <td align="right">9.156964</td>
-<td align="right">1.809600</td>
+<td align="right">2.337213</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -654,13 +677,14 @@ both.</p>
 <td align="right">282307.3</td>
 <td align="left">female</td>
 <td align="left">Salzburg</td>
+<td align="left">direct</td>
 <td align="right">17.939382</td>
-<td align="right">2.587059</td>
+<td align="right">2.633282</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## skipping 54 more rows</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="do">## skipping 54 more rows</span></span></code></pre></div>
 </div>
 
 

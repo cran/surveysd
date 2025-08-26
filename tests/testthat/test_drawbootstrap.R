@@ -7,7 +7,7 @@ library(surveysd)
 library(laeken)
 library(data.table)
 
-eusilc <- surveysd:::demo.eusilc(n = 5)
+eusilc <- surveysd:::demo.eusilc(n = 3)
 eusilc[, N.households := sum(db090[!duplicated(db030)]), by = .(year, db040)]
 eusilc[!duplicated(db030), N.households.error := sum(db090),
        by = .(year, db040)]
@@ -30,12 +30,12 @@ test_that("test para - REP", {
     draw.bootstrap(
       eusilc, REP = "a", hid = "db030", weights = "db090", period = "year",
       strata = "db040"),
-    "REP must contain one numeric value")
+    "'REP' must be of type numeric")
   expect_error(
     draw.bootstrap(
       eusilc, REP = 1:2, hid = "db030", weights = "db090", period = "year",
       strata = "db040"),
-    "REP must have length 1")
+    "'REP' must have length 1")
 })
 
 test_that("test para - hid, weights and period", {
@@ -43,24 +43,24 @@ test_that("test para - hid, weights and period", {
     draw.bootstrap(
       eusilc, REP = 2, hid = "db030s", weights = "db090", period = "year",
       strata = "db040"),
-    "db030s is not a column in dat")
+    "column(s) 'db030s' specified in 'hid' not found in dat", fixed = TRUE)
   expect_error(
     draw.bootstrap(
       eusilc, REP = 2, hid = "db030", weights = "db090s", period = "year",
       strata = "db040"),
-    "db090s is not a column in dat")
+    "column(s) 'db090s' specified in 'weights' not found in dat", fixed = TRUE)
   expect_error(
     draw.bootstrap(
       eusilc, REP = 2, hid = "db030", weights = "db090", period = "years",
       strata = "db040"),
-    "years is not a column in dat")
+    "column(s) 'years' specified in 'period' not found in dat", fixed = TRUE)
 
   eusilc[, year.char := as.character(year)]
   expect_error(
     draw.bootstrap(
       eusilc, REP = 2, hid = "db030", weights = "db090", period = "year.char",
       strata = "db040"),
-    "year.char is not an integer or numeric column")
+    "column(s) 'year.char' in parameter 'period' must correspond to numeric column(s) in dat", fixed = TRUE)
 })
 
 test_that("test para - strata, cluster and totals", {
@@ -131,7 +131,7 @@ if (Sys.getenv("SURVEYSD_ADDITIONAL_TEST") == "TRUE") {
       draw.bootstrap(
         eusilc, REP = 2, hid = "db030", weights = "db090", period = "year",
         strata = "db040", split = TRUE),
-      "when split is TRUE pid needs to be a string")
+      "when split is TRUE pid must be specified")
 
     eusilc[, rb030error := rb030[1], by = list(year, db030)]
     expect_error(
@@ -196,6 +196,8 @@ test_that("test return", {
   expect_true(ncol(dat.boot) == (2 + ncol(eusilc)))
   dat.unique <- unique(dat.boot[, mget(c("db030", paste0("w", 1:2)))])
   expect_true(nrow(dat.unique[, .N, by = db030][N > 2]) == 0)
+  
+  # check if any value is infinite
   expect_false(any(unlist(
     dat.boot[, lapply(
       .SD,
@@ -204,6 +206,24 @@ test_that("test return", {
       }),
       .SDcols = c(paste0("w", 1:2))
       ])))
+  
+  # check if sum of weights equals
+  # numer of sampling units per strata
+  tab_sums <- dat.boot[, lapply(
+    .SD,
+    function(w,db030) {
+      s1 <- sum(w[!duplicated(db030)])
+      s2 <- uniqueN(db030)
+      abs(s1-s2)>1e-10
+    },db030=db030),by=.(year,db040),
+    .SDcols = c(paste0("w", 1:2))
+  ]
+  expect_false(any(unlist(tab_sums[,.SD,.SDcols=paste0("w", 1:2)])))
+  
   expect_false(any(is.na(dat.boot[, .SD, .SDcols = c(paste0("w", 1:2))])))
   expect_true(all(dat.boot[, .SD, .SDcols = c(paste0("w", 1:2))] > 0))
 })
+
+
+
+

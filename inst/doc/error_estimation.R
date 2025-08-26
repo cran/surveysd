@@ -113,3 +113,37 @@ povertyRates <- calc.stError(dat2, var = "povertyRisk", fun = weightedRatio,
                              group = list("gender", "region", c("gender", "region")))
 povertyRates$Estimates
 
+## -----------------------------------------------------------------------------
+povertyRates <- calc.stError(dat2, var = "povertyRisk", fun = weightedRatio, 
+                             group = c("gender", "region"),
+                             group.diff = TRUE)
+povertyRates$Estimates
+
+## -----------------------------------------------------------------------------
+povertyRates <- calc.stError(dat2, var = "povertyRisk", fun = weightedRatio, 
+                             group = list(c("gender", "region")),
+                             group.diff = TRUE)
+povertyRates$Estimates[,.N,by=.(estimate_type)]
+
+## -----------------------------------------------------------------------------
+povertyRates <- calc.stError(dat_boot_calib[year>2013], var = "povertyRisk", fun = weightedRatio, 
+                             period.diff = c("2017 - 2016", "2016 - 2015", "2015 - 2014"))
+povertyRates$Estimates
+
+## -----------------------------------------------------------------------------
+povertyRates <- calc.stError(dat_boot_calib[year>2013], var = "povertyRisk", fun = weightedRatio, 
+                             group = "gender",
+                             period.diff = c("2017 - 2016", "2016 - 2015", "2015 - 2014"))
+povertyRates$Estimates
+
+## -----------------------------------------------------------------------------
+povertyRates <- calc.stError(dat_boot_calib[year>2013], var = "povertyRisk", fun = weightedRatio, 
+                             period.mean = 3)
+povertyRates$Estimates
+
+## -----------------------------------------------------------------------------
+povertyRates <- calc.stError(dat_boot_calib[year>2013], var = "povertyRisk", fun = weightedRatio, 
+                             period.mean = 3, period.diff = "2016 - 2015",
+                             group = "gender")
+povertyRates$Estimates
+

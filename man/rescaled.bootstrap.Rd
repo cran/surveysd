@@ -6,36 +6,43 @@
 \usage{
 rescaled.bootstrap(
   dat,
+  method = c("Preston", "Rao-Wu"),
   REP = 1000,
   strata = "DB050>1",
   cluster = "DB060>DB030",
   fpc = "N.cluster>N.households",
   single.PSU = c("merge", "mean"),
   return.value = c("data", "replicates"),
-  check.input = TRUE,
-  new.method = FALSE
+  run.input.checks = TRUE,
+  already.selected = NULL,
+  seed = NULL
 )
 }
 \arguments{
 \item{dat}{either data frame or data table containing the survey sample}
 
+\item{method}{for bootstrap replicates, either \code{"Preston"} or \code{"Rao-Wu"}}
+
 \item{REP}{integer indicating the number of bootstraps to be drawn}
 
 \item{strata}{string specifying the column name in \code{dat} that is used for
 stratification. For multistage sampling multiple column names can be
-specified by \code{strata=c("strata1>strata2>strata3")}. See Details for more
+specified by \code{strata=c("strata1","strata2","strata3")} or
+\code{strata=c("strata1>strata2>strata3")}. See Details for more
 information.}
 
 \item{cluster}{string specifying the column name in \code{dat} that is used for
 clustering. For instance given a household sample the column containing
 the household ID should be supplied.
 For multistage sampling multiple column names can be specified
-by \code{cluster=c("cluster1>cluster2>cluster3")}.
+by \code{cluster=c("cluster1","cluster2","cluster3")} or
+\code{cluster=c("cluster1>cluster2>cluster3")}.
 See Details for more information.}
 
 \item{fpc}{string specifying the column name in \code{dat} that contains the
 number of PSUs at the first stage. For multistage sampling the number of
-PSUs at each stage must be specified by \code{strata=c("fpc1>fpc2>fpc3")}.}
+PSUs at each stage must be specified by \code{strata=c("fpc1","fpc2","fpc3")}
+or \code{strata=c("fpc1>fpc2>fpc3")}.}
 
 \item{single.PSU}{either "merge" or "mean" defining how single PSUs need to
 be dealt with. For \code{single.PSU="merge"} single PSUs at each stage are
@@ -44,19 +51,23 @@ multiple of those exist one will be select via random draw. For
 \code{single.PSU="mean"} single PSUs will get the mean over all bootstrap
 replicates at the stage which did not contain single PSUs.}
 
-\item{return.value}{either "data" or "replicates" specifying the return value
-of the function. For "data" the survey data is returned as class
-\code{data.table}, for "replicates" only the bootstrap replicates are returned
-as \code{data.table}.}
+\item{return.value}{either "data", "replicates" and/or "selection"
+specifying the return value of the function. For "data" the survey data is
+returned as class \code{data.table}, for "replicates" only the bootstrap replicates
+are returned as \code{data.table}. For "selection" list of data.tables with
+length of \code{length(strata)} is returned containing 1:\code{REP} 0-1 columns
+indicating if a PSU was selected for each sampling stage.}
 
-\item{check.input}{logical, if TRUE the input will be checked before applying
+\item{run.input.checks}{logical, if TRUE the input will be checked before applying
 the bootstrap procedure}
 
-\item{new.method}{logical, if TRUE bootstrap replicates will never be
-negative even if in some strata the whole population is in the sample.
-WARNING: This is still experimental and resulting standard errors might be
-underestimated! Use this if for some strata the whole population is in the
-sample!}
+\item{already.selected}{list of data.tables or \code{NULL} where each data.table contains
+columns in \code{cluster}, \code{strata} and additionally 1:\code{REP} columns containing
+0-1 values which indicate if a PSU was selected for each bootstrap replicate.
+Each of the data.tables corresponds to one of the sampling stages. First entry
+in the list corresponds to the first sampling stage and so on.}
+
+\item{seed}{integer specifying the seed for the random number generator.}
 }
 \value{
 returns the complete data set including the bootstrap replicates or
@@ -64,33 +75,45 @@ just the bootstrap replicates, depending on \code{return.value="data"} or
 \code{return.value="replicates"} respectively.
 }
 \description{
-Draw bootstrap replicates from survey data using the rescaled
-bootstrap for stratified multistage sampling, presented by Preston, J.
-(2009).
+Draw bootstrap replicates from survey data using either the rescaled
+bootstrap for stratified multistage sampling, presented by J. Preston
+(2009) or the Rao-Wu boostrap by J. N. K. Rao and C. F. J. Wu (1988)
 }
 \details{
 For specifying multistage sampling designs the column names in
-\code{strata},\code{cluster} and \code{fpc} need to seperated by ">".\cr
+\code{strata},\code{cluster} and \code{fpc} need to be seperated by ">".\cr
 For multistage sampling the strings are read from left to right meaning that
-the column name before the first ">" is taken as the column for
-stratification/clustering/number of PSUs at the first and the column after
+the first vector entry or column name before the first ">" is taken as the column for
+stratification/clustering/number of PSUs at the first and the last vector entry
+or column after
 the last ">" is taken as the column for stratification/clustering/number of
 PSUs at the last stage.
 If for some stages the sample was not stratified or clustered one must
-specify this by "1" or "I", e.g. \code{strata=c("strata1>I>strata3")} if there was
-no stratification at the second stage or \code{cluster=c("cluster1>cluster2>I")}
+specify this by "1" or "I", e.g. \code{strata=c("strata1","I","strata3")} or
+\code{strata=c("strata1>I>strata3")} if there was
+no stratification at the second stage or
+\code{cluster=c("cluster1","cluster2","I")} respectively
+\code{cluster=c("cluster1>cluster2>I")}
 if there were no clusters at the last stage.\cr
 The number of PSUs at each stage is not calculated internally and must be
 specified for any sampling design.
 For single stage sampling using stratification this can usually be done by
 adding over all sample weights of each PSU by each strata-code.\cr
 Spaces in each of the strings will be removed, so if column names contain
-spaces they should be renamed before calling this procedure!
+spaces they should be renamed before calling this procedure!\cr
+If \code{already.selected} is supplied the sampling of bootstrap replicates
+considers if speficif PSUs have already been selected by a previous survey wave.
+For a specific \code{strata} and \code{cluster} this could lead to more than \code{floor(n/2)}
+records selected. In that case records will be de-selected such that \code{floor(n/2)} records,
+with \code{n} as the total number of records, are selected for each
+\code{strata} and \code{cluster}. This parameter ist mostly used by \link{draw.bootstrap} in
+order to consider the rotation of the sampling units over time.
 }
 \examples{
 
 library(surveysd)
 library(data.table)
+setDTthreads(1)
 set.seed(1234)
 eusilc <- demo.eusilc(n = 1,prettyNames = TRUE)
 
@@ -108,7 +131,9 @@ eusilc.bootstrap <- rescaled.bootstrap(eusilc,REP=10,strata=c("new_strata"),
 \references{
 Preston, J. (2009). Rescaled bootstrap for stratified multistage
 sampling. Survey Methodology. 35. 227-234.
+Rao, J. N. K., and C. F. J. Wu. (1988). Resampling Inference with Complex Survey Data.
+Journal of the American Statistical Association 83 (401): 231–41.
 }
 \author{
-Johannes Gussenbauer, Statistics Austria
+Johannes Gussenbauer, Eileen Vattheuer, Statistics Austria
 }
