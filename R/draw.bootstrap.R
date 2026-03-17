@@ -147,7 +147,7 @@
 #' library(data.table)
 #' setDTthreads(1)
 #' set.seed(1234)
-#' eusilc <- demo.eusilc(n = 3, prettyNames = TRUE)
+#' eusilc <- demo.eusilc(n = 2, prettyNames = TRUE)
 #'
 #' ## draw replicates without stratification or clustering
 #' dat_boot <- draw.bootstrap(eusilc, REP = 1, weights = "pWeight",
@@ -158,7 +158,7 @@
 #'   eusilc, REP = 1, hid = "hid", weights = "pWeight",
 #'   strata = "region", period = "year")
 #'
-#' ## use multi-level clustering
+#' ## stratification by multiple variables
 #' dat_boot <- draw.bootstrap(
 #'   eusilc, REP = 1, hid = "hid", weights = "pWeight",
 #'   strata = c("region", "hsize"), period = "year")

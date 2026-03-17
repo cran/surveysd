@@ -2,7 +2,7 @@ Package: surveysd
 Type: Package
 Title: Survey Standard Error Estimation for Cumulated Estimates and
         their Differences in Complex Panel Designs
-Version: 2.0.0
+Version: 2.0.1
 Authors@R: c(person("Johannes", "Gussenbauer", role = c("aut", "cre"),
                      email = "Johannes.Gussenbauer@statistik.gv.at"),
               person("Alexander", "Kowarik", role = "aut",
@@ -21,11 +21,11 @@ Imports: Rcpp (>= 0.12.12),data.table,ggplot2,laeken,methods
 LinkingTo: Rcpp
 URL: https://github.com/statistikat/surveysd
 BugReports: https://github.com/statistikat/surveysd/issues
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Suggests: testthat, knitr, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: yes
-Packaged: 2025-08-26 13:50:49 UTC; gussen
+Packaged: 2026-03-16 13:08:59 UTC; gussen
 Author: Johannes Gussenbauer [aut, cre],
   Alexander Kowarik [aut] (ORCID:
     <https://orcid.org/0000-0001-8598-4130>),
@@ -33,4 +33,4 @@ Author: Johannes Gussenbauer [aut, cre],
   Gregor de Cillia [aut],
   Matthias Till [ctb]
 Repository: CRAN
-Date/Publication: 2025-08-26 15:20:02 UTC
+Date/Publication: 2026-03-17 15:00:02 UTC

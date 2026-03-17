@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2025-08-26" />
+<meta name="date" content="2026-03-16" />
 
 <title>Error estimation</title>
 
@@ -49,8 +49,9 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -61,7 +62,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -338,7 +339,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Error estimation</h1>
-<h4 class="date">2025-08-26</h4>
+<h4 class="date">2026-03-16</h4>
 
 
 <div id="TOC">
@@ -390,17 +391,17 @@ to the documentation of those functions for more detail.</p>
 <span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="do">## print part of the dataset</span></span>
 <span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>dat_boot_calib[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, .(year, povertyRisk, eqIncome, onePerson, pWeight, w1, w2, w3, w4, w5)]</span></code></pre></div>
 <div class="kable-table">
-<table style="width:100%;">
+<table>
 <colgroup>
-<col width="5%" />
-<col width="12%" />
+<col width="4%" />
+<col width="11%" />
+<col width="8%" />
 <col width="9%" />
-<col width="10%" />
+<col width="8%" />
 <col width="9%" />
-<col width="13%" />
-<col width="10%" />
-<col width="10%" />
-<col width="10%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
 <col width="12%" />
 </colgroup>
 <thead>
@@ -424,11 +425,11 @@ to the documentation of those functions for more detail.</p>
 <td align="right">16090.69</td>
 <td align="left">FALSE</td>
 <td align="right">504.5696</td>
-<td align="right">1013.1805463</td>
-<td align="right">0.4502254</td>
-<td align="right">1001.5595</td>
-<td align="right">1015.8425</td>
-<td align="right">0.4456781</td>
+<td align="right">0.4472705</td>
+<td align="right">0.4509545</td>
+<td align="right">999.2684949</td>
+<td align="right">0.4518637</td>
+<td align="right">1014.3365799</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -436,11 +437,11 @@ to the documentation of those functions for more detail.</p>
 <td align="right">16090.69</td>
 <td align="left">FALSE</td>
 <td align="right">504.5696</td>
-<td align="right">1013.1805463</td>
-<td align="right">0.4502254</td>
-<td align="right">1001.5595</td>
-<td align="right">1015.8425</td>
-<td align="right">0.4456781</td>
+<td align="right">0.4472705</td>
+<td align="right">0.4509545</td>
+<td align="right">999.2684949</td>
+<td align="right">0.4518637</td>
+<td align="right">1014.3365799</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -448,11 +449,11 @@ to the documentation of those functions for more detail.</p>
 <td align="right">16090.69</td>
 <td align="left">FALSE</td>
 <td align="right">504.5696</td>
-<td align="right">1013.1805463</td>
-<td align="right">0.4502254</td>
-<td align="right">1001.5595</td>
-<td align="right">1015.8425</td>
-<td align="right">0.4456781</td>
+<td align="right">0.4472705</td>
+<td align="right">0.4509545</td>
+<td align="right">999.2684949</td>
+<td align="right">0.4518637</td>
+<td align="right">1014.3365799</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -460,11 +461,11 @@ to the documentation of those functions for more detail.</p>
 <td align="right">27076.24</td>
 <td align="left">FALSE</td>
 <td align="right">493.3824</td>
-<td align="right">0.4413742</td>
-<td align="right">0.4409086</td>
-<td align="right">975.1408</td>
-<td align="right">994.4018</td>
-<td align="right">979.7081838</td>
+<td align="right">0.4374904</td>
+<td align="right">0.4414709</td>
+<td align="right">0.4340924</td>
+<td align="right">993.0042983</td>
+<td align="right">0.4419104</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -472,11 +473,11 @@ to the documentation of those functions for more detail.</p>
 <td align="right">27076.24</td>
 <td align="left">FALSE</td>
 <td align="right">493.3824</td>
-<td align="right">0.4413742</td>
-<td align="right">0.4409086</td>
-<td align="right">975.1408</td>
-<td align="right">994.4018</td>
-<td align="right">979.7081838</td>
+<td align="right">0.4374904</td>
+<td align="right">0.4414709</td>
+<td align="right">0.4340924</td>
+<td align="right">993.0042983</td>
+<td align="right">0.4419104</td>
 </tr>
 </tbody>
 </table>
@@ -514,7 +515,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">14.44422</td>
-<td align="right">0.3755538</td>
+<td align="right">0.5828778</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
@@ -522,7 +523,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">14.77393</td>
-<td align="right">0.2298196</td>
+<td align="right">0.5185824</td>
 </tr>
 <tr class="odd">
 <td align="right">2012</td>
@@ -530,7 +531,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.04515</td>
-<td align="right">0.2056325</td>
+<td align="right">0.5707716</td>
 </tr>
 <tr class="even">
 <td align="right">2013</td>
@@ -538,7 +539,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">14.89013</td>
-<td align="right">0.4515894</td>
+<td align="right">0.7179865</td>
 </tr>
 <tr class="odd">
 <td align="right">2014</td>
@@ -546,7 +547,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.14556</td>
-<td align="right">0.4954098</td>
+<td align="right">0.5290947</td>
 </tr>
 <tr class="even">
 <td align="right">2015</td>
@@ -554,7 +555,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.53640</td>
-<td align="right">0.5456595</td>
+<td align="right">0.4387180</td>
 </tr>
 <tr class="odd">
 <td align="right">2016</td>
@@ -562,7 +563,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.08315</td>
-<td align="right">0.5211549</td>
+<td align="right">0.2971058</td>
 </tr>
 <tr class="even">
 <td align="right">2017</td>
@@ -570,7 +571,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.42019</td>
-<td align="right">0.3757101</td>
+<td align="right">0.4955047</td>
 </tr>
 </tbody>
 </table>
@@ -595,7 +596,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">162750998071</td>
-<td align="right">904175758</td>
+<td align="right">1589823115</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
@@ -603,7 +604,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">161926931417</td>
-<td align="right">1229058265</td>
+<td align="right">1063637178</td>
 </tr>
 <tr class="odd">
 <td align="right">2012</td>
@@ -611,7 +612,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">162576509628</td>
-<td align="right">1903487229</td>
+<td align="right">1115156820</td>
 </tr>
 <tr class="even">
 <td align="right">2013</td>
@@ -619,7 +620,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">163199507862</td>
-<td align="right">1624805090</td>
+<td align="right">1589030097</td>
 </tr>
 <tr class="odd">
 <td align="right">2014</td>
@@ -627,7 +628,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">163986275009</td>
-<td align="right">1464839665</td>
+<td align="right">1835879185</td>
 </tr>
 <tr class="even">
 <td align="right">2015</td>
@@ -635,7 +636,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">163416275447</td>
-<td align="right">1665569708</td>
+<td align="right">1079194548</td>
 </tr>
 <tr class="odd">
 <td align="right">2016</td>
@@ -643,7 +644,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">162706205137</td>
-<td align="right">2073914048</td>
+<td align="right">996910142</td>
 </tr>
 <tr class="even">
 <td align="right">2017</td>
@@ -651,7 +652,7 @@ separately for each reference period.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">164314959107</td>
-<td align="right">2030896610</td>
+<td align="right">915560440</td>
 </tr>
 </tbody>
 </table>
@@ -717,7 +718,7 @@ arguments for the custom estimator.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">273683.9</td>
-<td align="right">14449.17</td>
+<td align="right">15128.67</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
@@ -725,7 +726,7 @@ arguments for the custom estimator.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">261883.6</td>
-<td align="right">12029.86</td>
+<td align="right">18079.59</td>
 </tr>
 <tr class="odd">
 <td align="right">2012</td>
@@ -733,7 +734,7 @@ arguments for the custom estimator.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">243083.9</td>
-<td align="right">13071.31</td>
+<td align="right">15129.70</td>
 </tr>
 <tr class="even">
 <td align="right">2013</td>
@@ -741,7 +742,7 @@ arguments for the custom estimator.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">238004.4</td>
-<td align="right">15764.40</td>
+<td align="right">14183.01</td>
 </tr>
 <tr class="odd">
 <td align="right">2014</td>
@@ -749,7 +750,7 @@ arguments for the custom estimator.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">218572.1</td>
-<td align="right">16665.11</td>
+<td align="right">12070.38</td>
 </tr>
 <tr class="even">
 <td align="right">2015</td>
@@ -757,7 +758,7 @@ arguments for the custom estimator.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">219984.1</td>
-<td align="right">18322.78</td>
+<td align="right">15423.04</td>
 </tr>
 <tr class="odd">
 <td align="right">2016</td>
@@ -765,7 +766,7 @@ arguments for the custom estimator.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">201753.9</td>
-<td align="right">14075.25</td>
+<td align="right">14085.71</td>
 </tr>
 <tr class="even">
 <td align="right">2017</td>
@@ -773,7 +774,7 @@ arguments for the custom estimator.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">196881.2</td>
-<td align="right">13604.54</td>
+<td align="right">16767.69</td>
 </tr>
 </tbody>
 </table>
@@ -945,7 +946,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">12.02660</td>
-<td align="right">0.4858507</td>
+<td align="right">0.6491549</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -954,7 +955,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">16.73351</td>
-<td align="right">0.6959347</td>
+<td align="right">0.8492042</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -963,7 +964,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">14.44422</td>
-<td align="right">0.5756880</td>
+<td align="right">0.6944502</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
@@ -972,7 +973,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">12.81921</td>
-<td align="right">0.2873416</td>
+<td align="right">0.6119865</td>
 </tr>
 <tr class="odd">
 <td align="right">2011</td>
@@ -981,7 +982,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">16.62488</td>
-<td align="right">0.3743578</td>
+<td align="right">0.6752402</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
@@ -990,7 +991,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">14.77393</td>
-<td align="right">0.2694827</td>
+<td align="right">0.5903312</td>
 </tr>
 <tr class="odd">
 <td align="right">2012</td>
@@ -999,7 +1000,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">13.76065</td>
-<td align="right">0.2865017</td>
+<td align="right">0.7756739</td>
 </tr>
 <tr class="even">
 <td align="right">2012</td>
@@ -1008,7 +1009,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">16.26147</td>
-<td align="right">0.2689458</td>
+<td align="right">0.7124720</td>
 </tr>
 <tr class="odd">
 <td align="right">2012</td>
@@ -1017,7 +1018,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">15.04515</td>
-<td align="right">0.1903772</td>
+<td align="right">0.7152862</td>
 </tr>
 <tr class="even">
 <td align="right">2013</td>
@@ -1026,7 +1027,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">13.88962</td>
-<td align="right">0.4730442</td>
+<td align="right">0.7224536</td>
 </tr>
 <tr class="odd">
 <td align="right">2013</td>
@@ -1035,7 +1036,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">15.83754</td>
-<td align="right">0.1908739</td>
+<td align="right">0.7843814</td>
 </tr>
 <tr class="even">
 <td align="right">2013</td>
@@ -1044,7 +1045,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">14.89013</td>
-<td align="right">0.3074631</td>
+<td align="right">0.7065197</td>
 </tr>
 <tr class="odd">
 <td align="right">2014</td>
@@ -1053,7 +1054,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">14.50351</td>
-<td align="right">0.5042843</td>
+<td align="right">0.5109454</td>
 </tr>
 <tr class="even">
 <td align="right">2014</td>
@@ -1062,7 +1063,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">15.75353</td>
-<td align="right">0.3463626</td>
+<td align="right">0.7329613</td>
 </tr>
 <tr class="odd">
 <td align="right">2014</td>
@@ -1071,7 +1072,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">15.14556</td>
-<td align="right">0.3709321</td>
+<td align="right">0.5500679</td>
 </tr>
 <tr class="even">
 <td align="right">2015</td>
@@ -1080,7 +1081,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">15.12289</td>
-<td align="right">0.6285688</td>
+<td align="right">0.5096182</td>
 </tr>
 <tr class="odd">
 <td align="right">2015</td>
@@ -1089,7 +1090,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">15.92796</td>
-<td align="right">0.4200607</td>
+<td align="right">0.6679814</td>
 </tr>
 <tr class="even">
 <td align="right">2015</td>
@@ -1098,7 +1099,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">15.53640</td>
-<td align="right">0.4914012</td>
+<td align="right">0.5422557</td>
 </tr>
 <tr class="odd">
 <td align="right">2016</td>
@@ -1107,7 +1108,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">14.57968</td>
-<td align="right">0.5546359</td>
+<td align="right">0.3921443</td>
 </tr>
 <tr class="even">
 <td align="right">2016</td>
@@ -1116,7 +1117,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">15.55989</td>
-<td align="right">0.3072535</td>
+<td align="right">0.5435946</td>
 </tr>
 <tr class="odd">
 <td align="right">2016</td>
@@ -1125,7 +1126,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">15.08315</td>
-<td align="right">0.4023717</td>
+<td align="right">0.4037723</td>
 </tr>
 <tr class="even">
 <td align="right">2017</td>
@@ -1134,7 +1135,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">14.94816</td>
-<td align="right">0.4973673</td>
+<td align="right">0.5692264</td>
 </tr>
 <tr class="odd">
 <td align="right">2017</td>
@@ -1143,7 +1144,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">15.86717</td>
-<td align="right">0.6738396</td>
+<td align="right">0.5996059</td>
 </tr>
 <tr class="even">
 <td align="right">2017</td>
@@ -1152,7 +1153,7 @@ each <code>period</code> and then used for each grouping in
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">15.42019</td>
-<td align="right">0.5689435</td>
+<td align="right">0.5542208</td>
 </tr>
 </tbody>
 </table>
@@ -1196,9 +1197,9 @@ necessary columns.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">14.44422</td>
-<td align="right">0.3942534</td>
+<td align="right">0.4834021</td>
 <td align="right">14.85737</td>
-<td align="right">0.3942534</td>
+<td align="right">0.4834021</td>
 </tr>
 <tr class="even">
 <td align="right">2011</td>
@@ -1206,9 +1207,9 @@ necessary columns.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">14.77393</td>
-<td align="right">0.3043969</td>
+<td align="right">0.4359996</td>
 <td align="right">14.85737</td>
-<td align="right">0.3043969</td>
+<td align="right">0.4359996</td>
 </tr>
 <tr class="odd">
 <td align="right">2012</td>
@@ -1216,9 +1217,9 @@ necessary columns.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.04515</td>
-<td align="right">0.2895304</td>
+<td align="right">0.4916475</td>
 <td align="right">14.85737</td>
-<td align="right">0.2895304</td>
+<td align="right">0.4916475</td>
 </tr>
 <tr class="even">
 <td align="right">2013</td>
@@ -1226,9 +1227,9 @@ necessary columns.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">14.89013</td>
-<td align="right">0.3950952</td>
+<td align="right">0.5593800</td>
 <td align="right">14.85737</td>
-<td align="right">0.3950952</td>
+<td align="right">0.5593800</td>
 </tr>
 <tr class="odd">
 <td align="right">2014</td>
@@ -1236,9 +1237,9 @@ necessary columns.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.14556</td>
-<td align="right">0.4561354</td>
+<td align="right">0.5133336</td>
 <td align="right">14.85737</td>
-<td align="right">0.4561354</td>
+<td align="right">0.5133336</td>
 </tr>
 <tr class="even">
 <td align="right">2015</td>
@@ -1246,9 +1247,9 @@ necessary columns.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.53640</td>
-<td align="right">0.6039997</td>
+<td align="right">0.7277588</td>
 <td align="right">14.85737</td>
-<td align="right">0.6039997</td>
+<td align="right">0.7277588</td>
 </tr>
 <tr class="odd">
 <td align="right">2016</td>
@@ -1256,9 +1257,9 @@ necessary columns.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.08315</td>
-<td align="right">0.5295194</td>
+<td align="right">0.5472221</td>
 <td align="right">14.85737</td>
-<td align="right">0.5295194</td>
+<td align="right">0.5472221</td>
 </tr>
 <tr class="even">
 <td align="right">2017</td>
@@ -1266,9 +1267,9 @@ necessary columns.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.42019</td>
-<td align="right">0.6276176</td>
+<td align="right">0.5894858</td>
 <td align="right">14.85737</td>
-<td align="right">0.6276176</td>
+<td align="right">0.5894858</td>
 </tr>
 </tbody>
 </table>
@@ -1322,7 +1323,7 @@ state of Austria, <code>group = &quot;region&quot;</code> can be used.</p>
 <td align="left">Burgenland</td>
 <td align="left">direct</td>
 <td align="right">19.53984</td>
-<td align="right">3.8201446</td>
+<td align="right">1.8742915</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1331,7 +1332,7 @@ state of Austria, <code>group = &quot;region&quot;</code> can be used.</p>
 <td align="left">Vorarlberg</td>
 <td align="left">direct</td>
 <td align="right">16.53731</td>
-<td align="right">3.4361247</td>
+<td align="right">4.0541791</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1340,7 +1341,7 @@ state of Austria, <code>group = &quot;region&quot;</code> can be used.</p>
 <td align="left">Salzburg</td>
 <td align="left">direct</td>
 <td align="right">13.78734</td>
-<td align="right">1.8458914</td>
+<td align="right">1.7489240</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1349,7 +1350,7 @@ state of Austria, <code>group = &quot;region&quot;</code> can be used.</p>
 <td align="left">Carinthia</td>
 <td align="left">direct</td>
 <td align="right">13.08627</td>
-<td align="right">2.0096038</td>
+<td align="right">1.7965346</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1358,7 +1359,7 @@ state of Austria, <code>group = &quot;region&quot;</code> can be used.</p>
 <td align="left">Tyrol</td>
 <td align="left">direct</td>
 <td align="right">15.30819</td>
-<td align="right">1.8293976</td>
+<td align="right">1.7968278</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1367,7 +1368,7 @@ state of Austria, <code>group = &quot;region&quot;</code> can be used.</p>
 <td align="left">Styria</td>
 <td align="left">direct</td>
 <td align="right">14.37464</td>
-<td align="right">1.0559605</td>
+<td align="right">1.7382878</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1376,7 +1377,7 @@ state of Austria, <code>group = &quot;region&quot;</code> can be used.</p>
 <td align="left">Vienna</td>
 <td align="left">direct</td>
 <td align="right">17.23468</td>
-<td align="right">1.1871171</td>
+<td align="right">1.1688503</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1385,7 +1386,7 @@ state of Austria, <code>group = &quot;region&quot;</code> can be used.</p>
 <td align="left">Lower Austria</td>
 <td align="left">direct</td>
 <td align="right">13.84362</td>
-<td align="right">1.1256995</td>
+<td align="right">1.0023937</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1394,7 +1395,7 @@ state of Austria, <code>group = &quot;region&quot;</code> can be used.</p>
 <td align="left">Upper Austria</td>
 <td align="left">direct</td>
 <td align="right">10.88977</td>
-<td align="right">0.9377872</td>
+<td align="right">0.6490333</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1403,7 +1404,7 @@ state of Austria, <code>group = &quot;region&quot;</code> can be used.</p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">14.44422</td>
-<td align="right">0.3755538</td>
+<td align="right">0.5828778</td>
 </tr>
 </tbody>
 </table>
@@ -1462,7 +1463,7 @@ n_\text{genders} + 1) = 1\cdot(9 + 2 + 1) = 12.\]</span></p>
 <td align="left">Burgenland</td>
 <td align="left">direct</td>
 <td align="right">19.53984</td>
-<td align="right">3.8201446</td>
+<td align="right">1.8742915</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1472,7 +1473,7 @@ n_\text{genders} + 1) = 1\cdot(9 + 2 + 1) = 12.\]</span></p>
 <td align="left">Vorarlberg</td>
 <td align="left">direct</td>
 <td align="right">16.53731</td>
-<td align="right">3.4361247</td>
+<td align="right">4.0541791</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1482,7 +1483,7 @@ n_\text{genders} + 1) = 1\cdot(9 + 2 + 1) = 12.\]</span></p>
 <td align="left">Salzburg</td>
 <td align="left">direct</td>
 <td align="right">13.78734</td>
-<td align="right">1.8458914</td>
+<td align="right">1.7489240</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1492,7 +1493,7 @@ n_\text{genders} + 1) = 1\cdot(9 + 2 + 1) = 12.\]</span></p>
 <td align="left">Carinthia</td>
 <td align="left">direct</td>
 <td align="right">13.08627</td>
-<td align="right">2.0096038</td>
+<td align="right">1.7965346</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1502,7 +1503,7 @@ n_\text{genders} + 1) = 1\cdot(9 + 2 + 1) = 12.\]</span></p>
 <td align="left">Tyrol</td>
 <td align="left">direct</td>
 <td align="right">15.30819</td>
-<td align="right">1.8293976</td>
+<td align="right">1.7968278</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1512,7 +1513,7 @@ n_\text{genders} + 1) = 1\cdot(9 + 2 + 1) = 12.\]</span></p>
 <td align="left">Styria</td>
 <td align="left">direct</td>
 <td align="right">14.37464</td>
-<td align="right">1.0559605</td>
+<td align="right">1.7382878</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1522,7 +1523,7 @@ n_\text{genders} + 1) = 1\cdot(9 + 2 + 1) = 12.\]</span></p>
 <td align="left">Vienna</td>
 <td align="left">direct</td>
 <td align="right">17.23468</td>
-<td align="right">1.1871171</td>
+<td align="right">1.1688503</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1532,7 +1533,7 @@ n_\text{genders} + 1) = 1\cdot(9 + 2 + 1) = 12.\]</span></p>
 <td align="left">Lower Austria</td>
 <td align="left">direct</td>
 <td align="right">13.84362</td>
-<td align="right">1.1256995</td>
+<td align="right">1.0023937</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1542,7 +1543,7 @@ n_\text{genders} + 1) = 1\cdot(9 + 2 + 1) = 12.\]</span></p>
 <td align="left">Upper Austria</td>
 <td align="left">direct</td>
 <td align="right">10.88977</td>
-<td align="right">0.9377872</td>
+<td align="right">0.6490333</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1552,7 +1553,7 @@ n_\text{genders} + 1) = 1\cdot(9 + 2 + 1) = 12.\]</span></p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">12.02660</td>
-<td align="right">0.3524528</td>
+<td align="right">0.5911544</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1562,7 +1563,7 @@ n_\text{genders} + 1) = 1\cdot(9 + 2 + 1) = 12.\]</span></p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">16.73351</td>
-<td align="right">0.4706546</td>
+<td align="right">0.7083992</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1572,7 +1573,7 @@ n_\text{genders} + 1) = 1\cdot(9 + 2 + 1) = 12.\]</span></p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">14.44422</td>
-<td align="right">0.3755538</td>
+<td align="right">0.5828778</td>
 </tr>
 </tbody>
 </table>
@@ -1621,7 +1622,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Burgenland</td>
 <td align="left">direct</td>
 <td align="right">17.414524</td>
-<td align="right">3.7608324</td>
+<td align="right">1.9315531</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1631,7 +1632,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Burgenland</td>
 <td align="left">direct</td>
 <td align="right">21.432598</td>
-<td align="right">4.1870089</td>
+<td align="right">2.5803749</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1641,7 +1642,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Vorarlberg</td>
 <td align="left">direct</td>
 <td align="right">12.973259</td>
-<td align="right">3.7597884</td>
+<td align="right">3.4580325</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1651,7 +1652,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Vorarlberg</td>
 <td align="left">direct</td>
 <td align="right">19.883637</td>
-<td align="right">3.8858420</td>
+<td align="right">4.7451623</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1661,7 +1662,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Salzburg</td>
 <td align="left">direct</td>
 <td align="right">9.156964</td>
-<td align="right">1.9057526</td>
+<td align="right">1.6073884</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1671,7 +1672,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Salzburg</td>
 <td align="left">direct</td>
 <td align="right">17.939382</td>
-<td align="right">2.1700685</td>
+<td align="right">2.3428688</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1681,7 +1682,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Carinthia</td>
 <td align="left">direct</td>
 <td align="right">10.552148</td>
-<td align="right">1.6181769</td>
+<td align="right">1.5820548</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1691,7 +1692,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Carinthia</td>
 <td align="left">direct</td>
 <td align="right">15.392924</td>
-<td align="right">2.6174006</td>
+<td align="right">2.0516471</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1701,7 +1702,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Tyrol</td>
 <td align="left">direct</td>
 <td align="right">12.857542</td>
-<td align="right">2.2710099</td>
+<td align="right">1.6569300</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1711,7 +1712,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Tyrol</td>
 <td align="left">direct</td>
 <td align="right">17.604861</td>
-<td align="right">1.6905978</td>
+<td align="right">2.2461197</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1721,7 +1722,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Styria</td>
 <td align="left">direct</td>
 <td align="right">11.671247</td>
-<td align="right">1.2206931</td>
+<td align="right">1.9572219</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1731,7 +1732,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Vienna</td>
 <td align="left">direct</td>
 <td align="right">15.590616</td>
-<td align="right">1.0566260</td>
+<td align="right">1.5877926</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1741,7 +1742,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Styria</td>
 <td align="left">direct</td>
 <td align="right">16.964539</td>
-<td align="right">1.2797304</td>
+<td align="right">1.7014984</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1751,7 +1752,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Vienna</td>
 <td align="left">direct</td>
 <td align="right">18.778813</td>
-<td align="right">1.4814944</td>
+<td align="right">0.9743632</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1761,7 +1762,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Upper Austria</td>
 <td align="left">direct</td>
 <td align="right">9.074690</td>
-<td align="right">0.9212612</td>
+<td align="right">0.8905727</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1771,7 +1772,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Lower Austria</td>
 <td align="left">direct</td>
 <td align="right">16.372949</td>
-<td align="right">1.2166483</td>
+<td align="right">1.3935529</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1781,7 +1782,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Lower Austria</td>
 <td align="left">direct</td>
 <td align="right">11.348283</td>
-<td align="right">1.1851814</td>
+<td align="right">0.9908677</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1791,7 +1792,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">Upper Austria</td>
 <td align="left">direct</td>
 <td align="right">12.574205</td>
-<td align="right">1.1522839</td>
+<td align="right">0.8327411</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1801,7 +1802,7 @@ This will result in a larger output-table of the size</p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">14.444218</td>
-<td align="right">0.3755538</td>
+<td align="right">0.5828778</td>
 </tr>
 </tbody>
 </table>
@@ -1856,7 +1857,7 @@ for</p>
 <td align="left">Burgenland</td>
 <td align="left">direct</td>
 <td align="right">17.414524</td>
-<td align="right">3.7608324</td>
+<td align="right">1.9315531</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1866,7 +1867,7 @@ for</p>
 <td align="left">Burgenland</td>
 <td align="left">direct</td>
 <td align="right">21.432598</td>
-<td align="right">4.1870089</td>
+<td align="right">2.5803749</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1876,7 +1877,7 @@ for</p>
 <td align="left">Vorarlberg</td>
 <td align="left">direct</td>
 <td align="right">12.973259</td>
-<td align="right">3.7597884</td>
+<td align="right">3.4580325</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1886,7 +1887,7 @@ for</p>
 <td align="left">Vorarlberg</td>
 <td align="left">direct</td>
 <td align="right">19.883637</td>
-<td align="right">3.8858420</td>
+<td align="right">4.7451623</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1896,7 +1897,7 @@ for</p>
 <td align="left">Salzburg</td>
 <td align="left">direct</td>
 <td align="right">9.156964</td>
-<td align="right">1.9057526</td>
+<td align="right">1.6073884</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1906,7 +1907,7 @@ for</p>
 <td align="left">Salzburg</td>
 <td align="left">direct</td>
 <td align="right">17.939382</td>
-<td align="right">2.1700685</td>
+<td align="right">2.3428688</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1916,7 +1917,7 @@ for</p>
 <td align="left">Carinthia</td>
 <td align="left">direct</td>
 <td align="right">10.552148</td>
-<td align="right">1.6181769</td>
+<td align="right">1.5820548</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1926,7 +1927,7 @@ for</p>
 <td align="left">Burgenland</td>
 <td align="left">direct</td>
 <td align="right">19.539836</td>
-<td align="right">3.8201446</td>
+<td align="right">1.8742915</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1936,7 +1937,7 @@ for</p>
 <td align="left">Carinthia</td>
 <td align="left">direct</td>
 <td align="right">15.392924</td>
-<td align="right">2.6174006</td>
+<td align="right">2.0516471</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1946,7 +1947,7 @@ for</p>
 <td align="left">Tyrol</td>
 <td align="left">direct</td>
 <td align="right">12.857542</td>
-<td align="right">2.2710099</td>
+<td align="right">1.6569300</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1956,7 +1957,7 @@ for</p>
 <td align="left">Tyrol</td>
 <td align="left">direct</td>
 <td align="right">17.604861</td>
-<td align="right">1.6905978</td>
+<td align="right">2.2461197</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1966,7 +1967,7 @@ for</p>
 <td align="left">Vorarlberg</td>
 <td align="left">direct</td>
 <td align="right">16.537310</td>
-<td align="right">3.4361247</td>
+<td align="right">4.0541791</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1976,7 +1977,7 @@ for</p>
 <td align="left">Salzburg</td>
 <td align="left">direct</td>
 <td align="right">13.787343</td>
-<td align="right">1.8458914</td>
+<td align="right">1.7489240</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -1986,7 +1987,7 @@ for</p>
 <td align="left">Carinthia</td>
 <td align="left">direct</td>
 <td align="right">13.086268</td>
-<td align="right">2.0096038</td>
+<td align="right">1.7965346</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -1996,7 +1997,7 @@ for</p>
 <td align="left">Styria</td>
 <td align="left">direct</td>
 <td align="right">11.671247</td>
-<td align="right">1.2206931</td>
+<td align="right">1.9572219</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2006,7 +2007,7 @@ for</p>
 <td align="left">Vienna</td>
 <td align="left">direct</td>
 <td align="right">15.590616</td>
-<td align="right">1.0566260</td>
+<td align="right">1.5877926</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2016,7 +2017,7 @@ for</p>
 <td align="left">Styria</td>
 <td align="left">direct</td>
 <td align="right">16.964539</td>
-<td align="right">1.2797304</td>
+<td align="right">1.7014984</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2026,7 +2027,7 @@ for</p>
 <td align="left">Vienna</td>
 <td align="left">direct</td>
 <td align="right">18.778813</td>
-<td align="right">1.4814944</td>
+<td align="right">0.9743632</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2036,7 +2037,7 @@ for</p>
 <td align="left">Tyrol</td>
 <td align="left">direct</td>
 <td align="right">15.308191</td>
-<td align="right">1.8293976</td>
+<td align="right">1.7968278</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2046,7 +2047,7 @@ for</p>
 <td align="left">Upper Austria</td>
 <td align="left">direct</td>
 <td align="right">9.074690</td>
-<td align="right">0.9212612</td>
+<td align="right">0.8905727</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2056,7 +2057,7 @@ for</p>
 <td align="left">Lower Austria</td>
 <td align="left">direct</td>
 <td align="right">16.372949</td>
-<td align="right">1.2166483</td>
+<td align="right">1.3935529</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2066,7 +2067,7 @@ for</p>
 <td align="left">Lower Austria</td>
 <td align="left">direct</td>
 <td align="right">11.348283</td>
-<td align="right">1.1851814</td>
+<td align="right">0.9908677</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2076,7 +2077,7 @@ for</p>
 <td align="left">Upper Austria</td>
 <td align="left">direct</td>
 <td align="right">12.574205</td>
-<td align="right">1.1522839</td>
+<td align="right">0.8327411</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2086,7 +2087,7 @@ for</p>
 <td align="left">Styria</td>
 <td align="left">direct</td>
 <td align="right">14.374637</td>
-<td align="right">1.0559605</td>
+<td align="right">1.7382878</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2096,7 +2097,7 @@ for</p>
 <td align="left">Vienna</td>
 <td align="left">direct</td>
 <td align="right">17.234683</td>
-<td align="right">1.1871171</td>
+<td align="right">1.1688503</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2106,7 +2107,7 @@ for</p>
 <td align="left">Lower Austria</td>
 <td align="left">direct</td>
 <td align="right">13.843623</td>
-<td align="right">1.1256995</td>
+<td align="right">1.0023937</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2116,7 +2117,7 @@ for</p>
 <td align="left">Upper Austria</td>
 <td align="left">direct</td>
 <td align="right">10.889773</td>
-<td align="right">0.9377872</td>
+<td align="right">0.6490333</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2126,7 +2127,7 @@ for</p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">12.026600</td>
-<td align="right">0.3524528</td>
+<td align="right">0.5911544</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2136,7 +2137,7 @@ for</p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">16.733508</td>
-<td align="right">0.4706546</td>
+<td align="right">0.7083992</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2146,7 +2147,7 @@ for</p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">14.444218</td>
-<td align="right">0.3755538</td>
+<td align="right">0.5828778</td>
 </tr>
 </tbody>
 </table>
@@ -2199,7 +2200,7 @@ standard error of these differences for all variables defined in
 <td align="left">Burgenland</td>
 <td align="left">direct</td>
 <td align="right">19.5398365</td>
-<td align="right">3.8201446</td>
+<td align="right">1.8742915</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2209,7 +2210,7 @@ standard error of these differences for all variables defined in
 <td align="left">Burgenland - Vorarlberg</td>
 <td align="left">group difference</td>
 <td align="right">3.0025263</td>
-<td align="right">4.3512326</td>
+<td align="right">4.6658265</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2219,7 +2220,7 @@ standard error of these differences for all variables defined in
 <td align="left">Vorarlberg</td>
 <td align="left">direct</td>
 <td align="right">16.5373102</td>
-<td align="right">3.4361247</td>
+<td align="right">4.0541791</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2229,7 +2230,7 @@ standard error of these differences for all variables defined in
 <td align="left">Burgenland - Salzburg</td>
 <td align="left">group difference</td>
 <td align="right">5.7524933</td>
-<td align="right">4.0727197</td>
+<td align="right">2.4089456</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2239,7 +2240,7 @@ standard error of these differences for all variables defined in
 <td align="left">Burgenland - Carinthia</td>
 <td align="left">group difference</td>
 <td align="right">6.4535688</td>
-<td align="right">4.2042780</td>
+<td align="right">2.9080339</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2249,7 +2250,7 @@ standard error of these differences for all variables defined in
 <td align="left">Salzburg - Vorarlberg</td>
 <td align="left">group difference</td>
 <td align="right">-2.7499670</td>
-<td align="right">3.5203199</td>
+<td align="right">5.0135613</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2259,7 +2260,7 @@ standard error of these differences for all variables defined in
 <td align="left">Carinthia - Vorarlberg</td>
 <td align="left">group difference</td>
 <td align="right">-3.4510424</td>
-<td align="right">3.7663942</td>
+<td align="right">5.1942634</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2269,7 +2270,7 @@ standard error of these differences for all variables defined in
 <td align="left">Salzburg</td>
 <td align="left">direct</td>
 <td align="right">13.7873432</td>
-<td align="right">1.8458914</td>
+<td align="right">1.7489240</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2279,7 +2280,7 @@ standard error of these differences for all variables defined in
 <td align="left">Burgenland - Tyrol</td>
 <td align="left">group difference</td>
 <td align="right">4.2316460</td>
-<td align="right">4.2130768</td>
+<td align="right">2.3257739</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2289,7 +2290,7 @@ standard error of these differences for all variables defined in
 <td align="left">Carinthia - Salzburg</td>
 <td align="left">group difference</td>
 <td align="right">-0.7010755</td>
-<td align="right">2.6242885</td>
+<td align="right">1.7775119</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2299,7 +2300,7 @@ standard error of these differences for all variables defined in
 <td align="left">Tyrol - Vorarlberg</td>
 <td align="left">group difference</td>
 <td align="right">-1.2291197</td>
-<td align="right">4.6030925</td>
+<td align="right">4.1954037</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2309,7 +2310,7 @@ standard error of these differences for all variables defined in
 <td align="left">Carinthia</td>
 <td align="left">direct</td>
 <td align="right">13.0862677</td>
-<td align="right">2.0096038</td>
+<td align="right">1.7965346</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2319,7 +2320,7 @@ standard error of these differences for all variables defined in
 <td align="left">Salzburg - Tyrol</td>
 <td align="left">group difference</td>
 <td align="right">-1.5208473</td>
-<td align="right">2.3646678</td>
+<td align="right">2.0346273</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2329,7 +2330,7 @@ standard error of these differences for all variables defined in
 <td align="left">Carinthia - Tyrol</td>
 <td align="left">group difference</td>
 <td align="right">-2.2219227</td>
-<td align="right">3.0161373</td>
+<td align="right">2.5537838</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2339,7 +2340,7 @@ standard error of these differences for all variables defined in
 <td align="left">Tyrol</td>
 <td align="left">direct</td>
 <td align="right">15.3081905</td>
-<td align="right">1.8293976</td>
+<td align="right">1.7968278</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2349,7 +2350,7 @@ standard error of these differences for all variables defined in
 <td align="left">Burgenland - Styria</td>
 <td align="left">group difference</td>
 <td align="right">5.1651992</td>
-<td align="right">4.6852127</td>
+<td align="right">2.6520046</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2359,7 +2360,7 @@ standard error of these differences for all variables defined in
 <td align="left">Burgenland - Vienna</td>
 <td align="left">group difference</td>
 <td align="right">2.3051533</td>
-<td align="right">3.8296985</td>
+<td align="right">2.6832322</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2369,7 +2370,7 @@ standard error of these differences for all variables defined in
 <td align="left">Styria - Vorarlberg</td>
 <td align="left">group difference</td>
 <td align="right">-2.1626729</td>
-<td align="right">4.1234841</td>
+<td align="right">5.2340131</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2379,7 +2380,7 @@ standard error of these differences for all variables defined in
 <td align="left">Vienna - Vorarlberg</td>
 <td align="left">group difference</td>
 <td align="right">0.6973730</td>
-<td align="right">3.8746662</td>
+<td align="right">4.5896094</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2389,7 +2390,7 @@ standard error of these differences for all variables defined in
 <td align="left">Salzburg - Styria</td>
 <td align="left">group difference</td>
 <td align="right">-0.5872941</td>
-<td align="right">2.1351288</td>
+<td align="right">1.7533661</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2399,7 +2400,7 @@ standard error of these differences for all variables defined in
 <td align="left">Salzburg - Vienna</td>
 <td align="left">group difference</td>
 <td align="right">-3.4473400</td>
-<td align="right">1.9229290</td>
+<td align="right">1.9026378</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2409,7 +2410,7 @@ standard error of these differences for all variables defined in
 <td align="left">Burgenland - Lower Austria</td>
 <td align="left">group difference</td>
 <td align="right">5.6962137</td>
-<td align="right">4.4195868</td>
+<td align="right">2.4755067</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2419,7 +2420,7 @@ standard error of these differences for all variables defined in
 <td align="left">Burgenland - Upper Austria</td>
 <td align="left">group difference</td>
 <td align="right">8.6500631</td>
-<td align="right">3.8010158</td>
+<td align="right">2.1753207</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2429,7 +2430,7 @@ standard error of these differences for all variables defined in
 <td align="left">Carinthia - Styria</td>
 <td align="left">group difference</td>
 <td align="right">-1.2883695</td>
-<td align="right">2.2730489</td>
+<td align="right">1.2778364</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2439,7 +2440,7 @@ standard error of these differences for all variables defined in
 <td align="left">Carinthia - Vienna</td>
 <td align="left">group difference</td>
 <td align="right">-4.1484155</td>
-<td align="right">2.5062449</td>
+<td align="right">1.3441142</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2449,7 +2450,7 @@ standard error of these differences for all variables defined in
 <td align="left">Lower Austria - Vorarlberg</td>
 <td align="left">group difference</td>
 <td align="right">-2.6936874</td>
-<td align="right">3.4123823</td>
+<td align="right">4.1358063</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2459,7 +2460,7 @@ standard error of these differences for all variables defined in
 <td align="left">Upper Austria - Vorarlberg</td>
 <td align="left">group difference</td>
 <td align="right">-5.6475368</td>
-<td align="right">3.5482126</td>
+<td align="right">4.1541269</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2469,7 +2470,7 @@ standard error of these differences for all variables defined in
 <td align="left">Styria - Tyrol</td>
 <td align="left">group difference</td>
 <td align="right">-0.9335532</td>
-<td align="right">1.8749174</td>
+<td align="right">2.4175465</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2479,7 +2480,7 @@ standard error of these differences for all variables defined in
 <td align="left">Tyrol - Vienna</td>
 <td align="left">group difference</td>
 <td align="right">-1.9264927</td>
-<td align="right">1.7045409</td>
+<td align="right">2.3309747</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2489,7 +2490,7 @@ standard error of these differences for all variables defined in
 <td align="left">Lower Austria - Salzburg</td>
 <td align="left">group difference</td>
 <td align="right">0.0562796</td>
-<td align="right">1.8470515</td>
+<td align="right">1.9062728</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2499,7 +2500,7 @@ standard error of these differences for all variables defined in
 <td align="left">Salzburg - Upper Austria</td>
 <td align="left">group difference</td>
 <td align="right">2.8975698</td>
-<td align="right">2.2161464</td>
+<td align="right">1.7586789</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2509,7 +2510,7 @@ standard error of these differences for all variables defined in
 <td align="left">Carinthia - Lower Austria</td>
 <td align="left">group difference</td>
 <td align="right">-0.7573551</td>
-<td align="right">2.0484059</td>
+<td align="right">1.8049642</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2519,7 +2520,7 @@ standard error of these differences for all variables defined in
 <td align="left">Carinthia - Upper Austria</td>
 <td align="left">group difference</td>
 <td align="right">2.1964944</td>
-<td align="right">2.4497219</td>
+<td align="right">1.5636759</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2529,7 +2530,7 @@ standard error of these differences for all variables defined in
 <td align="left">Lower Austria - Tyrol</td>
 <td align="left">group difference</td>
 <td align="right">-1.4645677</td>
-<td align="right">2.5759089</td>
+<td align="right">2.1032002</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2539,7 +2540,7 @@ standard error of these differences for all variables defined in
 <td align="left">Tyrol - Upper Austria</td>
 <td align="left">group difference</td>
 <td align="right">4.4184171</td>
-<td align="right">1.6771042</td>
+<td align="right">2.0317357</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2549,7 +2550,7 @@ standard error of these differences for all variables defined in
 <td align="left">Styria</td>
 <td align="left">direct</td>
 <td align="right">14.3746373</td>
-<td align="right">1.0559605</td>
+<td align="right">1.7382878</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2559,7 +2560,7 @@ standard error of these differences for all variables defined in
 <td align="left">Styria - Vienna</td>
 <td align="left">group difference</td>
 <td align="right">-2.8600459</td>
-<td align="right">1.6846330</td>
+<td align="right">1.7431083</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2569,7 +2570,7 @@ standard error of these differences for all variables defined in
 <td align="left">Vienna</td>
 <td align="left">direct</td>
 <td align="right">17.2346832</td>
-<td align="right">1.1871171</td>
+<td align="right">1.1688503</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2579,7 +2580,7 @@ standard error of these differences for all variables defined in
 <td align="left">Lower Austria - Styria</td>
 <td align="left">group difference</td>
 <td align="right">-0.5310145</td>
-<td align="right">1.2602200</td>
+<td align="right">2.2979976</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2589,7 +2590,7 @@ standard error of these differences for all variables defined in
 <td align="left">Styria - Upper Austria</td>
 <td align="left">group difference</td>
 <td align="right">3.4848639</td>
-<td align="right">1.6332932</td>
+<td align="right">1.4771953</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2599,7 +2600,7 @@ standard error of these differences for all variables defined in
 <td align="left">Lower Austria - Vienna</td>
 <td align="left">group difference</td>
 <td align="right">-3.3910604</td>
-<td align="right">1.9532508</td>
+<td align="right">1.3089511</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2609,7 +2610,7 @@ standard error of these differences for all variables defined in
 <td align="left">Upper Austria - Vienna</td>
 <td align="left">group difference</td>
 <td align="right">-6.3449098</td>
-<td align="right">1.4178877</td>
+<td align="right">1.3733612</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2619,7 +2620,7 @@ standard error of these differences for all variables defined in
 <td align="left">Lower Austria</td>
 <td align="left">direct</td>
 <td align="right">13.8436228</td>
-<td align="right">1.1256995</td>
+<td align="right">1.0023937</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2629,7 +2630,7 @@ standard error of these differences for all variables defined in
 <td align="left">Lower Austria - Upper Austria</td>
 <td align="left">group difference</td>
 <td align="right">2.9538494</td>
-<td align="right">1.9538722</td>
+<td align="right">1.1177374</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2639,7 +2640,7 @@ standard error of these differences for all variables defined in
 <td align="left">Upper Austria</td>
 <td align="left">direct</td>
 <td align="right">10.8897734</td>
-<td align="right">0.9377872</td>
+<td align="right">0.6490333</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2649,7 +2650,7 @@ standard error of these differences for all variables defined in
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">12.0266000</td>
-<td align="right">0.3524528</td>
+<td align="right">0.5911544</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2659,7 +2660,7 @@ standard error of these differences for all variables defined in
 <td align="left">NA</td>
 <td align="left">group difference</td>
 <td align="right">-4.7069081</td>
-<td align="right">0.3539490</td>
+<td align="right">0.5693992</td>
 </tr>
 <tr class="even">
 <td align="right">2010</td>
@@ -2669,7 +2670,7 @@ standard error of these differences for all variables defined in
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">16.7335081</td>
-<td align="right">0.4706546</td>
+<td align="right">0.7083992</td>
 </tr>
 <tr class="odd">
 <td align="right">2010</td>
@@ -2679,7 +2680,7 @@ standard error of these differences for all variables defined in
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">14.4442182</td>
-<td align="right">0.3755538</td>
+<td align="right">0.5828778</td>
 </tr>
 </tbody>
 </table>
@@ -2784,7 +2785,7 @@ the form <code>&quot;period2&quot; - &quot;period1&quot;</code>.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.1455601</td>
-<td align="right">0.4954098</td>
+<td align="right">0.5290947</td>
 </tr>
 <tr class="even">
 <td align="left">2015</td>
@@ -2792,7 +2793,7 @@ the form <code>&quot;period2&quot; - &quot;period1&quot;</code>.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.5364014</td>
-<td align="right">0.5456595</td>
+<td align="right">0.4387180</td>
 </tr>
 <tr class="odd">
 <td align="left">2015-2014</td>
@@ -2800,7 +2801,7 @@ the form <code>&quot;period2&quot; - &quot;period1&quot;</code>.</p>
 <td align="right">8182222</td>
 <td align="left">period difference</td>
 <td align="right">0.3908413</td>
-<td align="right">0.3505833</td>
+<td align="right">0.4033549</td>
 </tr>
 <tr class="even">
 <td align="left">2016</td>
@@ -2808,7 +2809,7 @@ the form <code>&quot;period2&quot; - &quot;period1&quot;</code>.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.0831502</td>
-<td align="right">0.5211549</td>
+<td align="right">0.2971058</td>
 </tr>
 <tr class="odd">
 <td align="left">2016-2015</td>
@@ -2816,7 +2817,7 @@ the form <code>&quot;period2&quot; - &quot;period1&quot;</code>.</p>
 <td align="right">8182222</td>
 <td align="left">period difference</td>
 <td align="right">-0.4532512</td>
-<td align="right">0.3818030</td>
+<td align="right">0.3711659</td>
 </tr>
 <tr class="even">
 <td align="left">2017</td>
@@ -2824,7 +2825,7 @@ the form <code>&quot;period2&quot; - &quot;period1&quot;</code>.</p>
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.4201916</td>
-<td align="right">0.3757101</td>
+<td align="right">0.4955047</td>
 </tr>
 <tr class="odd">
 <td align="left">2017-2016</td>
@@ -2832,7 +2833,7 @@ the form <code>&quot;period2&quot; - &quot;period1&quot;</code>.</p>
 <td align="right">8182222</td>
 <td align="left">period difference</td>
 <td align="right">0.3370414</td>
-<td align="right">0.4140711</td>
+<td align="right">0.3072548</td>
 </tr>
 </tbody>
 </table>
@@ -2874,7 +2875,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">14.5035068</td>
-<td align="right">0.6086880</td>
+<td align="right">0.6106840</td>
 </tr>
 <tr class="even">
 <td align="left">2014</td>
@@ -2883,7 +2884,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">15.7535328</td>
-<td align="right">0.4769638</td>
+<td align="right">0.5999712</td>
 </tr>
 <tr class="odd">
 <td align="left">2014</td>
@@ -2892,7 +2893,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">15.1455601</td>
-<td align="right">0.4954098</td>
+<td align="right">0.5290947</td>
 </tr>
 <tr class="even">
 <td align="left">2015</td>
@@ -2901,7 +2902,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">15.1228904</td>
-<td align="right">0.6391846</td>
+<td align="right">0.4437781</td>
 </tr>
 <tr class="odd">
 <td align="left">2015</td>
@@ -2910,7 +2911,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">15.9279630</td>
-<td align="right">0.5250614</td>
+<td align="right">0.5586525</td>
 </tr>
 <tr class="even">
 <td align="left">2015</td>
@@ -2919,7 +2920,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">15.5364014</td>
-<td align="right">0.5456595</td>
+<td align="right">0.4387180</td>
 </tr>
 <tr class="odd">
 <td align="left">2015-2014</td>
@@ -2928,7 +2929,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">male</td>
 <td align="left">period difference</td>
 <td align="right">0.6193836</td>
-<td align="right">0.3561700</td>
+<td align="right">0.4593599</td>
 </tr>
 <tr class="even">
 <td align="left">2015-2014</td>
@@ -2937,7 +2938,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">female</td>
 <td align="left">period difference</td>
 <td align="right">0.1744301</td>
-<td align="right">0.3658346</td>
+<td align="right">0.3883376</td>
 </tr>
 <tr class="odd">
 <td align="left">2015-2014</td>
@@ -2946,7 +2947,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">NA</td>
 <td align="left">period difference</td>
 <td align="right">0.3908413</td>
-<td align="right">0.3505833</td>
+<td align="right">0.4033549</td>
 </tr>
 <tr class="even">
 <td align="left">2016</td>
@@ -2955,7 +2956,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">14.5796824</td>
-<td align="right">0.5975064</td>
+<td align="right">0.3530375</td>
 </tr>
 <tr class="odd">
 <td align="left">2016</td>
@@ -2964,7 +2965,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">15.5598937</td>
-<td align="right">0.5005551</td>
+<td align="right">0.4153164</td>
 </tr>
 <tr class="even">
 <td align="left">2016</td>
@@ -2973,7 +2974,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">15.0831502</td>
-<td align="right">0.5211549</td>
+<td align="right">0.2971058</td>
 </tr>
 <tr class="odd">
 <td align="left">2016-2015</td>
@@ -2982,7 +2983,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">male</td>
 <td align="left">period difference</td>
 <td align="right">-0.5432080</td>
-<td align="right">0.3532349</td>
+<td align="right">0.4204309</td>
 </tr>
 <tr class="even">
 <td align="left">2016-2015</td>
@@ -2991,7 +2992,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">female</td>
 <td align="left">period difference</td>
 <td align="right">-0.3680693</td>
-<td align="right">0.4613847</td>
+<td align="right">0.4031281</td>
 </tr>
 <tr class="odd">
 <td align="left">2016-2015</td>
@@ -3000,7 +3001,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">NA</td>
 <td align="left">period difference</td>
 <td align="right">-0.4532512</td>
-<td align="right">0.3818030</td>
+<td align="right">0.3711659</td>
 </tr>
 <tr class="even">
 <td align="left">2017</td>
@@ -3009,7 +3010,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">14.9481591</td>
-<td align="right">0.3562568</td>
+<td align="right">0.5686488</td>
 </tr>
 <tr class="odd">
 <td align="left">2017</td>
@@ -3018,7 +3019,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">15.8671684</td>
-<td align="right">0.4535615</td>
+<td align="right">0.4893236</td>
 </tr>
 <tr class="even">
 <td align="left">2017</td>
@@ -3027,7 +3028,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">15.4201916</td>
-<td align="right">0.3757101</td>
+<td align="right">0.4955047</td>
 </tr>
 <tr class="odd">
 <td align="left">2017-2016</td>
@@ -3036,7 +3037,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">male</td>
 <td align="left">period difference</td>
 <td align="right">0.3684767</td>
-<td align="right">0.4827706</td>
+<td align="right">0.4184294</td>
 </tr>
 <tr class="even">
 <td align="left">2017-2016</td>
@@ -3045,7 +3046,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">female</td>
 <td align="left">period difference</td>
 <td align="right">0.3072748</td>
-<td align="right">0.4544777</td>
+<td align="right">0.2455253</td>
 </tr>
 <tr class="odd">
 <td align="left">2017-2016</td>
@@ -3054,7 +3055,7 @@ are also carried out for all variables in <code>group</code>.</p>
 <td align="left">NA</td>
 <td align="left">period difference</td>
 <td align="right">0.3370414</td>
-<td align="right">0.4140711</td>
+<td align="right">0.3072548</td>
 </tr>
 </tbody>
 </table>
@@ -3097,7 +3098,7 @@ estimates as well as rolling averages of length
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.14556</td>
-<td align="right">0.4954098</td>
+<td align="right">0.5290947</td>
 </tr>
 <tr class="even">
 <td align="left">2014_2015_2016</td>
@@ -3105,7 +3106,7 @@ estimates as well as rolling averages of length
 <td align="right">8182222</td>
 <td align="left">period average</td>
 <td align="right">15.25504</td>
-<td align="right">0.4615078</td>
+<td align="right">0.3380137</td>
 </tr>
 <tr class="odd">
 <td align="left">2015</td>
@@ -3113,7 +3114,7 @@ estimates as well as rolling averages of length
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.53640</td>
-<td align="right">0.5456595</td>
+<td align="right">0.4387180</td>
 </tr>
 <tr class="even">
 <td align="left">2015_2016_2017</td>
@@ -3121,7 +3122,7 @@ estimates as well as rolling averages of length
 <td align="right">8182222</td>
 <td align="left">period average</td>
 <td align="right">15.34658</td>
-<td align="right">0.4211127</td>
+<td align="right">0.3679139</td>
 </tr>
 <tr class="odd">
 <td align="left">2016</td>
@@ -3129,7 +3130,7 @@ estimates as well as rolling averages of length
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.08315</td>
-<td align="right">0.5211549</td>
+<td align="right">0.2971058</td>
 </tr>
 <tr class="even">
 <td align="left">2017</td>
@@ -3137,7 +3138,7 @@ estimates as well as rolling averages of length
 <td align="right">8182222</td>
 <td align="left">direct</td>
 <td align="right">15.42019</td>
-<td align="right">0.3757101</td>
+<td align="right">0.4955047</td>
 </tr>
 </tbody>
 </table>
@@ -3179,7 +3180,7 @@ averages will be calculated.</p>
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">14.5035068</td>
-<td align="right">0.6086880</td>
+<td align="right">0.6106840</td>
 </tr>
 <tr class="even">
 <td align="left">2014</td>
@@ -3188,7 +3189,7 @@ averages will be calculated.</p>
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">15.7535328</td>
-<td align="right">0.4769638</td>
+<td align="right">0.5999712</td>
 </tr>
 <tr class="odd">
 <td align="left">2014</td>
@@ -3197,7 +3198,7 @@ averages will be calculated.</p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">15.1455601</td>
-<td align="right">0.4954098</td>
+<td align="right">0.5290947</td>
 </tr>
 <tr class="even">
 <td align="left">2014_2015_2016</td>
@@ -3206,7 +3207,7 @@ averages will be calculated.</p>
 <td align="left">male</td>
 <td align="left">period average</td>
 <td align="right">14.7353599</td>
-<td align="right">0.5710507</td>
+<td align="right">0.3548450</td>
 </tr>
 <tr class="odd">
 <td align="left">2014_2015_2016</td>
@@ -3215,7 +3216,7 @@ averages will be calculated.</p>
 <td align="left">female</td>
 <td align="left">period average</td>
 <td align="right">15.7471298</td>
-<td align="right">0.4185309</td>
+<td align="right">0.4649267</td>
 </tr>
 <tr class="even">
 <td align="left">2014_2015_2016</td>
@@ -3224,7 +3225,7 @@ averages will be calculated.</p>
 <td align="left">NA</td>
 <td align="left">period average</td>
 <td align="right">15.2550372</td>
-<td align="right">0.4615078</td>
+<td align="right">0.3380137</td>
 </tr>
 <tr class="odd">
 <td align="left">2015</td>
@@ -3233,7 +3234,7 @@ averages will be calculated.</p>
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">15.1228904</td>
-<td align="right">0.6391846</td>
+<td align="right">0.4437781</td>
 </tr>
 <tr class="even">
 <td align="left">2015</td>
@@ -3242,7 +3243,7 @@ averages will be calculated.</p>
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">15.9279630</td>
-<td align="right">0.5250614</td>
+<td align="right">0.5586525</td>
 </tr>
 <tr class="odd">
 <td align="left">2015</td>
@@ -3251,7 +3252,7 @@ averages will be calculated.</p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">15.5364014</td>
-<td align="right">0.5456595</td>
+<td align="right">0.4387180</td>
 </tr>
 <tr class="even">
 <td align="left">2015_2016_2017</td>
@@ -3260,7 +3261,7 @@ averages will be calculated.</p>
 <td align="left">male</td>
 <td align="left">period average</td>
 <td align="right">14.8835773</td>
-<td align="right">0.4784864</td>
+<td align="right">0.3846403</td>
 </tr>
 <tr class="odd">
 <td align="left">2015_2016_2017</td>
@@ -3269,7 +3270,7 @@ averages will be calculated.</p>
 <td align="left">female</td>
 <td align="left">period average</td>
 <td align="right">15.7850084</td>
-<td align="right">0.3963737</td>
+<td align="right">0.4528812</td>
 </tr>
 <tr class="even">
 <td align="left">2015_2016_2017</td>
@@ -3278,7 +3279,7 @@ averages will be calculated.</p>
 <td align="left">NA</td>
 <td align="left">period average</td>
 <td align="right">15.3465811</td>
-<td align="right">0.4211127</td>
+<td align="right">0.3679139</td>
 </tr>
 <tr class="odd">
 <td align="left">2016</td>
@@ -3287,7 +3288,7 @@ averages will be calculated.</p>
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">14.5796824</td>
-<td align="right">0.5975064</td>
+<td align="right">0.3530375</td>
 </tr>
 <tr class="even">
 <td align="left">2016</td>
@@ -3296,7 +3297,7 @@ averages will be calculated.</p>
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">15.5598937</td>
-<td align="right">0.5005551</td>
+<td align="right">0.4153164</td>
 </tr>
 <tr class="odd">
 <td align="left">2016</td>
@@ -3305,7 +3306,7 @@ averages will be calculated.</p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">15.0831502</td>
-<td align="right">0.5211549</td>
+<td align="right">0.2971058</td>
 </tr>
 <tr class="even">
 <td align="left">2016-2015</td>
@@ -3314,7 +3315,7 @@ averages will be calculated.</p>
 <td align="left">male</td>
 <td align="left">period difference</td>
 <td align="right">-0.5432080</td>
-<td align="right">0.3532349</td>
+<td align="right">0.4204309</td>
 </tr>
 <tr class="odd">
 <td align="left">2016-2015</td>
@@ -3323,7 +3324,7 @@ averages will be calculated.</p>
 <td align="left">female</td>
 <td align="left">period difference</td>
 <td align="right">-0.3680693</td>
-<td align="right">0.4613847</td>
+<td align="right">0.4031281</td>
 </tr>
 <tr class="even">
 <td align="left">2016-2015</td>
@@ -3332,7 +3333,7 @@ averages will be calculated.</p>
 <td align="left">NA</td>
 <td align="left">period difference</td>
 <td align="right">-0.4532512</td>
-<td align="right">0.3818030</td>
+<td align="right">0.3711659</td>
 </tr>
 <tr class="odd">
 <td align="left">2016-2015_mean</td>
@@ -3341,7 +3342,7 @@ averages will be calculated.</p>
 <td align="left">male</td>
 <td align="left">difference between period averages</td>
 <td align="right">0.1482174</td>
-<td align="right">0.1669658</td>
+<td align="right">0.3044421</td>
 </tr>
 <tr class="even">
 <td align="left">2016-2015_mean</td>
@@ -3350,7 +3351,7 @@ averages will be calculated.</p>
 <td align="left">female</td>
 <td align="left">difference between period averages</td>
 <td align="right">0.0378785</td>
-<td align="right">0.2406335</td>
+<td align="right">0.1875015</td>
 </tr>
 <tr class="odd">
 <td align="left">2016-2015_mean</td>
@@ -3359,7 +3360,7 @@ averages will be calculated.</p>
 <td align="left">NA</td>
 <td align="left">difference between period averages</td>
 <td align="right">0.0915438</td>
-<td align="right">0.1818219</td>
+<td align="right">0.2289807</td>
 </tr>
 <tr class="even">
 <td align="left">2017</td>
@@ -3368,7 +3369,7 @@ averages will be calculated.</p>
 <td align="left">male</td>
 <td align="left">direct</td>
 <td align="right">14.9481591</td>
-<td align="right">0.3562568</td>
+<td align="right">0.5686488</td>
 </tr>
 <tr class="odd">
 <td align="left">2017</td>
@@ -3377,7 +3378,7 @@ averages will be calculated.</p>
 <td align="left">female</td>
 <td align="left">direct</td>
 <td align="right">15.8671684</td>
-<td align="right">0.4535615</td>
+<td align="right">0.4893236</td>
 </tr>
 <tr class="even">
 <td align="left">2017</td>
@@ -3386,7 +3387,7 @@ averages will be calculated.</p>
 <td align="left">NA</td>
 <td align="left">direct</td>
 <td align="right">15.4201916</td>
-<td align="right">0.3757101</td>
+<td align="right">0.4955047</td>
 </tr>
 </tbody>
 </table>

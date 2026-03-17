@@ -93,14 +93,15 @@
 #' set.seed(1234)
 #' eusilc <- demo.eusilc(n = 1,prettyNames = TRUE)
 #' 
-#' eusilc[,N.households:=uniqueN(hid),by=region]
-#' eusilc.bootstrap <- rescaled.bootstrap(eusilc,REP=10,strata="region",
-#'                                        cluster="hid",fpc="N.households")
+#' eusilc[,N.households := sum(pWeight[!duplicated(hid)]),
+#'                                   by = .(region, year)]
+#' eusilc.bootstrap <- rescaled.bootstrap(eusilc, REP = 10, strata = "region",
+#'                                        cluster = "hid", fpc = "N.households")
 #' 
-#' eusilc[,new_strata:=paste(region,hsize,sep="_")]
-#' eusilc[,N.housholds:=uniqueN(hid),by=new_strata]
-#' eusilc.bootstrap <- rescaled.bootstrap(eusilc,REP=10,strata=c("new_strata"),
-#'                                        cluster="hid",fpc="N.households")
+#' eusilc[,new_strata := paste(region,hsize,sep="_")]
+#' eusilc[,N.housholds := sum(pWeight[!duplicated(hid)]), by = new_strata]
+#' eusilc.bootstrap <- rescaled.bootstrap(eusilc, REP = 10, strata = c("new_strata"),
+#'                                        cluster = "hid", fpc = "N.households")
 #'
 #'
 
@@ -121,7 +122,7 @@ rescaled.bootstrap <- function(
   
   InitialOrder <- N <- SINGLE_BOOT_FLAG <- SINGLE_BOOT_FLAG_FINAL <- f <-
     n_prev <- n_draw_prev <- sum_prev <- n_draw <- strata_i <- 
-    V1 <- fpc_i <- . <- new.var_col <- new_var <- NULL  
+    V1 <- fpc_i <- . <- new.var_col <- new.var <- NULL  
   
   dat <- copy(dat)
   method <- method[1]
@@ -223,7 +224,7 @@ rescaled.bootstrap <- function(
     if (any(!return.value %in% c("data", "replicates", "selection"))) {
       stop("return.value can only take the values 'data', 'replicates' or 'selection'")
     }
-    
+
     # check single.PSU
     if (is.null(single.PSU) || !single.PSU %in% c("merge", "mean")) {
       warning("single.PSU was not set to either 'merge' or 'mean'!\n Bootstrap",
@@ -306,7 +307,7 @@ rescaled.bootstrap <- function(
                               clust.val = clust.val)]
     singles <- singles[V1==1]
     if (nrow(singles) > 0) {
-      higher.stages <- c(strata[1:(i - 1)], cluster[1:(i - 1)])
+      higher.stages <- c(head(strata,i-1), head(cluster,i-1))
       by.val.tail <- tail(by.val,1)
       firstStage <- length(higher.stages) == 0
       if (firstStage) {
@@ -319,12 +320,12 @@ rescaled.bootstrap <- function(
       if (method == "Preston") {
         if (single.PSU == "merge") { # strata with only one PSU are merged with the nearest smaller stratum to avoid issues in the bootstrap procedure.
           
-          if (return.value == "data") {
+          if ("data" %in% return.value) {
             by.val.orig <- paste0(by.val.tail, "_ORIGINALSINGLES")
             fpc_orig <- paste0(fpc[i], "_ORIGINALSINGLES")
             
-            set(dat, i = by.val.orig, value = dat[[by.val.tail]])
-            set(dat, i = fpc_orig, value = dat[[fpc[i]]])
+            set(dat, j = by.val.orig, value = dat[[by.val.tail]])
+            set(dat, j = fpc_orig, value = dat[[fpc[i]]])
           }
           
           setkeyv(dat, higher.stages)
@@ -343,11 +344,11 @@ rescaled.bootstrap <- function(
           if(any(is.na(next.PSU[[new.var]]))){
             if(firstStage){
               next.PSU[is.na(new.var_col), c(new.var) := head(higher.stages, 1),      
-                       env = list(new.var_col = new_var,
+                       env = list(new.var_col = new.var,
                                   higher.stages = higher.stages)]
             }else{
               next.PSU[is.na(new.var_col), c(new.var) := head(by.val.tail,1),      
-                       env = list(new.var_col = new_var,
+                       env = list(new.var_col = new.var,
                                   by.val.tail = by.val.tail)]
             }
           }
@@ -362,7 +363,7 @@ rescaled.bootstrap <- function(
           # sum over margins
           fpc.i_ADD <- paste0(fpc[i], "_ADD")
           dat[!is.na(new.var), c(fpc.i_ADD) := 
-                sum(fpc_i[!duplicated(by.val.tail)]), by = c(new.var),
+                sum(fpc_i[!duplicated(by.val.tail)]), by = .(new.var),
               env = list(new.var = new.var,
                          fpc_i = fpc[i],
                          by.val.tail = by.val.tail)]
@@ -370,16 +371,14 @@ rescaled.bootstrap <- function(
           # assign to new group
           dat[!is.na(new.var), c(by.val.tail) := new.var, 
               env = list(new.var = new.var)]
-          dat[ c(fpc[i]) := fpc_i[is.na(new.var)][1], by=c(by.val),
+          dat[ ,c(fpc[i]) := fpc_i[is.na(new.var)][1], by=c(by.val),
                env = list(new.var = new.var)]
           dat[!is.na(new.var), c(fpc[i]) := fpc.i_ADD,
               env = list(new.var = new.var,
                          fpc.i_ADD = fpc.i_ADD)]
           
           dat[, c(new.var, paste0(fpc[i], "_ADD")) := NULL]
-        } 
-        
-        else if (single.PSU == "mean") {  # if single = mean: Marks the affected observations with a SINGLE_BOOT_FLAG in order to simply take the average of other replicates later in the bootstrap process.
+        } else if (single.PSU == "mean") {  # if single = mean: Marks the affected observations with a SINGLE_BOOT_FLAG in order to simply take the average of other replicates later in the bootstrap process.
           
           singles[, SINGLE_BOOT_FLAG := paste(higher.stages, .GRP, sep = "-"),  
                   by = c(higher.stages)]
@@ -393,9 +392,7 @@ rescaled.bootstrap <- function(
           }
           dat[, SINGLE_BOOT_FLAG := NULL]
           
-        } 
-        
-        else {
+        } else {
           message("Single PSUs detected at the following stages:\n")
           dat.print <- dat[,sum(!duplicated(clust.val)), by=c(by.val),
                            env = list(clust.val = clust.val)]
@@ -406,12 +403,12 @@ rescaled.bootstrap <- function(
       } else if (method == "Rao-Wu") {
         if (single.PSU == "merge") {
           
-          if (return.value == "data") {
+          if ("data" %in% return.value) {
             by.val.orig <- paste0(by.val.tail, "_ORIGINALSINGLES")
             fpc_orig <- paste0(fpc[i], "_ORIGINALSINGLES")
             
-            set(dat, i = by.val.orig, value = dat[[by.val.tail]])
-            set(dat, i = fpc_orig, value = dat[[fpc[i]]])
+            set(dat, j = by.val.orig, value = dat[[by.val.tail]])
+            set(dat, j = fpc_orig, value = dat[[fpc[i]]])
           }
           
           setkeyv(dat, higher.stages)
@@ -430,11 +427,11 @@ rescaled.bootstrap <- function(
           if(any(is.na(next.PSU[[new.var]]))){
             if(firstStage){
               next.PSU[is.na(new.var_col), c(new.var) := head(higher.stages, 1),
-                       env = list(new.var_col = new_var,
+                       env = list(new.var_col = new.var,
                                   higher.stages = higher.stages)]
             }else{
               next.PSU[is.na(new.var_col), c(new.var) := head(by.val.tail,1),
-                       env = list(new.var_col = new_var,
+                       env = list(new.var_col = new.var,
                                   by.val.tail = by.val.tail)]
             }
           }
@@ -552,7 +549,6 @@ rescaled.bootstrap <- function(
         }
       }, n = n, n_draw = n_draw), by = c(by.val), .SDcols = c(deltai)]
       
-      
       dati_check <- dati[, lapply(.SD, function(z, n_draw) {
         sum(z) == n_draw[1]
         
@@ -584,10 +580,7 @@ rescaled.bootstrap <- function(
           replicate(REP, draw.without.replacement(n[1], n_draw[1]), simplify = FALSE)
         ), by = c(by.val)]
       } else if (method == "Rao-Wu") {
-        print("Debugging draw.without.replacement:")
-        print(paste("n:", n))
-        print(paste("n_draw:", n_draw))
-        
+
         # Sampling with replacement
         dati[, c(deltai) := as.data.table(
           replicate(REP, draw.with.replacement(n[1], n_draw[1]), simplify = FALSE)
@@ -784,6 +777,7 @@ draw.with.replacement <- function(n, n_draw, delta = NULL) {
     delta <- rep(0, n)  # Set all units to 0 (not yet drawn)
     delta[is.na(delta)] <- 0
   }
+  delta <- as.numeric(delta)
   
   if (is.na(n_draw) || n_draw > n) {
     stop("Error: Invalid n_draw value.")
@@ -824,12 +818,18 @@ draw.with.replacement <- function(n, n_draw, delta = NULL) {
     delta[is.na(delta)] <- 0   
   }
   
-  return(delta)
+  return(as.numeric(delta))
 }
 
 
 change.random.value <- function(delta,changeVal=0,nChanges=1){
   
+  if(nChanges == 0){
+    # dont change anything
+    return(delta)
+  }
+  
+  # change a 0 -> 1 or 1 -> 0
   changeVal2 <- fifelse(changeVal==0,1,0) 
   set2NA <- which(delta==changeVal & !is.na(delta))
   if(length(set2NA)>1){
