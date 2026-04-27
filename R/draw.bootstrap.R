@@ -164,28 +164,35 @@
 #'   strata = c("region", "hsize"), period = "year")
 #'
 #'
-#' # create spit households
+#' # create split households
 #' eusilc[, pidsplit := pid]
 #' year <- eusilc[, unique(year)]
 #' year <- year[-1]
 #' leaf_out <- c()
 #' for(y in year) {
-#'   split.person <- eusilc[
-#'     year == (y-1) & !duplicated(hid) & !(hid %in% leaf_out),
-#'     sample(pid, 20)
-#'   ]
-#'   overwrite.person <- eusilc[
-#'     (year == (y)) & !duplicated(hid) & !(hid %in% leaf_out),
-#'     .(pid = sample(pid, 20))
-#'   ]
-#'   overwrite.person[, c("pidsplit", "year_curr") := .(split.person, y)]
-#'
-#'   eusilc[overwrite.person, pidsplit := i.pidsplit,
-#'          on = .(pid, year >= year_curr)]
-#'   leaf_out <- c(leaf_out,
-#'                 eusilc[pid %in% c(overwrite.person$pid,
-#'                                   overwrite.person$pidsplit),
-#'                 unique(hid)])
+#' split.person <- eusilc[
+#'   year == (y-1) & !duplicated(hid) & !(hid %in% leaf_out),
+#'   sample(pid, 20)
+#' ]
+#' overwrite.person <- eusilc[
+#'   (year == (y)) & !duplicated(hid) & !(hid %in% leaf_out),
+#'   .(pid = sample(pid, 20))
+#' ]
+#' overwrite.person[, c("pidsplit", "year_curr") := .(split.person, y)]
+#' 
+#' eusilc[overwrite.person, pidsplit := i.pidsplit,
+#'        on = .(pid, year >= year_curr)]
+#' 
+#' # assign new PID to avoid duplicates in pidsplit
+#' eusilc[overwrite.person, change_pid := TRUE, 
+#'        on = .(pid = pidsplit, year >= year_curr)]
+#' eusilc[change_pid == TRUE, pidsplit := as.integer(paste0(hid, 99))]
+#' eusilc[, change_pid := NULL]
+#' 
+#' leaf_out <- c(leaf_out,
+#'               eusilc[pid %in% c(overwrite.person$pid,
+#'                                 overwrite.person$pidsplit),
+#'                      unique(hid)])
 #' }
 #'
 #' dat_boot <- draw.bootstrap(
@@ -208,7 +215,7 @@ draw.bootstrap <- function(
       NULL, split = FALSE, pid = NULL, seed = NULL, already.selected = NULL) {
   
   occurence_first_period <- V1 <- strata_i <- . <-
-    hid_survey_segment_help <- NULL
+    hid_survey_segment_help <- N <- keep <- draw_randomly <- hid_orig <- NULL
   
   if (method == "Rao-Wu") {
     warning("The 'Rao-Wu' method should only be used when the first stage sampling is conducted without replacement. Ensure that your sampling design follows this requirement.")
@@ -436,7 +443,7 @@ draw.bootstrap <- function(
   }
   for(p in periods){
 
-      dat_boot <- rescaled.bootstrap(dat[.(p),on=c(period)],
+    dat_boot <- rescaled.bootstrap(dat[.(p),on=c(period)],
                                    method = method, 
                                    REP = REP, strata = strata_design, cluster = cluster_design,
                                    fpc = totals_design, single.PSU = single.PSU, return.value = c("replicates","selection"),
@@ -465,10 +472,22 @@ draw.bootstrap <- function(
     # dat[, occurence_first_period := min(get(period)), 
     #     by = .(hid, hid_survey_segment_help)]
     
-    select.first.occurence <- paste0(c(hid,"hid_survey_segment_help", w.names), collapse = ",")
     dat.first.occurence <- unique(dat[period==occurence_first_period, .SD,
                                       .SDcols = c(hid,"hid_survey_segment_help", w.names),
                                       env = list(period = period)])
+    dupl.HID <- dat.first.occurence[,.N, by= c(hid,"hid_survey_segment_help")][N>1]
+    if(nrow(dupl.HID) > 0){
+      # duplicated HID
+      # 2 or more HID started in same survey year ~ period and merged together
+      # choose 1 row randomly
+      dat.first.occurence[, keep := TRUE]
+      hid_set <- dupl.HID[[hid]]
+      dat.first.occurence[dupl.HID, draw_randomly := TRUE, on = c(hid,"hid_survey_segment_help")]
+      dat.first.occurence[draw_randomly == TRUE, keep := sample(c(rep(TRUE,1),rep(FALSE,.N-1))), by=.(hid), env = list(hid = hid)]
+      dat.first.occurence <- dat.first.occurence[keep == TRUE]
+      dat.first.occurence[, keep := NULL]
+    }
+    
     # select_cols <- c(hid, "hid_survey_segment_help", w.names)
     # dat.first.occurence <- unique(
     #   dat[get(period) == occurence_first_period, 
@@ -477,8 +496,20 @@ draw.bootstrap <- function(
     
     dat[, c(w.names) := NULL]
     dat <- merge(dat, dat.first.occurence, by = c(hid, "hid_survey_segment_help"), all.x = TRUE)
+    
+    # check if any missing values occur
+    if(any(is.na(dat[[w.names[1]]]))){
+      stop("Missing values generated while dealing with split households.\nPlease report bug in ",
+           "https://github.com/statistikat/surveysd")
+    }
+    if(nrow(dat[, .N, by = c(pid, period)][N > 1]) > 1){
+      stop("Duplicated ", pid," generated while dealing with split households.\nPlease report bug in ",
+           "https://github.com/statistikat/surveysd")
+    }
+    
     dat[, c("occurence_first_period","hid_survey_segment_help") := NULL]
-    dat[, hid := paste0(hid,"_orig"), env = list(hid = hid)]
+    dat[, hid := hid_orig, env = list(hid = hid,
+                                      hid_orig = paste0(hid,"_orig"))]
     # dat[, (hid) := paste0(get(hid), "_orig")]
     dat[, c(paste0(hid, "_orig")) := NULL]
   }

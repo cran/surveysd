@@ -1,11 +1,11 @@
-ab0220885cb856010f27b5f6c376708f *DESCRIPTION
+fe0932608e2d9b3d3aade271053b06f2 *DESCRIPTION
 42b60e66e6333818ba71585e5e8a9b84 *NAMESPACE
 8b2b7ebe4a5bf0f0d3ea56053922ac79 *NEWS.md
 1cfe6000a4738b89eb147992b87fd4fa *R/RcppExports.R
 b445d2ce6424be9b64d3de9a7ecf4f6c *R/calc.stError.R
 f470f1261dbe169aa8e03606fb1e92ea *R/computeFrac.R
 104753f4fdbdcfef7330cd5906656d62 *R/demo.eusilc.R
-c52de715a02fe03ee099b5d084d9abc8 *R/draw.bootstrap.R
+cc0f701c5d9bf00365bdc0d81cea01ae *R/draw.bootstrap.R
 68656337d5552fe3e20b565b9b3a2837 *R/generateHHID.R
 552dddeeb2ba9848d33978b2bf721da7 *R/get.selection.R
 eba46c8b9eeb62d15bc56e0569082966 *R/helpers.R
@@ -22,16 +22,16 @@ d6d0a648095542baa2d8c2aa375a7aa5 *README.md
 30f91520f6647473489c8572fd3be1c4 *build/vignette.rds
 3b87e2cd6846ae9ba8196f79d5c41682 *inst/doc/error_estimation.R
 7ed0d5a4a0c5a7e711541160b5974e28 *inst/doc/error_estimation.Rmd
-c6b758e0eedf60da1bbd810582d8b67a *inst/doc/error_estimation.html
+42d4dd229a150c7d4714fbb899d0eeb4 *inst/doc/error_estimation.html
 5751b32d34eeaf1be03fd397683812c1 *inst/doc/ipf.R
 3aff59a37200bd1e896d75c92ac18735 *inst/doc/ipf.Rmd
-709c539addc2ab5a6547798ef22f3f91 *inst/doc/ipf.html
+46f159fbcca6dcda829835378a0978ff *inst/doc/ipf.html
 233f311cf5b5ac12e66e404ac464310a *inst/doc/methodology.R
 3703a3491737808bb04f64fa102d0cf7 *inst/doc/methodology.Rmd
 51e8954ff1fc16fe66ec164569446d20 *inst/doc/methodology.html
 25d3ab26380ca51b65c19ae1b1c64348 *inst/doc/raowu.R
 76f8ee826257ce74f457afbbf24eadc1 *inst/doc/raowu.Rmd
-f344f26f4e855e00d9abcb5706861246 *inst/doc/raowu.html
+25b4e1d3b44b99dbc1924b56dd0002d1 *inst/doc/raowu.html
 fdc83354f045e95d2d0ae432dd548dfe *inst/doc/surveysd.R
 d5393581a2de147b54c4973dc21ef22c *inst/doc/surveysd.Rmd
 319680a720df43b0411fc65a94700935 *inst/doc/surveysd.pdf
@@ -40,7 +40,7 @@ d8abf728b228207f3d9555ccd9037745 *man/PointEstimates.Rd
 e74574f31c0cc14a3294300c140b2654 *man/computeFrac.Rd
 0dfe939370cd7c3cadbfd66ab29dc397 *man/cpp_mean.Rd
 7ba9be581d7f2091279741ccbc335e3a *man/demo.eusilc.Rd
-a9ec459d8ecb0d8eb517977c8b8577ee *man/draw.bootstrap.Rd
+0d4ab212e40f88a531459298a86c2883 *man/draw.bootstrap.Rd
 f465507e33302eb515bc194f2261ac6e *man/figures/logo.png
 3c2cd6109e66af743a52e1493f2225f2 *man/generate.HHID.Rd
 dc46ebf8df56e50a608684bd021a08e8 *man/get.selection.Rd
@@ -59,6 +59,7 @@ ea41788cfc56ad022e6013e7cb68aa56 *src/compute_linear.cpp
 6d775224a531a9e85c0d155adb9ac762 *src/helpersC.cpp
 6d5ef97eb6f2c49a9ca54b178e59e1cd *src/ipu_step.cpp
 be379a4c058b480473a5351f6cafbe32 *tests/testthat.R
+60f08b4bc05f224e6cc6e98370ec49ed *tests/testthat/Rplots.pdf
 cefe460ed1cd82dfddf709f522c27bb0 *tests/testthat/test_calcstError.R
 b9b6d021ee75aa78ebc3c3e2a1d17687 *tests/testthat/test_calcstError_long.R
 d44b65eb941e2503c139c92db646a834 *tests/testthat/test_drawbootstrap.R
@@ -74,4 +75,4 @@ e5ccb2f5a2ee63f88122ac4735c31463 *vignettes/lib.bib
 3703a3491737808bb04f64fa102d0cf7 *vignettes/methodology.Rmd
 76f8ee826257ce74f457afbbf24eadc1 *vignettes/raowu.Rmd
 d5393581a2de147b54c4973dc21ef22c *vignettes/surveysd.Rmd
-e44073a339401792263df9a867f0c8cd *vignettes/surveysd.html
+cf2e2f5139af591bb9691f925254ad24 *vignettes/surveysd.html
