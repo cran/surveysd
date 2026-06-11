@@ -2,6 +2,9 @@
 options(rmarkdown.html_vignette.check_title = FALSE)
 knitr::opts_chunk$set(echo = TRUE)
 
+library(data.table)
+setDTthreads(1)
+
 ## -----------------------------------------------------------------------------
 library(surveysd)
 

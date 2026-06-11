@@ -4,6 +4,9 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
+library(data.table)
+setDTthreads(1)
+
 ## ----setup--------------------------------------------------------------------
 library(surveysd)
 population <- demo.eusilc(1, prettyNames = TRUE)
